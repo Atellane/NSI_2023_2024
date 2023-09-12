@@ -8,9 +8,10 @@ numérotées 1,2, ... ; Elles ont une durée. Un album contient au moins une pla
 sur plusieurs plages (par exemple une symphonie en mouvements). Une œuvre a un identifiant et un titre. Certaines oeuvres ne sont pas enregistrées. On connaît les 
 interprètes de l'oeuvre pour une plage donnée. Un interprète a un identifiant et un nom et peut jouer de nombreuses œuvres. Une œuvre peut être jouée par plusieurs 
 interprètes. 
-- b. On suppose que chaque interprète utilise exactement un instrument (piano, guitare, etc) sur une plage. Où placer l'attribut "znstrument" dans le schéma 
+- b. On suppose que chaque interprète utilise exactement un instrument (piano, guitare, etc) sur une plage. Où placer l'attribut "instrument" dans le schéma 
 précédent ? 
 ## 1 (schéma)
+`(clé = "**clé**")`
 ```mermaid
 flowchart LR
 EntityClassCity["Ville"]
@@ -20,15 +21,15 @@ EntityClassArtist["Artiste"]
 AssociationClassIsIn{{"est dans"}}
 AssociationClassExhibitedAtTheMuseumDuring{{"exposé au musée pendant"}}
 AssociationClassHasMade{{"a réalisé"}}
-CityAttribute1(["`**nom**`"])
+CityAttribute1(["**nom**"])
 CityAttribute2(["pays"])
-MuseumAttribute1(["`**nom**`"])
+MuseumAttribute1(["**nom**"])
 MuseumAttribute2(["description"])
-ArtworkAttribute1(["`**titre**`"])
+ArtworkAttribute1(["**titre**"])
 ArtworkAttribute2(["siècle"])
-ArtistAttribute1(["`**nom**`"])
+ArtistAttribute1(["**nom**"])
 ArtistAttribute2(["prénom"])
-ExhibitedAtTheMuseumDuringAttribute1(["`**début**`"])
+ExhibitedAtTheMuseumDuringAttribute1(["**début**"])
 ExhibitedAtTheMuseumDuringAttribute2(["fin"])
 EntityClassCity --- CityAttribute1
 EntityClassCity --- CityAttribute2
