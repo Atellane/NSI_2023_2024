@@ -12,11 +12,45 @@ changer d'une épreuve à l'autre de la course. La base de données doit permett
 1. Proposez un schéma E/ A qui modélise la course nautique.
 2. Dans votre schéma E/ A, est-ce qu 'un équipier peut être engagé sur plusieurs bateaux pendant la même épreuve ? Si oui, modifier le schéma E/ A afin de préciser
 qu'un équipier ne peut pas être sur plusieurs bateaux pendant une épreuve.
+
+`(les clés interne sont en gras et les clés externe en italique)`
 ```mermaid
 flowchart LR
-entityBoat["bateau"] --- attributeSkipper(["skipper"])
-entityBoat --- attributeLenght(["longueur"])
-entityBoat --- attributeName(["nom"])
-entityBoat --- attribute(["`**n°**`"])
-entityTeammate["équipier"]-- 1:1 ---associationTeam{{"Est-dans"}}
+EntityClassBoat["Bateau"]
+EntityClassSponsor["Sponsor"]
+EntityClassTest["Épreuve"]
+EntityClassSeaport["Port"]
+AssociationClassFinance{{"finance"}}
+AssociationClassParticipate{{"participe"}}
+AssociationClassTakesPlace{{"se déroule"}}
+BoatAttribute1(["`**immatriculation**`"])
+BoatAttribute2(["longueur"])
+BoatAttribute3(["skipper"])
+BoatAttribute4(["nom"])
+SponsorAttribute1(["`**nom**`"])
+TestAttribute1(["`**date**`"])
+TestAttribute2(["classement"])
+TestAttribute3(["durée"])
+SeaportAttribute1(["`**nom**`"])
+FinanceAttribute1(["`**somme**`"])
+ParticipateAttribute1(["`**équipe**`"])
+ParticipateAttribute2(["y a-t-il un médecin ?"])
+EntityClassSponsor -- 1:n --- AssociationClassFinance
+AssociationClassFinance -- 1:n --- EntityClassBoat
+EntityClassBoat -- 1:n --> AssociationClassParticipate
+AssociationClassParticipate -- 2:n --> EntityClassTest
+EntityClassTest -- 1:n --> AssociationClassTakesPlace
+AssociationClassTakesPlace -- 1:n --> EntityClassSeaport
+EntityClassBoat --- BoatAttribute1
+EntityClassBoat --- BoatAttribute2
+EntityClassBoat --- BoatAttribute3
+EntityClassBoat --- BoatAttribute4
+EntityClassSponsor --- SponsorAttribute1
+EntityClassTest --- TestAttribute1
+EntityClassTest --- TestAttribute2
+EntityClassTest --- TestAttribute3
+EntityClassSeaport --- SeaportAttribute1
+AssociationClassFinance --- FinanceAttribute1
+AssociationClassParticipate --- ParticipateAttribute1
+AssociationClassParticipate --- ParticipateAttribute2
 ```
