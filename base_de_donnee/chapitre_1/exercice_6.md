@@ -68,6 +68,39 @@ EntityClassInterpreter["interprète"]
 AssociationClassIsPartOf{{"fait partie de"}}
 AssociationClassIsDividedInto{{"est divisé en"}}
 AssociationClassHasMade{{"a fait"}}
+AlbumAttribute1(["`**code**`"])
+AlbumAttribute2(["date"])
+TrackAttribute1(["`**numéro**`"])
+TrackAttribute2(["durée"])
+ArtworkAttribute1(["`**identifiant**`"])
+ArtworkAttribute2(["titre"])
+InterpreterAttribute1(["`**identifiant**`"])
+InterpreterAttribute2(["nom"])
+EntityClassInterpreter -- 1:n --> AssociationClassHasMade
+AssociationClassHasMade -- 1:n --> EntityClassArtwork
+EntityClassArtwork -- 1:n --> AssociationClassIsDividedInto
+AssociationClassIsDividedInto -- 1:n --> EntityClassTrack
+EntityClassTrack -- 1:1 --> AssociationClassIsPartOf
+AssociationClassIsPartOf -- 1:n --> EntityClassAmbum
+EntityClassInterpreter --- InterpreterAttribute1
+EntityClassInterpreter --- InterpreterAttribute2
+EntityClassArtwork --- ArtworkAttribute1
+EntityClassArtwork --- ArtworkAttribute2
+EntityClassTrack --- TrackAttribute1
+EntityClassTrack --- TrackAttribute2
+EntityClassAmbum --- AlbumAttribute1
+EntityClassAmbum --- AlbumAttribute2
+```
+- b
+```mermaid
+flowchart LR
+EntityClassAmbum["album"]
+EntityClassTrack["plage"]
+EntityClassArtwork["oeuvre"]
+EntityClassInterpreter["interprète"]
+AssociationClassIsPartOf{{"fait partie de"}}
+AssociationClassIsDividedInto{{"est divisé en"}}
+AssociationClassHasMade{{"a fait"}}
 AssociationClassUse{{"utilise"}}
 AlbumAttribute1(["`**code**`"])
 AlbumAttribute2(["date"])
