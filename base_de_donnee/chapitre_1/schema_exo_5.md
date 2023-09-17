@@ -13,7 +13,7 @@ changer d'une épreuve à l'autre de la course. La base de données doit permett
 2. Dans votre schéma E/ A, est-ce qu 'un équipier peut être engagé sur plusieurs bateaux pendant la même épreuve ? Si oui, modifier le schéma E/ A afin de préciser
 qu'un équipier ne peut pas être sur plusieurs bateaux pendant une épreuve.
 
-`(clé = "**clé**")`
+> (clé = "**clé**")
 ```mermaid
 flowchart LR
 EntityClassBoat["Bateau"]
@@ -23,17 +23,17 @@ EntityClassSeaport["Port"]
 AssociationClassFinance{{"finance"}}
 AssociationClassParticipate{{"participe"}}
 AssociationClassTakesPlace{{"se déroule"}}
-BoatAttribute1(["**immatriculation**"])
+BoatAttribute1(["`**immatriculation**`"])
 BoatAttribute2(["longueur"])
 BoatAttribute3(["skipper"])
 BoatAttribute4(["nom"])
-SponsorAttribute1(["**nom**"])
-TestAttribute1(["**date**"])
+SponsorAttribute1(["`**nom**`"])
+TestAttribute1(["`**date**`"])
 TestAttribute2(["classement"])
 TestAttribute3(["durée"])
-SeaportAttribute1(["**nom**"])
-FinanceAttribute1(["**somme**"])
-ParticipateAttribute1(["**équipe**"])
+SeaportAttribute1(["`**nom**`"])
+FinanceAttribute1(["`**somme**`"])
+ParticipateAttribute1(["`**équipe**`"])
 ParticipateAttribute2(["y a-t-il un médecin ?"])
 EntityClassSponsor -- 1:n --- AssociationClassFinance
 AssociationClassFinance -- 1:n --- EntityClassBoat
