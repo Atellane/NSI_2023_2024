@@ -2,6 +2,9 @@ body {
   margin: 0;
 
   #topBar {
+    $normalColorForHeader: #cacaca;
+    $colorOnHoverForHeader: white;
+
     border-bottom: 5px solid #08c;
     background-color: #222;
     list-style-type: none;
@@ -24,7 +27,7 @@ body {
         fill: #999;
 
         &:hover {
-          fill: white;
+          fill: $colorOnHoverForHeader;
         }
       }
     }
@@ -38,7 +41,7 @@ body {
         label {
           font-weight: bold;
           margin: 0.5em;
-          color: #cacaca;
+          color: $normalColorForHeader;
         }
 
         input {
@@ -61,13 +64,52 @@ body {
     }
 
     #username {
-      margin-right: 1em;
       a {
         text-decoration: none;
-        color: #cacaca;
+        color: $normalColorForHeader;
+        display: flex;
+        align-items: center;
 
         &:hover {
-          color: white;
+          color: $colorOnHoverForHeader;
+        }
+        
+
+
+        img {
+          width: 2em; 
+          height: 2em;
+          margin-left: .5em;
+          border-radius: 50%; 
+        }
+      }
+    }
+
+    #connexion {
+      display: flex;
+      align-items: center;
+
+      a {
+        text-decoration: none;
+        color: $normalColorForHeader;
+      }
+
+      #signIn {
+        margin-right: .8em;
+
+        &:hover {
+          color: $colorOnHoverForHeader;
+        }
+      }
+
+      #signUp {
+        border: 1px solid $normalColorForHeader;
+        border-radius: 6px;
+        padding: 4px 8px 4px 8px;
+
+        &:hover {
+          border-color: $colorOnHoverForHeader;
+          color: $colorOnHoverForHeader;
         }
       }
     }

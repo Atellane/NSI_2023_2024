@@ -51,13 +51,41 @@ body #topBar #searchBar div button[type=submit] svg {
   width: 24px;
   height: 24px;
 }
-body #topBar #username {
-  margin-right: 1em;
-}
 body #topBar #username a {
   text-decoration: none;
   color: #cacaca;
+  display: flex;
+  align-items: center;
 }
 body #topBar #username a:hover {
+  color: white;
+}
+body #topBar #username a img {
+  width: 2em;
+  height: 2em;
+  margin-left: 0.5em;
+  border-radius: 50%;
+}
+body #topBar #connexion {
+  display: flex;
+  align-items: center;
+}
+body #topBar #connexion a {
+  text-decoration: none;
+  color: #cacaca;
+}
+body #topBar #connexion #signIn {
+  margin-right: 0.8em;
+}
+body #topBar #connexion #signIn:hover {
+  color: white;
+}
+body #topBar #connexion #signUp {
+  border: 1px solid #cacaca;
+  border-radius: 6px;
+  padding: 4px 8px 4px 8px;
+}
+body #topBar #connexion #signUp:hover {
+  border-color: white;
   color: white;
 }/*# sourceMappingURL=page_d_acceuil.css.map */
