@@ -1,54 +1,75 @@
-ul {
-  list-style-type: none;
-  margin: auto;
-  padding: 0;
-}
+body {
+  margin: 0;
 
-li {
-  margin: auto;
-}
+  #topBar {
+    border-bottom: 5px solid #08c;
+    background-color: #222;
+    list-style-type: none;
+    margin: 0;
+    display: flex;
+    padding: 0.75%;
+    position: relative;
+    justify-content: space-between; 
+    align-items: center; /* Centrer verticalement */
 
-label {
-  font-weight: bold;
-}
+    #acceuil {
+      margin: 0;
+      position: relative;
 
-input[type="submit"] {
-  background-color: #4caf50;
-  color: white;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  padding: 10px;
-}
+      #homeIcon {
+        width: 2.5em; 
+        height: 2.5em;
+        margin: 0 auto;
+        display: block;
+        fill: #999;
 
-#topBar {
-  display: flex;
-  box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.25);
-  margin: auto;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fafafa;
-  
-  li {
-    margin-top: .1em;
+        &:hover {
+          fill: white;
+        }
+      }
+    }
+
+    #searchBar {
+      display: flex;
+
+      div {
+        align-self: center;
+
+        label {
+          font-weight: bold;
+          margin: 0.5em;
+          color: #cacaca;
+        }
+
+        input {
+          margin-right: 1em;
+        }
+
+        button[type="submit"] {
+          background-color: white;
+          cursor: pointer;
+          padding: 0;
+          border-color: rgba(35, 73, 17, 0.582);
+          border-radius: 5px;
+
+          svg {
+            width: 24px;
+            height: 24px;
+          }
+        }
+      }
+    }
+
+    #username {
+      margin-right: 1em;
+      a {
+        text-decoration: none;
+        color: #cacaca;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
   }
-
-  #acceuil {
-    margin-left: 1em;
-  }
-}
-
-#homeIcon {
-  width: 2.5em; 
-  height: 2.5em;
-}
-
-#searchBar {
-  display: flex;
-  padding: 1em
-}
-
-#username {
-  margin-right: 1em;
 }

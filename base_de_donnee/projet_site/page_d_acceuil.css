@@ -1,52 +1,63 @@
-ul {
+body {
+  margin: 0;
+}
+body #topBar {
+  border-bottom: 5px solid #08c;
+  background-color: #222;
   list-style-type: none;
-  margin: auto;
-  padding: 0;
-}
-
-li {
-  margin: auto;
-}
-
-label {
-  font-weight: bold;
-}
-
-input[type=submit] {
-  background-color: #4caf50;
-  color: white;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  padding: 10px;
-}
-
-#topBar {
+  margin: 0;
   display: flex;
-  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.25);
-  margin: auto;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fafafa;
+  padding: 0.75%;
+  position: relative;
+  justify-content: space-between;
+  align-items: center; /* Centrer verticalement */
 }
-#topBar li {
-  margin-top: 0.1em;
+body #topBar #acceuil {
+  margin: 0;
+  position: relative;
 }
-#topBar #acceuil {
-  margin-left: 1em;
-}
-
-#homeIcon {
+body #topBar #acceuil #homeIcon {
   width: 2.5em;
   height: 2.5em;
+  margin: 0 auto;
+  display: block;
+  fill: #999;
 }
-
-#searchBar {
+body #topBar #acceuil #homeIcon:hover {
+  fill: white;
+}
+body #topBar #searchBar {
   display: flex;
-  padding: 1em;
 }
-
-#username {
+body #topBar #searchBar div {
+  align-self: center;
+}
+body #topBar #searchBar div label {
+  font-weight: bold;
+  margin: 0.5em;
+  color: #cacaca;
+}
+body #topBar #searchBar div input {
   margin-right: 1em;
+}
+body #topBar #searchBar div button[type=submit] {
+  background-color: white;
+  cursor: pointer;
+  padding: 0;
+  border-color: rgba(35, 73, 17, 0.582);
+  border-radius: 5px;
+}
+body #topBar #searchBar div button[type=submit] svg {
+  width: 24px;
+  height: 24px;
+}
+body #topBar #username {
+  margin-right: 1em;
+}
+body #topBar #username a {
+  text-decoration: none;
+  color: #cacaca;
+}
+body #topBar #username a:hover {
+  color: white;
 }/*# sourceMappingURL=page_d_acceuil.css.map */
