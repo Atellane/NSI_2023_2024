@@ -88,4 +88,49 @@ body #topBar #connexion #signUp {
 body #topBar #connexion #signUp:hover {
   border-color: white;
   color: white;
+}
+body #pageContent {
+  display: flex;
+}
+body #pageContent #mostPopularUsers {
+  flex: 0.3;
+}
+body #pageContent #mostPopularUsers ul {
+  list-style-type: none;
+  display: flex;
+  padding-left: 0;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+body #pageContent #mostPopularUsers ul li {
+  margin-right: 0.5em;
+}
+body #pageContent #mostPopularUsers ul .followButton {
+  background-color: transparent;
+  margin-left: 0.5em;
+  margin-right: 0;
+  border: 1px solid black;
+  border-radius: 6px;
+  padding: 4px 8px 4px 8px;
+  cursor: pointer;
+}
+body #pageContent #mostPopularUsers ul .followButton:hover {
+  border-color: grey;
+  color: white;
+  background-color: black;
+}
+body #pageContent #mostPopularUsers p {
+  margin-left: 1em;
+}
+body #pageContent .post {
+  display: block;
+  border: 3px solid #999;
+}
+body #pageContent .post ul {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+  margin-left: 1em;
+  margin-right: 1em;
 }/*# sourceMappingURL=page_d_acceuil.css.map */

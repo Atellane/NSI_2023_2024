@@ -114,4 +114,57 @@ body {
       }
     }
   }
+
+  #pageContent {
+    display: flex;
+
+    #mostPopularUsers {
+      flex: 0.3;
+      ul {
+        list-style-type: none;
+        display: flex;
+        padding-left: 0;
+        margin-left: 1em;
+        margin-right: 1em;
+        
+        li {
+          margin-right: .5em;
+        }
+
+        .followButton {
+          background-color: transparent;
+          margin-left: .5em;
+          margin-right: 0;
+          border: 1px solid black;
+          border-radius: 6px;
+          padding: 4px 8px 4px 8px;
+          cursor: pointer;
+
+          &:hover {
+            border-color: grey;
+            color: white;
+            background-color: black;
+          }
+        }
+      }
+      
+      p {
+        margin-left: 1em;
+      }
+    }
+
+    .post {
+      display: block;
+      border: 3px solid #999;
+
+      ul {
+        list-style-type: none;
+        display: flex;
+        align-items: center;
+        padding-left: 0;
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+    }
+  }
 }

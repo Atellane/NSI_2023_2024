@@ -4,12 +4,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="page_d_acceuil.css" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="follow_like_and_share.js"></script>
         <title>Blog</title>
     </head>
     <body>
         <ul id="topBar">
             <li id="acceuil">
-                <a href="./page_d_acceuil.html">
+                <a href="./page_d_acceuil_connected.html">
                     <svg version="1.1" id="homeIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                     viewBox="0 0 460.298 460.297" xml:space="preserve" >
                         <path d="M230.149,120.939L65.986,256.274c0,0.191-0.048,0.472-0.144,0.855c-0.094,0.38-0.144,0.656-0.144,0.852v137.041
@@ -27,7 +29,7 @@
                 </a>
             </li>
             <li>
-                <form id="searchBar" action="search_answer.html" method="get">
+                <form id="searchBar" action="./search_answer.html" method="get">
                     <div>
                         <label for="keyword">recherche :</label>
                         <input type="text" id="keyword" name="keyword">
@@ -41,20 +43,30 @@
                     </div>
                 </form>
             </li>
-            <li id="username"><a href="./accouts/profile/username.html">username<img src="./accounts/pfp/default_pfp.png" alt="photo de profil de username"></a></li>
+            <li id="username"><a href="./accounts/profile.html">username<img src="./accounts/pfp/default_pfp.png" alt="photo de profil de username"></a></li>
         </ul>
         <div id="pageContent">
+            <div id="mostPopularUsers">
+                <div class="users">
+                    <ul>
+                        <li><a href="./accounts/profile.html"><img src="./accounts/pfp/default_pfp.png" alt="photo de profil de username" width="30" height="30"></a></li>
+                        <li><a href="./accounts/profile.html">username</a></li>
+                        <li><button class="followButton username" id="popularUser" onclick="follow(this)">Follow</button></li>
+                    </ul>
+                    <p>number of folowers</p>
+                </div>
+            </div>
             <div id="mostRecentPost">
                 <div class="post" id="usernamedatetime">
                     <ul class="postHeader">
-                        <li><a href="./accounts/profile/username.html"><img src="./accounts/pfp/default_pfp.png" alt="photo de profil de username" width="30" height="30"></a></li>
-                        <li><a href="./accounts/profile/username.html">username</a></li>
+                        <li><a href="./accounts/profile.html"><img src="./accounts/pfp/default_pfp.png" alt="photo de profil de username" width="30" height="30"></a></li>
+                        <li><a href="./accounts/profile.html">username</a></li>
                         <li>datetime</li>
                     </ul>
                     <p class="postContent">blabla ;)</p>
                     <ul>
                         <li class="like">
-                            <a href="./posts/usernamedatetime.html#comment">
+                            <a href="./post.html#comment">
                                 <svg viewBox="0 0 48 48" width="24" height="24">
                                     <path d="M34.3 3.5C27.2 3.5 24 8.8 24 8.8s-3.2-5.3-10.3-5.3C6.4 3.5.5 9.9.5 17.8s6.1 12.4 12.2 17.8c9.2 8.2 9.8 8.9 11.3 8.9s2.1-.7 11.3-8.9c6.2-5.5 12.2-10 12.2-17.8 0-7.9-5.9-14.3-13.2-14.3zm-1 29.8c-5.4 4.8-8.3 7.5-9.3 8.1-1-.7-4.6-3.9-9.3-8.1-5.5-4.9-11.2-9-11.2-15.6 0-6.2 4.6-11.3 10.2-11.3 4.1 0 6.3 2 7.9 4.2 3.6 5.1 1.2 5.1 4.8 0 1.6-2.2 3.8-4.2 7.9-4.2 5.6 0 10.2 5.1 10.2 11.3 0 6.7-5.7 10.8-11.2 15.6z"></path>
                                 </svg>
@@ -82,14 +94,14 @@
             <div id="postRankedByNumberOfLikes">
                 <div class="post" id="usernamedatetime1">
                     <ul class="postHeader">
-                        <li><a href="./accounts/profile/username.html"><img src="./accounts/pfp/default_pfp.png" alt="photo de profil de username" width="30" height="30"></a></li>
-                        <li><a href="./accounts/profile/username.html">username</a></li>
+                        <li><a href="./accounts/profile.html"><img src="./accounts/pfp/default_pfp.png" alt="photo de profil de username" width="30" height="30"></a></li>
+                        <li><a href="./accounts/profile.html">username</a></li>
                         <li>datetime</li>
                     </ul>
                     <p class="postContent">blabla ;)</p>
                     <ul>
                         <li class="like">
-                            <a href="./posts/usernamedatetime.html#comment">
+                            <a href="./post.html#comment">
                                 <svg viewBox="0 0 48 48" width="24" height="24">
                                     <path d="M34.3 3.5C27.2 3.5 24 8.8 24 8.8s-3.2-5.3-10.3-5.3C6.4 3.5.5 9.9.5 17.8s6.1 12.4 12.2 17.8c9.2 8.2 9.8 8.9 11.3 8.9s2.1-.7 11.3-8.9c6.2-5.5 12.2-10 12.2-17.8 0-7.9-5.9-14.3-13.2-14.3zm-1 29.8c-5.4 4.8-8.3 7.5-9.3 8.1-1-.7-4.6-3.9-9.3-8.1-5.5-4.9-11.2-9-11.2-15.6 0-6.2 4.6-11.3 10.2-11.3 4.1 0 6.3 2 7.9 4.2 3.6 5.1 1.2 5.1 4.8 0 1.6-2.2 3.8-4.2 7.9-4.2 5.6 0 10.2 5.1 10.2 11.3 0 6.7-5.7 10.8-11.2 15.6z"></path>
                                 </svg>
