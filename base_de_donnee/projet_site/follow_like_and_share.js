@@ -58,7 +58,7 @@ function like(obj) {
     var postId = obj.parentNode.parentNode.parentNode.id
     console.log(postId);
     
-    if (obj.className === "OwO") {
+    if (obj.className === "likeButton") {
         // Redirigez l'utilisateur vers signIn.php
         window.location.href = "./accounts/sign_in.html";
         return; // Sortez de la fonction pour éviter l'exécution du reste du code
@@ -115,7 +115,7 @@ function share(obj) {
     var postId = obj.parentNode.parentNode.parentNode.id
     console.log(postId);
     
-    if (obj.className === "OwO") {
+    if (obj.className === "shareButton") {
         // Redirigez l'utilisateur vers signIn.php
         window.location.href = "./accounts/sign_in.html";
         return; // Sortez de la fonction pour éviter l'exécution du reste du code

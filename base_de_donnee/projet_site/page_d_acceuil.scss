@@ -153,17 +153,21 @@ body {
       }
     }
 
-    .post {
-      display: block;
-      border: 3px solid #999;
+    #forPost{
+      flex: auto;
+      .post {
+        display: block;
+        border: 3px solid #999;
 
-      ul {
-        list-style-type: none;
-        display: flex;
-        align-items: center;
-        padding-left: 0;
-        margin-left: 1em;
-        margin-right: 1em;
+        ul {
+          list-style-type: none;
+          display: flex;
+          align-items: center;
+          align-self: center;
+          padding-left: 0;
+          margin-left: 1em;
+          margin-right: 1em;
+        }
       }
     }
   }

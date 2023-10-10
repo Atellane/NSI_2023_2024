@@ -122,14 +122,18 @@ body #pageContent #mostPopularUsers ul .followButton:hover {
 body #pageContent #mostPopularUsers p {
   margin-left: 1em;
 }
-body #pageContent .post {
+body #pageContent #forPost {
+  flex: auto;
+}
+body #pageContent #forPost .post {
   display: block;
   border: 3px solid #999;
 }
-body #pageContent .post ul {
+body #pageContent #forPost .post ul {
   list-style-type: none;
   display: flex;
   align-items: center;
+  align-self: center;
   padding-left: 0;
   margin-left: 1em;
   margin-right: 1em;
