@@ -55,7 +55,7 @@ function follow(obj) {
 
 function like(obj) {
     console.log(obj.id + " " + obj.className);
-    var postId = obj.parentNode.parentNode.parentNode.id
+    var postId = obj.parentNode.parentNode.parentNode.parentNode.id
     console.log(postId);
     
     if (obj.className === "likeButton") {
@@ -112,7 +112,7 @@ function like(obj) {
 
 function share(obj) {
     console.log(obj.id + " " + obj.className);
-    var postId = obj.parentNode.parentNode.parentNode.id
+    var postId = obj.parentNode.parentNode.parentNode.parentNode.id
     console.log(postId);
     
     if (obj.className === "shareButton") {
