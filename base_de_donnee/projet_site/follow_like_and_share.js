@@ -67,7 +67,7 @@ function like(obj) {
     // Send an AJAX request to the PHP file when the button is clicked
     if (obj.classList.contains("liked")) {
         obj.classList.remove("liked");
-        classList.add("unliked");
+        obj.classList.add("unliked");
         $.ajax({
             url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/accounts/follow.php",
             method: "POST", // or "GET" depending on your needs
@@ -107,7 +107,9 @@ function like(obj) {
                 console.error("Error: " + error);
             }
         });
-        classList.remove("unliked");
+        if (obj.classList.contains("unliked")) {
+            obj.classList.remove("unliked");
+        }
         obj.classList.add("liked");
     }
 };
