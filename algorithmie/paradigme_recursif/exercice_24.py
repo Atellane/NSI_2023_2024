@@ -3,7 +3,7 @@ def dichotomie(tableau: list, valeur: int) -> bool:
     finIntervalleRecherche = len(tableau) - 1
     
     while debutIntervalleRecherche <= finIntervalleRecherche:
-        positionDansTableau = (debutIntervalleRecherche + finIntervalleRecherche) // 2
+        positionDansTableau = (debutIntervalleRecherche + finIntervalleRecherche) / 2
         
         if tableau[positionDansTableau] == valeur:
             # on a trouvé valeur
