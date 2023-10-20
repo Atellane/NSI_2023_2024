@@ -24,12 +24,12 @@ def flocon_koch(longueur, n):
 # Initialisation de Turtle
 turtle.speed(0)  # Ajuster la vitesse si nécessaire
 turtle.penup()
-turtle.goto(-150, 0)
+turtle.goto(-50, 0)
 turtle.pendown()
 
 # Appel de la fonction pour dessiner le flocon de Koch
-longueur_cote = 300
-n_iterations = 4  # Augmenter le nombre d'itérations pour un flocon plus complexe
+longueur_cote = 800
+n_iterations = 5  # Augmenter le nombre d'itérations pour un flocon plus complexe
 flocon_koch(longueur_cote, n_iterations)
 
 # Maintien ouverte la fenêtre Turtle
