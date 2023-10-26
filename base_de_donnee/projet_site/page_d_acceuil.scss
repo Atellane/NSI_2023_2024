@@ -132,18 +132,124 @@ body {
         }
 
         .followButton {
-          background-color: transparent;
-          margin-left: .5em;
-          margin-right: 0;
-          border: 1px solid black;
-          border-radius: 6px;
-          padding: 4px 8px 4px 8px;
+          border-width: 1px;
+          width: 10em;
+          height: 2.5em;
+          /*border-radius*/
+          border-radius: 5em;
+          background: #fff;
+          position: absolute;
+          border: 5px solid #6fb07f;
           cursor: pointer;
 
+          @-webkit-keyframes extend {
+                20% {
+                background: #6fb07f;
+                } 100% {
+                background: #6fb07f;
+                }
+          }
+
+          @keyframes extend {
+              20% {
+              background: #6fb07f;
+              } 100% {
+              background: #6fb07f;
+              }
+          }
+
+          @-webkit-keyframes disappear {
+            0% {
+                opacity: 1;
+                } 20% {
+                color: #fff;
+                } 100% {
+                opacity: 0;
+                }
+          }
+
+          @keyframes disappear {
+            0% {
+                opacity: 1;
+                } 20% {
+                color: #fff;
+                } 100% {
+                opacity: 0;
+                }
+          }
+
+          @-webkit-keyframes appear {
+            0% {
+                opacity: 0;
+                } 70% {
+                opacity: 0;
+                } 100% {
+                opacity: 1;
+                }
+          }
+
+          @keyframes appear {
+            0% {
+                opacity: 0;
+                } 70% {
+                opacity: 0;
+                } 100% {
+                opacity: 1;
+                }
+          }
+
+          & > span {
+            font-size: 1em;
+            color: #6fb07f
+          }
+
+          img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            filter: alpha(opacity=0);
+            opacity: 0
+          }
+          
+          &.followed {
+            /*animation*/
+            -webkit-animation: extend 1s ease-in-out;
+            -ms-animation: extend 1s ease-in-out;
+            animation: extend 1s ease-in-out;
+            background-color: #6fb07f
+            /*-webkit-animation-fill-mode: forwards;*/
+            /* Chrome, Safari, Opera */
+            /*animation-fill-mode: forwards;*/
+          }
+
+          &.followed > span {
+            /*animation*/
+            -webkit-animation: disappear 1s ease-in-out;
+            -ms-animation: disappear 1s ease-in-out;
+            animation: disappear 1s ease-in-out;
+            opacity: 0;
+            /*-webkit-animation-fill-mode: forwards;*/
+            /* Chrome, Safari, Opera */
+            /*animation-fill-mode: forwards;*/
+          }
+
+          &.followed > img {
+            /*animation*/
+            -webkit-animation: appear 1s ease-in-out;
+            -ms-animation: appear 1s ease-in-out;
+            animation: appear 1s ease-in-out;
+            opacity: 1;
+            /*-webkit-animation-fill-mode: forwards;*/
+            /* Chrome, Safari, Opera */
+            /*animation-fill-mode: forwards*/
+          }
+
           &:hover {
-            border-color: grey;
-            color: white;
-            background-color: black;
+            background-color: #1b5229;
           }
         }
       }
@@ -158,6 +264,8 @@ body {
       article {
         display: block;
         border: 3px solid #999;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.25);
         
         ul {
           list-style-type: none;
@@ -186,17 +294,22 @@ body {
           padding: .5em;
           border-top: 3px solid #999;
 
-          li {
-            display: flex;
-            align-items: center; /* Centre horizontalement */
-            text-align: center; /* Centre le texte horizontalement */
-            padding-right: 1em;
+          section.postFooter {
+            li {
+              padding-right: 1em;
+            }
           }
 
           button {
             height: 19px;
             width: 22px;
-            margin-right: .5em;
+            margin-right: .75em;
+          }
+
+          li {
+            display: flex;
+            align-items: center; /* Centre horizontalement */
+            text-align: center; /* Centre le texte horizontalement */
           }
 
           a {
@@ -270,6 +383,67 @@ body {
           button {
             background-color: transparent;
             border: none;
+          }
+          
+          .comment {
+            display: none;
+            
+            &.comOuvert {
+              display: inherit;
+            }
+
+            article {
+              margin-top: .5em;
+
+              
+              header {
+                li {
+                  &.datetime {
+                    margin-left: 100%;
+                  }
+                }
+              }
+            }
+
+            .commentFormSection {
+              header {
+                display: grid;
+                justify-content: normal;
+                margin: auto;
+                padding: 10px;
+                border: 1px solid #ccc;
+                background-color: #fafafa;
+
+                input, textarea {
+                  width: 95.5%;
+                  padding: 10px;
+                  margin-bottom: 10px;
+                  border: none;
+                  border-bottom: 1px solid #ccc;
+                  background-color: transparent;
+                }
+                
+                .submitCommentForm {
+                  background-color: #6fb07f;
+                  color: white;
+                  cursor: pointer;
+                  border: none;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: auto;
+                  height: auto;
+                }
+
+                textarea {
+                  resize: none;
+                }
+              }
+              footer {
+                img {
+                  width: 30em;
+                }
+              }
+            }
           }
         }
       }

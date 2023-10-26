@@ -106,18 +106,84 @@ body #pageContent #mostPopularUsers ul li {
   margin-right: 0.5em;
 }
 body #pageContent #mostPopularUsers ul .followButton {
-  background-color: transparent;
-  margin-left: 0.5em;
-  margin-right: 0;
-  border: 1px solid black;
-  border-radius: 6px;
-  padding: 4px 8px 4px 8px;
+  border-width: 1px;
+  width: 10em;
+  height: 2.5em;
+  /*border-radius*/
+  border-radius: 5em;
+  background: #fff;
+  position: absolute;
+  border: 5px solid #6fb07f;
   cursor: pointer;
 }
+@keyframes extend {
+  20% {
+    background: #6fb07f;
+  }
+  100% {
+    background: #6fb07f;
+  }
+}
+@keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  20% {
+    color: #fff;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+body #pageContent #mostPopularUsers ul .followButton > span {
+  font-size: 1em;
+  color: #6fb07f;
+}
+body #pageContent #mostPopularUsers ul .followButton img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+body #pageContent #mostPopularUsers ul .followButton.followed {
+  /*animation*/
+  animation: extend 1s ease-in-out;
+  background-color: #6fb07f;
+}
+body #pageContent #mostPopularUsers ul .followButton.followed > span {
+  /*animation*/
+  animation: disappear 1s ease-in-out;
+  opacity: 0;
+  /*-webkit-animation-fill-mode: forwards;*/
+  /* Chrome, Safari, Opera */
+  /*animation-fill-mode: forwards;*/
+}
+body #pageContent #mostPopularUsers ul .followButton.followed > img {
+  /*animation*/
+  animation: appear 1s ease-in-out;
+  opacity: 1;
+  /*-webkit-animation-fill-mode: forwards;*/
+  /* Chrome, Safari, Opera */
+  /*animation-fill-mode: forwards*/
+}
 body #pageContent #mostPopularUsers ul .followButton:hover {
-  border-color: grey;
-  color: white;
-  background-color: black;
+  background-color: #1b5229;
 }
 body #pageContent #mostPopularUsers p {
   margin-left: 1em;
@@ -128,6 +194,8 @@ body #pageContent #forPost {
 body #pageContent #forPost article {
   display: block;
   border: 3px solid #999;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.25);
 }
 body #pageContent #forPost article ul {
   list-style-type: none;
@@ -152,16 +220,18 @@ body #pageContent #forPost article footer {
   padding: 0.5em;
   border-top: 3px solid #999;
 }
-body #pageContent #forPost article footer li {
-  display: flex;
-  align-items: center; /* Centre horizontalement */
-  text-align: center; /* Centre le texte horizontalement */
+body #pageContent #forPost article footer section.postFooter li {
   padding-right: 1em;
 }
 body #pageContent #forPost article footer button {
   height: 19px;
   width: 22px;
-  margin-right: 0.5em;
+  margin-right: 0.75em;
+}
+body #pageContent #forPost article footer li {
+  display: flex;
+  align-items: center; /* Centre horizontalement */
+  text-align: center; /* Centre le texte horizontalement */
 }
 body #pageContent #forPost article footer a {
   margin-right: 0.5em;
@@ -218,4 +288,48 @@ body #pageContent #forPost article footer .likeButton.unliked {
 body #pageContent #forPost article footer button {
   background-color: transparent;
   border: none;
+}
+body #pageContent #forPost article footer .comment {
+  display: none;
+}
+body #pageContent #forPost article footer .comment.comOuvert {
+  display: inherit;
+}
+body #pageContent #forPost article footer .comment article {
+  margin-top: 0.5em;
+}
+body #pageContent #forPost article footer .comment article header li.datetime {
+  margin-left: 100%;
+}
+body #pageContent #forPost article footer .comment .commentFormSection header {
+  display: grid;
+  justify-content: normal;
+  margin: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #fafafa;
+}
+body #pageContent #forPost article footer .comment .commentFormSection header input, body #pageContent #forPost article footer .comment .commentFormSection header textarea {
+  width: 95.5%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background-color: transparent;
+}
+body #pageContent #forPost article footer .comment .commentFormSection header .submitCommentForm {
+  background-color: #6fb07f;
+  color: white;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  width: auto;
+  height: auto;
+}
+body #pageContent #forPost article footer .comment .commentFormSection header textarea {
+  resize: none;
+}
+body #pageContent #forPost article footer .comment .commentFormSection footer img {
+  width: 30em;
 }/*# sourceMappingURL=page_d_acceuil.css.map */
