@@ -51,66 +51,6 @@ function follow(obj) {
     }
 };
 
-function like(obj) {
-    var postId = obj.parentNode.parentNode.parentNode.parentNode.parentNode.id
-    console.log(postId);
-    
-    if (obj.className === "likeButton") {
-        // Redirigez l'utilisateur vers signIn.php
-        window.location.href = "./accounts/sign_in.html";
-        return; // Sortez de la fonction pour éviter l'exécution du reste du code
-    }
-    
-    // Send an AJAX request to the PHP file when the button is clicked
-    if (obj.classList.contains("liked")) {
-        obj.classList.remove("liked");
-        obj.classList.add("unliked");
-        $.ajax({
-            url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/accounts/like.php",
-            method: "POST", // or "GET" depending on your needs
-            data: {
-                // You can send any data you need here
-                action: "remove",
-                user: obj.classList[1],
-                post: postId
-            },
-            success: function (response) {
-                // Handle the response from the PHP file if needed
-                console.log("Signal sent successfully.");
-                console.log("Response from PHP: " + response);
-            },
-            error: function (xhr, status, error) {
-                // Handle errors if the request fails
-                console.error("Error: " + error);
-            }
-        });
-    } else {
-        $.ajax({
-            url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/accounts/like.php",
-            method: "POST", // or "GET" depending on your needs
-            data: {
-                // You can send any data you need here
-                action: "create",
-                user: obj.classList[1],
-                post: postId
-            },
-            success: function (response) {
-                // Handle the response from the PHP file if needed
-                console.log("Signal sent successfully.");
-                console.log("Response from PHP: " + response);
-            },
-            error: function (xhr, status, error) {
-                // Handle errors if the request fails
-                console.error("Error: " + error);
-            }
-        });
-        if (obj.classList.contains("unliked")) {
-            obj.classList.remove("unliked");
-        }
-        obj.classList.add("liked");
-    }
-};
-
 function share(obj) {
     var postId = obj.parentNode.parentNode.parentNode.parentNode.parentNode.id
     console.log(postId);
@@ -125,7 +65,7 @@ function share(obj) {
     if (obj.classList.contains("shared")) {
         obj.classList.remove("shared");
         $.ajax({
-            url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/accounts/share.php",
+            url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/posts/share.php",
             method: "POST", // or "GET" depending on your needs
             data: {
                 // You can send any data you need here
@@ -145,7 +85,7 @@ function share(obj) {
         });
     } else {
         $.ajax({
-            url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/accounts/share.php",
+            url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/posts/share.php",
             method: "POST", // or "GET" depending on your needs
             data: {
                 // You can send any data you need here
@@ -195,7 +135,7 @@ function soumettreCommentaire(obj) {
     // -------------------------------------------
 
     $.ajax({
-        url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/addComment.php",
+        url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/posts/addComment.php",
         type: "POST",
         data: commentaire,
         contentType: false,
@@ -234,7 +174,7 @@ function soumettreModification(obj) {
     // -------------------------------------------
 
     $.ajax({
-        url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/modifyAPost.php",
+        url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/posts/modifyAPost.php",
         type: "POST",
         data: modification,
         contentType: false,
@@ -280,4 +220,28 @@ function ouvrirModif(obj) {
     } else {
         commentSection.classList.add("modifOuverte");
     }
+};
+
+function supprimerPost(obj) {
+    postId = obj.parentNode.parentNode.parentNode.parentNode.parentNode.id;
+    console.log(postId);
+    $.ajax({
+        url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/posts/deletePost.php",
+        method: "POST", // or "GET" depending on your needs
+        data: {
+            // You can send any data you need here
+            user: obj.classList[1],
+            post: postId
+        },
+        success: function (response) {
+            // Handle the response from the PHP file if needed
+            console.log("Signal sent successfully.");
+            console.log("Response from PHP: " + response);
+        },
+        error: function (xhr, status, error) {
+            // Handle errors if the request fails
+            console.error("Error: " + error);
+        }
+    });
+    window.location.reload();
 };

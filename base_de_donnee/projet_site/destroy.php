@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>créer BDD</title>
+        <title>détruire BDD</title>
     </head>
     <body>
         <?php
@@ -17,14 +17,6 @@
             $sAbonneA= 'DROP TABLE sAbonneA';
 
             $dbh->exec($sAbonneA);
-
-            $like = 'DROP TABLE jAime';
-
-            $dbh->exec($like);
-
-            $mentionne = 'DROP TABLE mentione';
-
-            $dbh->exec($mentionne);
 
             $partage = 'DROP TABLE partage';
 

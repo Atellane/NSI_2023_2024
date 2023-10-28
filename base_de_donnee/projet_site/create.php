@@ -32,30 +32,6 @@
 
             $dbh->exec($sAbonneA);
 
-            $like = 'CREATE TABLE jAime(
-                id VARCHAR(530) PRIMARY KEY,
-                messagelike VARCHAR(275),
-                utilisateur VARCHAR(255),
-                CONSTRAINT messagelike FOREIGN KEY (messagelike) REFERENCES messages(signatureMessage),
-                CONSTRAINT utilisateur FOREIGN KEY (utilisateur) REFERENCES utilisateurs(username),
-                ON DELETE CASCADE,
-                ON UPDATE CASCADE,
-            )';
-
-            $dbh->exec($like);
-
-            $mentionne = 'CREATE TABLE mentione(
-                id VARCHAR(530) PRIMARY KEY,
-                messagementionnant VARCHAR(275),
-                utilisateur VARCHAR(255),
-                CONSTRAINT messagelike FOREIGN KEY (messagementionnant) REFERENCES messages(signatureMessage),
-                CONSTRAINT utilisateur FOREIGN KEY (utilisateur) REFERENCES utilisateurs(username),
-                ON DELETE CASCADE,
-                ON UPDATE CASCADE,
-            )';
-
-            $dbh->exec($mentionne);
-
             $partage = 'CREATE TABLE partage(
                 id VARCHAR(530) PRIMARY KEY,
                 utilisateur VARCHAR(255),

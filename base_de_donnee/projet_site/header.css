@@ -1,0 +1,103 @@
+body {
+  margin: 0;
+}
+body #topBar {
+  border-bottom: 5px solid #08c;
+  background-color: #222;
+  list-style-type: none;
+  margin: 0;
+  display: flex;
+  padding: 0.75%;
+  position: relative;
+  justify-content: space-between;
+  align-items: center; /* Centrer verticalement */
+}
+body #topBar li a {
+  text-decoration: none;
+  color: #cacaca;
+}
+body #topBar li a:hover {
+  color: white;
+}
+body #topBar #acceuil {
+  margin: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+body #topBar #acceuil a {
+  margin-right: 1em;
+}
+body #topBar #acceuil #homeIcon {
+  width: 2.5em;
+  height: 2.5em;
+  margin: 0 auto;
+  display: block;
+  fill: #999;
+}
+body #topBar #acceuil #homeIcon:hover {
+  fill: white;
+}
+body #topBar #searchBar {
+  display: flex;
+  position: absolute;
+  left: 45%;
+  top: 26.75%;
+}
+body #topBar #searchBar div {
+  align-self: center;
+}
+body #topBar #searchBar div label {
+  font-weight: bold;
+  margin: 0.5em;
+  color: #cacaca;
+}
+body #topBar #searchBar div input {
+  margin-right: 1em;
+}
+body #topBar #searchBar div button[type=submit] {
+  background-color: white;
+  cursor: pointer;
+  padding: 0;
+  border-color: rgba(35, 73, 17, 0.582);
+  border-radius: 5px;
+}
+body #topBar #searchBar div button[type=submit] svg {
+  width: 24px;
+  height: 24px;
+}
+body #topBar #username {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #cacaca;
+}
+body #topBar #username img {
+  width: 2em;
+  height: 2em;
+  margin-left: 0.5em;
+  border-radius: 50%;
+}
+body #topBar #connexion {
+  display: flex;
+  align-items: center;
+}
+body #topBar #connexion a {
+  text-decoration: none;
+  color: #cacaca;
+}
+body #topBar #connexion #signIn {
+  margin-right: 0.8em;
+}
+body #topBar #connexion #signIn:hover {
+  color: white;
+}
+body #topBar #connexion #signUp {
+  border: 1px solid #cacaca;
+  border-radius: 6px;
+  padding: 4px 8px 4px 8px;
+}
+body #topBar #connexion #signUp:hover {
+  border-color: white;
+  color: white;
+}/*# sourceMappingURL=header.css.map */

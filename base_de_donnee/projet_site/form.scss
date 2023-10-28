@@ -1,0 +1,32 @@
+form:not(#searchBar) {
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  input,
+  textarea {
+    width: 95.5%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    background-color: transparent;
+    resize: none;
+  }
+
+  #submitInput {
+    display: flex;
+    justify-content: center;
+
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      padding: 10px;
+    }
+  }
+}

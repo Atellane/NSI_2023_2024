@@ -4,8 +4,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="page_d_acceuil.css" />
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script type="text/javascript" src="follow_like_and_share.js"></script>
+        <link rel="stylesheet" href="header.css">
+        <link rel="stylesheet" href="form.css">
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="follow_share_and_action_for_post.js"></script>
         <title>Blog</title>
     </head>
     <body>
@@ -13,7 +15,7 @@
             <nav>
                 <ul id="topBar">
                     <li id="acceuil">
-                        <a href="./page_d_acceuil_connected.html">
+                        <a href="./page_d_acceuil_connected.php">
                             <svg version="1.1" id="homeIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 460.298 460.297" xml:space="preserve" >
                                 <path d="M230.149,120.939L65.986,256.274c0,0.191-0.048,0.472-0.144,0.855c-0.094,0.38-0.144,0.656-0.144,0.852v137.041
@@ -29,9 +31,13 @@
                                 c1.522-1.906,2.189-4.145,1.991-6.716C460.068,229.007,459.021,226.961,457.122,225.438z"/>
                             </svg>
                         </a>
+                        <a href="#mostRecentPost">Post les plus récents</a>
+                        <a href="#postFromFollowed">Post de vos abonnements</a>
+                        <a href="#postRankedByNumberOfShare">Post les plus partagés</a>
+                        <a href="./posts/createAPost.php">Créer un post</a>
                     </li>
                     <li>
-                        <form id="searchBar" action="./search_answer.html" method="get">
+                        <form id="searchBar" action="./search_answer.php" method="get">
                             <div>
                                 <label for="keyword">recherche :</label>
                                 <input type="text" id="keyword" name="keyword">
@@ -45,7 +51,10 @@
                             </div>
                         </form>
                     </li>
-                    <li id="username"><a href="./accounts/profile.html">username<img src="./accounts/pfp/default_pfp.png" alt="photo de profil de username"></a></li>
+                    <li id="username">
+                        username
+                        <img src="./accounts/pfp/default_pfp.png" alt="photo de profil de username">
+                    </li>
                 </ul>
             </nav>
         </header>
@@ -58,7 +67,7 @@
                         <li>
                             <button class="followButton username" id="popularUser" onclick="follow(this)">
                                 <span>Follow</span>
-                                <img src="https://i.cloudup.com/2ZAX3hVsBE-3000x3000.png" height="20" width="20">
+                                <img src="./assets/signeValidation.png" height="20" width="20">
                             </button>
                         </li>
                     </ul>
@@ -76,27 +85,20 @@
                                 <li class="liFollow">                            
                                     <button class="followButton username" id="popularUser" onclick="follow(this)">
                                         <span>Follow</span>
-                                        <img src="https://i.cloudup.com/2ZAX3hVsBE-3000x3000.png" height="20" width="20">
+                                        <img src="./assets/signeValidation.png" height="20" width="20">
                                     </button>
                                 </li>
                                 <li class="datetime">datetime</li>
                             </ul>
                         </header>
                         <section class="postContent">
+                            <img src="./assets/wallpaper.png" alt="imagePost" />
+                            <br />
                             <p>blabla ;)</p>
                         </section>
                         <footer>
                             <section class="postFooter">
                                 <ul>
-                                    <li class="like">
-                                        <button class="likeButton username" onclick="like(this)">
-                                            <svg width="22" height="19" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <!-- License: MIT. Made by teenyicons: https://github.com/teenyicons/teenyicons -->
-                                                <path d="M4.03553 1C1.80677 1 0 2.80677 0 5.03553C0 6.10582 0.42517 7.13228 1.18198 7.88909L7.14645 13.8536C7.34171 14.0488 7.65829 14.0488 7.85355 13.8536L13.818 7.88909C14.5748 7.13228 15 6.10582 15 5.03553C15 2.80677 13.1932 1 10.9645 1C9.89418 1 8.86772 1.42517 8.11091 2.18198L7.5 2.79289L6.88909 2.18198C6.13228 1.42517 5.10582 1 4.03553 1Z" fill="#000000"/>
-                                            </svg>
-                                        </button>
-                                        nombre de like
-                                    </li>
                                     <li class="partage">
                                         <button class="shareButton username" onclick="share(this)">
                                         </button>
@@ -137,38 +139,7 @@
                                             <li class="liFollow">                            
                                                 <button class="followButton username" id="popularUser" onclick="follow(this)">
                                                     <span>Follow</span>
-                                                    <img src="https://i.cloudup.com/2ZAX3hVsBE-3000x3000.png" height="20" width="20">
-                                                </button>
-                                            </li>
-                                            <li class="datetime">datetime</li>
-                                        </ul>
-                                    </header>
-                                    <section class="postContent">
-                                        <p>blabla ;)</p>
-                                    </section>
-                                    <footer>
-                                        <ul>
-                                            <li class="like">
-                                                <button class="likeButton username" onclick="like(this)">
-                                                    <svg width="22" height="19" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <!-- License: MIT. Made by teenyicons: https://github.com/teenyicons/teenyicons -->
-                                                        <path d="M4.03553 1C1.80677 1 0 2.80677 0 5.03553C0 6.10582 0.42517 7.13228 1.18198 7.88909L7.14645 13.8536C7.34171 14.0488 7.65829 14.0488 7.85355 13.8536L13.818 7.88909C14.5748 7.13228 15 6.10582 15 5.03553C15 2.80677 13.1932 1 10.9645 1C9.89418 1 8.86772 1.42517 8.11091 2.18198L7.5 2.79289L6.88909 2.18198C6.13228 1.42517 5.10582 1 4.03553 1Z" fill="#000000"/>
-                                                    </svg>
-                                                </button>
-                                                nombre de like
-                                            </li>
-                                        </ul>
-                                    </footer>
-                                </article>
-                                <article id="usernamedatetime2">
-                                    <header>
-                                        <ul>
-                                            <li><img src="./accounts/pfp/default_pfp.png" alt="photo de profil de username" width="30" height="30"></li>
-                                            <li>username</li>
-                                            <li class="liFollow">                            
-                                                <button class="followButton username" id="popularUser" onclick="follow(this)">
-                                                    <span>Follow</span>
-                                                    <img src="https://i.cloudup.com/2ZAX3hVsBE-3000x3000.png" height="20" width="20">
+                                                    <img src="./assets/signeValidation.png" height="20" width="20">
                                                 </button>
                                             </li>
                                             <li class="datetime">datetime</li>
@@ -180,14 +151,41 @@
                                     <footer>
                                         <section class="postFooter">
                                             <ul>
-                                                <li class="like">
-                                                    <button class="likeButton username" onclick="like(this)">
-                                                        <svg width="22" height="19" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <!-- License: MIT. Made by teenyicons: https://github.com/teenyicons/teenyicons -->
-                                                            <path d="M4.03553 1C1.80677 1 0 2.80677 0 5.03553C0 6.10582 0.42517 7.13228 1.18198 7.88909L7.14645 13.8536C7.34171 14.0488 7.65829 14.0488 7.85355 13.8536L13.818 7.88909C14.5748 7.13228 15 6.10582 15 5.03553C15 2.80677 13.1932 1 10.9645 1C9.89418 1 8.86772 1.42517 8.11091 2.18198L7.5 2.79289L6.88909 2.18198C6.13228 1.42517 5.10582 1 4.03553 1Z" fill="#000000"/>
-                                                        </svg>
+                                                <li class="partage">
+                                                    <button class="shareButton username" onclick="share(this)">
                                                     </button>
-                                                    nombre de like
+                                                    <p>nombre de partage</p>
+                                                </li>
+                                            </ul>
+                                        </section>
+                                    </footer>
+                                </article>
+                                <article id="usernamedatetime2">
+                                    <header>
+                                        <ul>
+                                            <li><img src="./accounts/pfp/default_pfp.png" alt="photo de profil de username" width="30" height="30"></li>
+                                            <li>username</li>
+                                            <li class="liFollow">                            
+                                                <button class="followButton username" id="popularUser" onclick="follow(this)">
+                                                    <span>Follow</span>
+                                                    <img src="./assets/signeValidation.png" height="20" width="20">
+                                                </button>
+                                            </li>
+                                            <li class="datetime">datetime</li>
+                                        </ul>
+                                    </header>
+                                    <section class="postContent">
+                                        <img src="./assets/wallpaper.png" alt="imagePost" />
+                                        <br />
+                                        <p>blabla ;)</p>
+                                    </section>
+                                    <footer>
+                                        <section class="postFooter">
+                                            <ul>
+                                                <li class="partage">
+                                                    <button class="shareButton username" onclick="share(this)">
+                                                    </button>
+                                                    <p>nombre de partage</p>
                                                 </li>
                                                 <li>
                                                     <button onclick="ouvrirModif(this)">
@@ -210,9 +208,9 @@
                                         <article class="modification">
                                             <header>
                                                 <form class="modifForm">
-                                                    Texte Post:
+                                                    <label for="postText">Texte Post:</label>
                                                     <textarea class="texteModification" name="texteModification" rows="5" cols="40"></textarea>
-                                                    <br> Image:
+                                                    <br /> <label for="image">Image :</label>
                                                     <input class="imageModification" type="file" name="image">
                                                     <br>
                                                 </form>
@@ -226,7 +224,7 @@
                                         <form class="commentForm">
                                             Commentaire:
                                             <textarea class="texteCommentaire" name="texteCommentaire" rows="5" cols="40"></textarea>
-                                            <br> Image:
+                                            <br /> <label for="image">Image :</label>
                                             <input class="imageCommentaire" type="file" name="image">
                                             <br>
                                         </form>
@@ -247,9 +245,9 @@
                             <article class="modification">
                                 <header>
                                     <form class="modifForm">
-                                        Texte Post:
+                                        <label for="postText">Texte Post:</label>
                                         <textarea class="texteModification" name="texteModification" rows="5" cols="40"></textarea>
-                                        <br> Image:
+                                        <br /> <label for="image">Image :</label>
                                         <input class="imageModification" type="file" name="image">
                                         <br>
                                     </form>
@@ -279,7 +277,7 @@
                                 <li class="liFollow">                            
                                     <button class="followButton username" id="popularUser" onclick="follow(this)">
                                         <span>Follow</span>
-                                        <img src="https://i.cloudup.com/2ZAX3hVsBE-3000x3000.png" height="20" width="20">
+                                        <img src="./assets/signeValidation.png" height="20" width="20">
                                     </button>
                                 </li>
                                 <li class="datetime">datetime</li>
@@ -291,15 +289,6 @@
                         <footer>
                             <section class="postFooter">
                                 <ul>
-                                    <li class="like">
-                                        <button class="likeButton username" onclick="like(this)">
-                                            <svg width="22" height="19" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <!-- License: MIT. Made by teenyicons: https://github.com/teenyicons/teenyicons -->
-                                                <path d="M4.03553 1C1.80677 1 0 2.80677 0 5.03553C0 6.10582 0.42517 7.13228 1.18198 7.88909L7.14645 13.8536C7.34171 14.0488 7.65829 14.0488 7.85355 13.8536L13.818 7.88909C14.5748 7.13228 15 6.10582 15 5.03553C15 2.80677 13.1932 1 10.9645 1C9.89418 1 8.86772 1.42517 8.11091 2.18198L7.5 2.79289L6.88909 2.18198C6.13228 1.42517 5.10582 1 4.03553 1Z" fill="#000000"/>
-                                            </svg>
-                                        </button>
-                                        nombre de like
-                                    </li>
                                     <li class="partage">
                                         <button class="shareButton username" onclick="share(this)">
                                         </button>
@@ -324,7 +313,7 @@
                                             <li class="liFollow">                            
                                                 <button class="followButton username" id="popularUser" onclick="follow(this)">
                                                     <span>Follow</span>
-                                                    <img src="https://i.cloudup.com/2ZAX3hVsBE-3000x3000.png" height="20" width="20">
+                                                    <img src="./assets/signeValidation.png" height="20" width="20">
                                                 </button>
                                             </li>
                                             <li class="datetime">datetime</li>
@@ -334,17 +323,15 @@
                                         <p>blabla ;)</p>
                                     </section>
                                     <footer>
-                                        <ul>
-                                            <li class="like">
-                                                <button class="likeButton username" onclick="like(this)">
-                                                    <svg width="22" height="19" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <!-- License: MIT. Made by teenyicons: https://github.com/teenyicons/teenyicons -->
-                                                        <path d="M4.03553 1C1.80677 1 0 2.80677 0 5.03553C0 6.10582 0.42517 7.13228 1.18198 7.88909L7.14645 13.8536C7.34171 14.0488 7.65829 14.0488 7.85355 13.8536L13.818 7.88909C14.5748 7.13228 15 6.10582 15 5.03553C15 2.80677 13.1932 1 10.9645 1C9.89418 1 8.86772 1.42517 8.11091 2.18198L7.5 2.79289L6.88909 2.18198C6.13228 1.42517 5.10582 1 4.03553 1Z" fill="#000000"/>
-                                                    </svg>
-                                                </button>
-                                                nombre de like
-                                            </li>
-                                        </ul>
+                                        <section class="postFooter">
+                                            <ul>
+                                                <li class="partage">
+                                                    <button class="shareButton username" onclick="share(this)">
+                                                    </button>
+                                                    <p>nombre de partage</p>
+                                                </li>
+                                            </ul>
+                                        </section>
                                     </footer>
                                 </article>
                                 <article id="usernamedatetime5">
@@ -355,7 +342,7 @@
                                             <li class="liFollow">                            
                                                 <button class="followButton username" id="popularUser" onclick="follow(this)">
                                                     <span>Follow</span>
-                                                    <img src="https://i.cloudup.com/2ZAX3hVsBE-3000x3000.png" height="20" width="20">
+                                                    <img src="./assets/signeValidation.png" height="20" width="20">
                                                 </button>
                                             </li>
                                             <li class="datetime">datetime</li>
@@ -365,17 +352,15 @@
                                         <p>blabla ;)</p>
                                     </section>
                                     <footer>
-                                        <ul>
-                                            <li class="like">
-                                                <button class="likeButton username" onclick="like(this)">
-                                                    <svg width="22" height="19" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <!-- License: MIT. Made by teenyicons: https://github.com/teenyicons/teenyicons -->
-                                                        <path d="M4.03553 1C1.80677 1 0 2.80677 0 5.03553C0 6.10582 0.42517 7.13228 1.18198 7.88909L7.14645 13.8536C7.34171 14.0488 7.65829 14.0488 7.85355 13.8536L13.818 7.88909C14.5748 7.13228 15 6.10582 15 5.03553C15 2.80677 13.1932 1 10.9645 1C9.89418 1 8.86772 1.42517 8.11091 2.18198L7.5 2.79289L6.88909 2.18198C6.13228 1.42517 5.10582 1 4.03553 1Z" fill="#000000"/>
-                                                    </svg>
-                                                </button>
-                                                nombre de like
-                                            </li>
-                                        </ul>
+                                        <section class="postFooter">
+                                            <ul>
+                                                <li class="partage">
+                                                    <button class="shareButton username" onclick="share(this)">
+                                                    </button>
+                                                    <p>nombre de partage</p>
+                                                </li>
+                                            </ul>
+                                        </section>
                                     </footer>
                                 </article>
                                 <article class="commentFormSection">
@@ -383,7 +368,7 @@
                                         <form class="commentForm">
                                             Commentaire:
                                             <textarea class="texteCommentaire" name="texteCommentaire" rows="5" cols="40"></textarea>
-                                            <br> Image:
+                                            <br /> <label for="image">Image :</label>
                                             <input class="imageCommentaire" type="file" name="image">
                                             <br>
                                         </form>
@@ -404,8 +389,8 @@
                         </footer>
                     </article>
                 </section>
-                <section id="postRankedByNumberOfLikes">
-                    <h1>Les posts les plus likés :</h1>
+                <section id="postRankedByNumberOfShare">
+                    <h1>Les posts les plus partagés :</h1>
                     <article id="usernamedatetime3">
                         <header>
                             <ul>
@@ -414,7 +399,7 @@
                                 <li class="liFollow">                            
                                     <button class="followButton username" id="popularUser" onclick="follow(this)">
                                         <span>Follow</span>
-                                        <img src="https://i.cloudup.com/2ZAX3hVsBE-3000x3000.png" height="20" width="20">
+                                        <img src="./assets/signeValidation.png" height="20" width="20">
                                     </button>
                                 </li>
                                 <li class="datetime">datetime</li>
@@ -426,15 +411,6 @@
                         <footer>
                             <section class="postFooter">
                                 <ul>
-                                    <li class="like">
-                                        <button class="likeButton username" onclick="like(this)">
-                                            <svg width="22" height="19" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <!-- License: MIT. Made by teenyicons: https://github.com/teenyicons/teenyicons -->
-                                                <path d="M4.03553 1C1.80677 1 0 2.80677 0 5.03553C0 6.10582 0.42517 7.13228 1.18198 7.88909L7.14645 13.8536C7.34171 14.0488 7.65829 14.0488 7.85355 13.8536L13.818 7.88909C14.5748 7.13228 15 6.10582 15 5.03553C15 2.80677 13.1932 1 10.9645 1C9.89418 1 8.86772 1.42517 8.11091 2.18198L7.5 2.79289L6.88909 2.18198C6.13228 1.42517 5.10582 1 4.03553 1Z" fill="#000000"/>
-                                            </svg>
-                                        </button>
-                                        nombre de like
-                                    </li>
                                     <li class="partage">
                                         <button class="shareButton username" onclick="share(this)">
                                         </button>
@@ -459,7 +435,7 @@
                                             <li class="liFollow">                            
                                                 <button class="followButton username" id="popularUser" onclick="follow(this)">
                                                     <span>Follow</span>
-                                                    <img src="https://i.cloudup.com/2ZAX3hVsBE-3000x3000.png" height="20" width="20">
+                                                    <img src="./assets/signeValidation.png" height="20" width="20">
                                                 </button>
                                             </li>
                                             <li class="datetime">datetime</li>
@@ -469,17 +445,15 @@
                                         <p>blabla ;)</p>
                                     </section>
                                     <footer>
-                                        <ul>
-                                            <li class="like">
-                                                <button class="likeButton username" onclick="like(this)">
-                                                    <svg width="22" height="19" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <!-- License: MIT. Made by teenyicons: https://github.com/teenyicons/teenyicons -->
-                                                        <path d="M4.03553 1C1.80677 1 0 2.80677 0 5.03553C0 6.10582 0.42517 7.13228 1.18198 7.88909L7.14645 13.8536C7.34171 14.0488 7.65829 14.0488 7.85355 13.8536L13.818 7.88909C14.5748 7.13228 15 6.10582 15 5.03553C15 2.80677 13.1932 1 10.9645 1C9.89418 1 8.86772 1.42517 8.11091 2.18198L7.5 2.79289L6.88909 2.18198C6.13228 1.42517 5.10582 1 4.03553 1Z" fill="#000000"/>
-                                                    </svg>
-                                                </button>
-                                                nombre de like
-                                            </li>
-                                        </ul>
+                                        <section class="postFooter">
+                                            <ul>
+                                                <li class="partage">
+                                                    <button class="shareButton username" onclick="share(this)">
+                                                    </button>
+                                                    <p>nombre de partage</p>
+                                                </li>
+                                            </ul>
+                                        </section>
                                     </footer>
                                 </article>
                                 <article id="usernamedatetime5">
@@ -490,7 +464,7 @@
                                             <li class="liFollow">                            
                                                 <button class="followButton username" id="popularUser" onclick="follow(this)">
                                                     <span>Follow</span>
-                                                    <img src="https://i.cloudup.com/2ZAX3hVsBE-3000x3000.png" height="20" width="20">
+                                                    <img src="./assets/signeValidation.png" height="20" width="20">
                                                 </button>
                                             </li>
                                             <li class="datetime">datetime</li>
@@ -500,17 +474,15 @@
                                         <p>blabla ;)</p>
                                     </section>
                                     <footer>
-                                        <ul>
-                                            <li class="like">
-                                                <button class="likeButton username" onclick="like(this)">
-                                                    <svg width="22" height="19" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <!-- License: MIT. Made by teenyicons: https://github.com/teenyicons/teenyicons -->
-                                                        <path d="M4.03553 1C1.80677 1 0 2.80677 0 5.03553C0 6.10582 0.42517 7.13228 1.18198 7.88909L7.14645 13.8536C7.34171 14.0488 7.65829 14.0488 7.85355 13.8536L13.818 7.88909C14.5748 7.13228 15 6.10582 15 5.03553C15 2.80677 13.1932 1 10.9645 1C9.89418 1 8.86772 1.42517 8.11091 2.18198L7.5 2.79289L6.88909 2.18198C6.13228 1.42517 5.10582 1 4.03553 1Z" fill="#000000"/>
-                                                    </svg>
-                                                </button>
-                                                nombre de like
-                                            </li>
-                                        </ul>
+                                        <section class="postFooter">
+                                            <ul>
+                                                <li class="partage">
+                                                    <button class="shareButton username" onclick="share(this)">
+                                                    </button>
+                                                    <p>nombre de partage</p>
+                                                </li>
+                                            </ul>
+                                        </section>
                                     </footer>
                                 </article>
                                 <article class="commentFormSection">
@@ -518,7 +490,7 @@
                                         <form class="commentForm">
                                             Commentaire:
                                             <textarea class="texteCommentaire" name="texteCommentaire" rows="5" cols="40"></textarea>
-                                            <br> Image:
+                                            <br /> <label for="image">Image :</label>
                                             <input class="imageCommentaire" type="file" name="image">
                                             <br>
                                         </form>

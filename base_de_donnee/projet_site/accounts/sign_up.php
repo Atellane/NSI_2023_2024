@@ -52,29 +52,25 @@
             </ul>
         </nav>
     </header>
-    <section id="pageContent">
-        <h1>S'inscrire :</h1>
-        <form method="post">
-            <div>
-                <label for="username">Nom d'utilisateur :</label>
-                <input type="text" id="username" name="username">
-            </div>
-            <div>
-                <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="password">
-            </div>
-            <div>
-                <label for="pfp">Photo de profil :</label>
-                <input type="file" name="pfp" id="pfp">
-            </div>
-            <div id="submitInput">
-                <input type="submit" value="Envoyer">
-            </div>
-        </form>
-        <section id="reponsePhp">
-            <p>ça a marché !</p>
-            <img src="../assets/signeValidation.png" alt="image signe validation">
-        </section>
-    </section>
+<section id="pageContent">
+    <h1>S'inscrire :</h1>
+	<form method="post">
+		<div>
+			<label for="username">Nom d'utilisateur :</label>
+  			<input type="text" id="username" name="username">
+		</div>
+		<div>
+			<label for="password">Mot de passe :</label>
+  			<input type="password" id="password" name="password">
+		</div>
+        <div>
+            <label for="pfp">Photo de profil :</label>
+            <input type="file" name="pfp" id="pfp">
+        </div>
+		<div id="submitInput">
+			<input type="submit" value="Envoyer">
+		</div>
+	</form>
+</section>
 </body>
 </html>

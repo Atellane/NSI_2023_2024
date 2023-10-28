@@ -1,0 +1,129 @@
+body {
+    margin: 0;
+  
+    #topBar {
+      $normalColorForHeader: #cacaca;
+      $colorOnHoverForHeader: white;
+  
+      border-bottom: 5px solid #08c;
+      background-color: #222;
+      list-style-type: none;
+      margin: 0;
+      display: flex;
+      padding: 0.75%;
+      position: relative;
+      justify-content: space-between; 
+      align-items: center; /* Centrer verticalement */
+  
+      li {
+        a {
+          text-decoration: none;
+          color: $normalColorForHeader;
+  
+          &:hover {
+            color: $colorOnHoverForHeader
+          }
+        }
+      }
+  
+      #acceuil {
+        margin: 0;
+        position: relative;
+        display: flex;
+        align-items: center;
+  
+        a {
+          margin-right: 1em;
+        }
+  
+        #homeIcon {
+          width: 2.5em; 
+          height: 2.5em;
+          margin: 0 auto;
+          display: block;
+          fill: #999;
+  
+          &:hover {
+            fill: $colorOnHoverForHeader;
+          }
+        }
+      }
+  
+      #searchBar {
+        display: flex;
+        position: absolute;
+        left: 45%;
+        top: 26.75%;
+  
+        div {
+          align-self: center;
+  
+          label {
+            font-weight: bold;
+            margin: 0.5em;
+            color: $normalColorForHeader;
+          }
+  
+          input {
+            margin-right: 1em;
+          }
+  
+          button[type="submit"] {
+            background-color: white;
+            cursor: pointer;
+            padding: 0;
+            border-color: rgba(35, 73, 17, 0.582);
+            border-radius: 5px;
+  
+            svg {
+              width: 24px;
+              height: 24px;
+            }
+          }
+        }
+      }
+  
+      #username {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: $normalColorForHeader;
+  
+        img {
+          width: 2em; 
+          height: 2em;
+          margin-left: .5em;
+          border-radius: 50%; 
+        }
+      }
+  
+      #connexion {
+        display: flex;
+        align-items: center;
+  
+        a {
+          text-decoration: none;
+          color: $normalColorForHeader;
+        }
+  
+        #signIn {
+          margin-right: .8em;
+  
+          &:hover {
+            color: $colorOnHoverForHeader;
+          }
+        }
+  
+        #signUp {
+          border: 1px solid $normalColorForHeader;
+          border-radius: 6px;
+          padding: 4px 8px 4px 8px;
+  
+          &:hover {
+            border-color: $colorOnHoverForHeader;
+            color: $colorOnHoverForHeader;
+          }
+        }
+      }
+    }
+}

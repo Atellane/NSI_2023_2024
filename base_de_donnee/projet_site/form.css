@@ -1,0 +1,27 @@
+form:not(#searchBar) label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+form:not(#searchBar) input,
+form:not(#searchBar) textarea {
+  width: 95.5%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background-color: transparent;
+  resize: none;
+}
+form:not(#searchBar) #submitInput {
+  display: flex;
+  justify-content: center;
+}
+form:not(#searchBar) #submitInput input[type=submit] {
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+}/*# sourceMappingURL=form.css.map */
