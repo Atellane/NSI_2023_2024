@@ -6,6 +6,9 @@
         <link rel="stylesheet" type="text/css" href="page_d_acceuil.css" />
         <link rel="stylesheet" href="header.css">
         <link rel="stylesheet" href="form.css">
+        <link rel="stylesheet" href="post.css">
+        <link rel="stylesheet" href="follow_button.css">
+        <link rel="stylesheet" href="display_user.css">
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" src="follow_share_and_action_for_post.js"></script>
         <title>Blog</title>
@@ -60,7 +63,8 @@
         </header>
         <section id="pageContent">
             <section id="mostPopularUsers">
-                <nav class="users">
+                <h1>Les utilisateur.ice.s les plus populaires :</h1>
+                <nav class="user">
                     <ul>
                         <li><img src="./accounts/pfp/default_pfp.png" alt="photo de profil de username" width="30" height="30"></li>
                         <li>username</li>
@@ -207,7 +211,7 @@
                                         </section>
                                         <article class="modification">
                                             <header>
-                                                <form class="modifForm">
+                                                <form enctype="multipart/form-data" class="modifForm">
                                                     <label for="postText">Texte Post:</label>
                                                     <textarea class="texteModification" name="texteModification" rows="5" cols="40"></textarea>
                                                     <br /> <label for="image">Image :</label>
@@ -221,7 +225,7 @@
                                 </article>
                                 <article class="commentFormSection">
                                     <header>
-                                        <form class="commentForm">
+                                        <form enctype="multipart/form-data" class="commentForm">
                                             Commentaire:
                                             <textarea class="texteCommentaire" name="texteCommentaire" rows="5" cols="40"></textarea>
                                             <br /> <label for="image">Image :</label>
@@ -244,7 +248,7 @@
                             </section>
                             <article class="modification">
                                 <header>
-                                    <form class="modifForm">
+                                    <form enctype="multipart/form-data" class="modifForm">
                                         <label for="postText">Texte Post:</label>
                                         <textarea class="texteModification" name="texteModification" rows="5" cols="40"></textarea>
                                         <br /> <label for="image">Image :</label>
@@ -365,7 +369,7 @@
                                 </article>
                                 <article class="commentFormSection">
                                     <header>
-                                        <form class="commentForm">
+                                        <form enctype="multipart/form-data" class="commentForm">
                                             Commentaire:
                                             <textarea class="texteCommentaire" name="texteCommentaire" rows="5" cols="40"></textarea>
                                             <br /> <label for="image">Image :</label>
@@ -487,7 +491,7 @@
                                 </article>
                                 <article class="commentFormSection">
                                     <header>
-                                        <form class="commentForm">
+                                        <form enctype="multipart/form-data" class="commentForm">
                                             Commentaire:
                                             <textarea class="texteCommentaire" name="texteCommentaire" rows="5" cols="40"></textarea>
                                             <br /> <label for="image">Image :</label>

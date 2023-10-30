@@ -24,4 +24,12 @@
 }
 #pageContent #reponsePhp img {
   height: 2em;
+}
+#pageContent #reponsePhp button {
+  background-color: #af4c54;
+  color: white;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
 }/*# sourceMappingURL=sign_in_and_up.css.map */

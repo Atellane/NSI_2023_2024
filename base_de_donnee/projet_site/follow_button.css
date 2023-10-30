@@ -1,0 +1,80 @@
+.followButton {
+  border-width: 1px;
+  width: 10em;
+  height: 2.5em;
+  /*border-radius*/
+  border-radius: 5em;
+  background: #fff;
+  position: absolute;
+  border: 5px solid #6fb07f;
+  cursor: pointer;
+}
+@keyframes extend {
+  20% {
+    background: #6fb07f;
+  }
+  100% {
+    background: #6fb07f;
+  }
+}
+@keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  20% {
+    color: #fff;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.followButton > span {
+  font-size: 1em;
+  color: #6fb07f;
+}
+.followButton img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+.followButton.followed {
+  /*animation*/
+  animation: extend 1s ease-in-out;
+  background-color: #6fb07f;
+}
+.followButton.followed > span {
+  /*animation*/
+  animation: disappear 1s ease-in-out;
+  opacity: 0;
+  /*-webkit-animation-fill-mode: forwards;*/
+  /* Chrome, Safari, Opera */
+  /*animation-fill-mode: forwards;*/
+}
+.followButton.followed > img {
+  /*animation*/
+  animation: appear 1s ease-in-out;
+  opacity: 1;
+  /*-webkit-animation-fill-mode: forwards;*/
+  /* Chrome, Safari, Opera */
+  /*animation-fill-mode: forwards*/
+}
+.followButton:hover {
+  background-color: #1b5229;
+}/*# sourceMappingURL=follow_button.css.map */
