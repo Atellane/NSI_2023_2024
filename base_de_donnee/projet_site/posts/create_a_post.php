@@ -208,155 +208,65 @@
                         $statement->bindParam(":nombreDeCommentaire", $nombreDeCommentaire, PDO::PARAM_INT);
                         $statement->execute();
                     }
-                    $sql = "SELECT messages.signatureMessage, messages.auteur, DATE_FORMAT(messages.dateEtHeure, '%d/%m/%Y %H:%i:%s') AS dateEtHeureFormatee, messages.nom_image, messages.texte, messages.nombreDePartage, messages.nombreDeCommentaire
+                    $sql = "SELECT messages.signatureMessage, messages.auteur, DATE_FORMAT(messages.dateEtHeure, '%d/%m/%Y %H:%i:%s') AS dateEtHeureFormatee, messages.nom_image, messages.texte, messages.nombreDePartage, messages.nombreDeCommentaire, utilisateurs.nom_photo_de_profil
                             FROM messages
+                            LEFT JOIN utilisateurs ON messages.auteur = utilisateurs.username
                             WHERE messages.signatureMessage = :signatureMessage";
 
                     $statement = $dbh->prepare($sql);
                     $statement->bindParam(":signatureMessage", $signatureMessage, PDO::PARAM_STR);
                     $statement->execute();
-                    $message = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    $messages = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    $message = $messages[0];
 
                     echo "<section id='reponsePhp'>
                     <p>ça a marché !</p>
                     <img src='../assets/signeValidation.png' alt='image signe validation'>
                 </section>";
 
-                echo "<article class='blogPost' id='" . $message["signatureMessage"] . "'>
-                <header>
-                    <ul>
-                        <li><img id='pfp' src='./accounts/pfp/" . $message["nom_photo_de_profil"] . "' alt='photo de profil de " . $message["auteur"] . "' width='30' height='30'></li>
-                        <li>" . $message["auteur"] . "</li>
-                        <li class='liFollow'>                            
-                            <button class='followButton connecte' id='" . $message["auteur"] . "' onclick='follow(this)'>
-                                <span>Follow</span>
-                                <img src='./assets/signeValidation.png' height='20' width='20'>
-                            </button>
-                        </li>
-                        <li class='datetime'>" . $message["dateEtHeureFormatee"] . "</li>
-                    </ul>
-                </header>";
+                    echo "<article class='blogPost' id='" . $message["signatureMessage"] . "'>
+                            <header>
+                                <ul>
+                                    <li><img id='pfp' src='../accounts/pfp/" . $message["nom_photo_de_profil"] . "' alt='photo de profil de " . $message["auteur"] . "' width='30' height='30'></li>
+                                    <li>" . $message["auteur"] . "</li>
+                                    <li class='liFollow'>                            
+                                        <button class='followButton connecte' id='" . $message["auteur"] . "' onclick='follow(this)'>
+                                            <span>Follow</span>
+                                            <img src='./assets/signeValidation.png' height='20' width='20'>
+                                        </button>
+                                    </li>
+                                    <li class='datetime'>" . $message["dateEtHeureFormatee"] . "</li>
+                                </ul>
+                            </header>";
 
-    if (!(is_null($message["nom_image"]))) {
-        echo "<section class='postContent'>
-                    <img src='./posts/post_picture/" . $message["nom_image"] . "' alt='imagePost' />
-                    <br />
-                    <p>" . $message["texte"] . "</p>
-                </section>";
-    } else {
-        echo "<section class='postContent'>
-                    <p>" . $message["texte"] . "</p>
-                </section>";
-    }
+                    if (!(is_null($message["nom_image"]))) {
+                        echo "<section class='postContent'>
+                                <img src='../posts/post_picture/" . $message["nom_image"] . "' alt='imagePost' />
+                                <br />
+                                <p>" . $message["texte"] . "</p>
+                            </section>";
+                    } else {
+                        echo "<section class='postContent'>
+                                <p>" . $message["texte"] . "</p>
+                            </section>";
+                    }
 
-    echo "<footer>
-                <section class='postFooter'>";
-
-    if ($_SESSION["utilisateur"] === $message["auteur"]) {
-        echo "<footer>
-                    <section class='postFooter'>
-                        <ul>
-                            <li class='partage'>
-                                <button class='shareButton connecte' onclick='share(this)'>
-                                </button>
-                                <p>" . $message["nombreDePartage"] . "</p>
-                            </li>
-                            <li>
-                                <button class='commentButton connecte' onclick='ouvrirCommentaire(this)'>
-                                    <svg viewBox='0 0 48 48' width='22' height='19'>
-                                        <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
-                                    </svg>
-                                </button>
-                                " . $message["nombreDeCommentaire"] . "
-                            </li>
-                            <li>
-                                <button onclick='ouvrirModif(this)'>
-                                    <svg fill='#000000' width='22' height='19' viewBox='-2.5 -2.5 24 24' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin'>
-                                        <path d='M12.238 5.472 3.2 14.51l-.591 2.016 1.975-.571 9.068-9.068-1.414-1.415zM13.78 3.93l1.414 1.414 1.318-1.318a.5.5 0 0 0 0-.707l-.708-.707a.5.5 0 0 0-.707 0L13.781 3.93zm3.439-2.732.707.707a2.5 2.5 0 0 1 0 3.535L5.634 17.733l-4.22 1.22a1 1 0 0 1-1.237-1.241l1.248-4.255 12.26-12.26a2.5 2.5 0 0 1 3.535 0z'/>
-                                    </svg>
-                                </button>
-                            </li>
-                            <li>
-                                <button onclick='supprimerPost(this)'>
-                                    <svg fill='#000000' width='22' height='19' viewBox='0 0 36 36' version='1.1'  preserveAspectRatio='xMidYMid meet' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
-                                        <path class='clr-i-solid clr-i-solid-path-1' d='M6,9V31a2.93,2.93,0,0,0,2.86,3H27.09A2.93,2.93,0,0,0,30,31V9Zm9,20H13V14h2Zm8,0H21V14h2Z'></path>
-                                        <path class='clr-i-solid clr-i-solid-path-2' d='M30.73,5H23V4A2,2,0,0,0,21,2h-6.2A2,2,0,0,0,13,4V5H5A1,1,0,1,0,5,7H30.73a1,1,0,0,0,0-2Z'></path>
-                                        <rect x='0' y='0' width='36' height='36' fill-opacity='0'/>
-                                    </svg>
-                                </button>
-                            </li>
-                        </ul>
-                    </section>";
-    } else {
-        echo "<footer>
-                    <section class='postFooter'>
-                        <ul>
-                            <li class='partage'>
-                                <button class='shareButton connecte' onclick='share(this)'>
-                                </button>
-                                <p>" . $message["nombreDePartage"] . "</p>
-                            </li>
-                            <li>
-                                <button class='commentButton connecte' onclick='ouvrirCommentaire(this)'>
-                                    <svg viewBox='0 0 48 48' width='22' height='19'>
-                                        <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
-                                    </svg>
-                                </button>
-                                " . $message["nombreDeCommentaire"] . "
-                            </li>
-                        </ul>
-                    </section>";
-    }
-
-    $sql = "SELECT messages.signatureMessage, messages.auteur, DATE_FORMAT(messages.dateEtHeure, '%d/%m/%Y %H:%i:%s') AS dateEtHeureFormatee, messages.nom_image, messages.texte, messages.nombreDePartage, utilisateurs.nom_photo_de_profil
-            FROM messages
-            INNER JOIN commente ON commente.commentaire = messages.signatureMessage
-            LEFT JOIN utilisateurs ON messages.auteur = utilisateurs.username
-            WHERE commente.messageCommente = :messageSignature";
-
-    $statement = $dbh->prepare($sql);
-    $statement->bindParam(':messageSignature', $message["signatureMessage"], PDO::PARAM_STR);
-    $statement->execute();
-    $commentaires = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-    if (!(is_null($commentaires))) {
-        echo "<section class='comment'>";
-
-        foreach ($commentaires as $commentaire) {
-            echo "<article class='blogPost' id='" . $commentaire["signaturecommentaire"] . "'>
-                                <header>
-                                    <ul>
-                                        <li><img id='pfp' src='./accounts/pfp/" . $commentaire["nom_photo_de_profil"] . "' alt='photo de profil de " . $commentaire["auteur"] . "' width='30' height='30'></li>
-                                        <li>" . $commentaire["auteur"] . "</li>
-                                        <li class='liFollow'>                            
-                                            <button class='followButton connecte' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
-                                                <span>Follow</span>
-                                                <img src='./assets/signeValidation.png' height='20' width='20'>
-                                            </button>
-                                        </li>
-                                        <li class='datetime'>" . $commentaire["dateEtHeureFormatee"] . "</li>
-                                    </ul>
-                                </header>";
-
-            if (!(is_null($commentaire["nom_image"]))) {
-                echo "<section class='postContent'>
-                                    <img src='./posts/post_picture/" . $commentaire["nom_image"] . "' alt='imagePost' />
-                                    <br />
-                                    <p>" . $commentaire["texte"] . "</p>
-                                </section>";
-            } else {
-                echo "<section class='postContent'>
-                                    <p>" . $commentaire["texte"] . "</p>
-                                </section>";
-            }
-
-            echo "<footer>
+                    if ($_SESSION["utilisateur"] === $message["auteur"]) {
+                        echo "<footer>
                                 <section class='postFooter'>
                                     <ul>
                                         <li class='partage'>
                                             <button class='shareButton connecte' onclick='share(this)'>
                                             </button>
-                                            <p>" . $commentaire["nombreDePartage"] . "</p>
+                                            <p>" . $message["nombreDePartage"] . "</p>
+                                        </li>
+                                        <li>
+                                            <button class='commentButton connecte' onclick='ouvrirCommentaire(this)'>
+                                                <svg viewBox='0 0 48 48' width='22' height='19'>
+                                                    <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
+                                                </svg>
+                                            </button>
+                                            " . $message["nombreDeCommentaire"] . "
                                         </li>
                                         <li>
                                             <button onclick='ouvrirModif(this)'>
@@ -375,8 +285,187 @@
                                             </button>
                                         </li>
                                     </ul>
-                                </section>
-                                <article class='modification'>
+                                </section>";
+                    } else {
+                        echo "<footer>
+                                <section class='postFooter'>
+                                    <ul>
+                                        <li class='partage'>
+                                            <button class='shareButton connecte' onclick='share(this)'>
+                                            </button>
+                                            <p>" . $message["nombreDePartage"] . "</p>
+                                        </li>
+                                        <li>
+                                            <button class='commentButton connecte' onclick='ouvrirCommentaire(this)'>
+                                                <svg viewBox='0 0 48 48' width='22' height='19'>
+                                                    <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
+                                                </svg>
+                                            </button>
+                                            " . $message["nombreDeCommentaire"] . "
+                                        </li>
+                                    </ul>
+                                </section>";
+                    }
+
+                    $sql = "SELECT messages.signatureMessage, messages.auteur, DATE_FORMAT(messages.dateEtHeure, '%d/%m/%Y %H:%i:%s') AS dateEtHeureFormatee, messages.nom_image, messages.texte, messages.nombreDePartage, utilisateurs.nom_photo_de_profil
+                            FROM messages
+                            INNER JOIN commente ON commente.commentaire = messages.signatureMessage
+                            LEFT JOIN utilisateurs ON messages.auteur = utilisateurs.username
+                            WHERE commente.messageCommente = :messageSignature";
+
+                    $statement = $dbh->prepare($sql);
+                    $statement->bindParam(':messageSignature', $message["signatureMessage"], PDO::PARAM_STR);
+                    $statement->execute();
+                    $commentaires = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+                    if (!(is_null($commentaires))) {
+                        echo "<section class='comment'>";
+
+                        foreach ($commentaires as $commentaire) {
+                            echo "<article class='blogPost' id='" . $commentaire["signaturecommentaire"] . "'>
+                                            <header>
+                                                <ul>
+                                                    <li><img id='pfp' src='../accounts/pfp/" . $commentaire["nom_photo_de_profil"] . "' alt='photo de profil de " . $commentaire["auteur"] . "' width='30' height='30'></li>
+                                                    <li>" . $commentaire["auteur"] . "</li>
+                                                    <li class='liFollow'>                            
+                                                        <button class='followButton' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
+                                                            <span>Follow</span>
+                                                            <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                        </button>
+                                                    </li>
+                                                    <li class='datetime'>" . $commentaire["dateEtHeureFormatee"] . "</li>
+                                                </ul>
+                                            </header>";
+
+                            if (!(is_null($commentaire["nom_image"]))) {
+                                echo "<section class='postContent'>
+                                                <img src='../posts/post_picture/" . $commentaire["nom_image"] . "' alt='imagePost' />
+                                                <br />
+                                                <p>" . $commentaire["texte"] . "</p>
+                                            </section>";
+                            } else {
+                                echo "<section class='postContent'>
+                                                <p>" . $commentaire["texte"] . "</p>
+                                            </section>";
+                            }
+
+                            echo "<footer>
+                                            <section class='postFooter'>";
+
+                            if ($_SESSION["utilisateur"] === $commentaire["auteur"]) {
+                                echo "<footer>
+                                                <section class='postFooter'>
+                                                    <ul>
+                                                        <li class='partage'>
+                                                            <button class='shareButton' onclick='share(this)'>
+                                                            </button>
+                                                            <p>" . $commentaire["nombreDePartage"] . "</p>
+                                                        </li>
+                                                        <li>
+                                                            <button onclick='ouvrirModif(this)'>
+                                                                <svg fill='#000000' width='22' height='19' viewBox='-2.5 -2.5 24 24' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin'>
+                                                                    <path d='M12.238 5.472 3.2 14.51l-.591 2.016 1.975-.571 9.068-9.068-1.414-1.415zM13.78 3.93l1.414 1.414 1.318-1.318a.5.5 0 0 0 0-.707l-.708-.707a.5.5 0 0 0-.707 0L13.781 3.93zm3.439-2.732.707.707a2.5 2.5 0 0 1 0 3.535L5.634 17.733l-4.22 1.22a1 1 0 0 1-1.237-1.241l1.248-4.255 12.26-12.26a2.5 2.5 0 0 1 3.535 0z'/>
+                                                                </svg>
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button onclick='supprimerPost(this)'>
+                                                                <svg fill='#000000' width='22' height='19' viewBox='0 0 36 36' version='1.1'  preserveAspectRatio='xMidYMid meet' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+                                                                    <path class='clr-i-solid clr-i-solid-path-1' d='M6,9V31a2.93,2.93,0,0,0,2.86,3H27.09A2.93,2.93,0,0,0,30,31V9Zm9,20H13V14h2Zm8,0H21V14h2Z'></path>
+                                                                    <path class='clr-i-solid clr-i-solid-path-2' d='M30.73,5H23V4A2,2,0,0,0,21,2h-6.2A2,2,0,0,0,13,4V5H5A1,1,0,1,0,5,7H30.73a1,1,0,0,0,0-2Z'></path>
+                                                                    <rect x='0' y='0' width='36' height='36' fill-opacity='0'/>
+                                                                </svg>
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </section>
+                                                <article class='modification'>
+                                                    <header>
+                                                        <form enctype='multipart/form-data' class='modifForm'>
+                                                            <label for='postText'>Texte Post:</label>
+                                                            <textarea class='texteModification' name='texteModification' rows='5' cols='40'></textarea>
+                                                            <br /> <label for='image'>Image :</label>
+                                                            <input class='imageModification' type='file' name='image'>
+                                                            <br>
+                                                        </form>
+                                                    
+                                                        <button class='submitModifForm' onclick='soumettreModification(this)'><span>submit the form!</span></button>
+                                                    </header>
+                                                    <footer>
+                                                        <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
+                                                        <h1 class='modifPreview'>
+                                                            SENT: <span></span>
+                                                            <img src='#' alt='rien' />
+                                                        </h1>
+                                                    </footer>
+                                                </article>
+                                            </footer>";
+                            } else {
+                                echo "<footer>
+                                                <section class='postFooter'>
+                                                    <ul>
+                                                        <li class='partage'>
+                                                            <button class='shareButton' onclick='share(this)'>
+                                                            </button>
+                                                            <p>" . $commentaire["nombreDePartage"] . "</p>
+                                                        </li>
+                                                    </ul>
+                                                </section>
+                                            </footer>";
+                            }
+
+                            echo "</article>";
+
+                        }
+
+                        echo "<article class='commentFormSection'>
+                                    <header>
+                                        <form enctype='multipart/form-data' class='commentForm'>
+                                            Commentaire:
+                                            <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
+                                            <br /> <label for='image'>Image :</label>
+                                            <input class='imageCommentaire' type='file' name='image'>
+                                            <br>
+                                        </form>
+                                    
+                                        <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
+                                    </header>
+                                    <footer>
+                                        <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
+                                        <h1 class='commentPreview'>
+                                            SENT: <span></span>
+                                            <img src='#' alt='rien' />
+                                        </h1>
+                                    </footer>
+                                </article>
+                            </section>";
+                    } else {
+                        echo "<section class='comment'>
+                                <article class='commentFormSection'>
+                                    <header>
+                                        <form enctype='multipart/form-data' class='commentForm'>
+                                            Commentaire:
+                                            <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
+                                            <br /> <label for='image'>Image :</label>
+                                            <input class='imageCommentaire' type='file' name='image'>
+                                            <br>
+                                        </form>
+                                    
+                                        <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
+                                    </header>
+                                    <footer>
+                                        <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
+                                        <h1 class='commentPreview'>
+                                            SENT: <span></span>
+                                            <img src='#' alt='rien' />
+                                        </h1>
+                                    </footer>
+                                </article>
+                            </section>";
+                    }
+
+                    if ($_SESSION["utilisateur"] === $message["auteur"]) {
+                        echo "<article class='modification'>
                                     <header>
                                         <form enctype='multipart/form-data' class='modifForm'>
                                             <label for='postText'>Texte Post:</label>
@@ -396,83 +485,12 @@
                                         </h1>
                                     </footer>
                                 </article>
-                            </footer>
-                        </article>";
+                            </footer>";
+                    } else {
+                        echo "</footer>";
+                    }
+                    echo "</article>";
 
-        }
-
-        echo "<article class='commentFormSection'>
-                        <header>
-                            <form enctype='multipart/form-data' class='commentForm'>
-                                Commentaire:
-                                <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
-                                <br /> <label for='image'>Image :</label>
-                                <input class='imageCommentaire' type='file' name='image'>
-                                <br>
-                            </form>
-                        
-                            <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
-                        </header>
-                        <footer>
-                            <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                            <h1 class='commentPreview'>
-                                SENT: <span></span>
-                                <img src='#' alt='rien' />
-                            </h1>
-                        </footer>
-                    </article>
-                </section>";
-    } else {
-        echo "<section class='comment'>
-                    <article class='commentFormSection'>
-                        <header>
-                            <form enctype='multipart/form-data' class='commentForm'>
-                                Commentaire:
-                                <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
-                                <br /> <label for='image'>Image :</label>
-                                <input class='imageCommentaire' type='file' name='image'>
-                                <br>
-                            </form>
-                        
-                            <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
-                        </header>
-                        <footer>
-                            <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                            <h1 class='commentPreview'>
-                                SENT: <span></span>
-                                <img src='#' alt='rien' />
-                            </h1>
-                        </footer>
-                    </article>
-                </section>";
-    }
-
-    if ($_SESSION["utilisateur"] === $message["auteur"]) {
-        echo "<article class='modification'>
-                        <header>
-                            <form enctype='multipart/form-data' class='modifForm'>
-                                <label for='postText'>Texte Post:</label>
-                                <textarea class='texteModification' name='texteModification' rows='5' cols='40'></textarea>
-                                <br /> <label for='image'>Image :</label>
-                                <input class='imageModification' type='file' name='image'>
-                                <br>
-                            </form>
-                        
-                            <button class='submitModifForm' onclick='soumettreModification(this)'><span>submit the form!</span></button>
-                        </header>
-                        <footer>
-                            <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                            <h1 class='modifPreview'>
-                                SENT: <span></span>
-                                <img src='#' alt='rien' />
-                            </h1>
-                        </footer>
-                    </article>
-                </footer>";
-    } else {
-        echo "</footer>";
-    }
-    echo "</article>";
 
                 } else {
                     echo "<h1>Créer un post :</h1>
