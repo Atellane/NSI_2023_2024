@@ -19,6 +19,15 @@ body #topBar li a {
 body #topBar li a:hover {
   color: white;
 }
+body #topBar li #signUp, body #topBar li #logOut {
+  border: 1px solid #cacaca;
+  border-radius: 6px;
+  padding: 4px 8px 4px 8px;
+}
+body #topBar li #signUp:hover, body #topBar li #logOut:hover {
+  border-color: white;
+  color: white;
+}
 body #topBar #acceuil {
   margin: 0;
   position: relative;
@@ -76,7 +85,9 @@ body #topBar #username img {
   width: 2em;
   height: 2em;
   margin-left: 0.5em;
-  border-radius: 50%;
+}
+body #topBar #username #logOut {
+  margin-left: 1em;
 }
 body #topBar #connexion {
   display: flex;
@@ -90,14 +101,5 @@ body #topBar #connexion #signIn {
   margin-right: 0.8em;
 }
 body #topBar #connexion #signIn:hover {
-  color: white;
-}
-body #topBar #connexion #signUp {
-  border: 1px solid #cacaca;
-  border-radius: 6px;
-  padding: 4px 8px 4px 8px;
-}
-body #topBar #connexion #signUp:hover {
-  border-color: white;
   color: white;
 }/*# sourceMappingURL=header.css.map */

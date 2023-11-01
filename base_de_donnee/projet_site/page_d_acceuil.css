@@ -15,7 +15,7 @@
 #pageContent #forPost #postRankedByNumberOfShare,
 #pageContent #forPost #postFromFollowed {
   border-top: 3px solid #999;
-  margin-top: 0.5em;
+  margin-top: -0.5em;
   padding-bottom: 0.5em;
 }
 #pageContent #forPost #mostRecentPost,

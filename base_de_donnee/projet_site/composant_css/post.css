@@ -3,6 +3,9 @@ article {
   border-radius: 5px;
   box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.25);
 }
+article.blogPost {
+  margin-bottom: 1.5em;
+}
 article ul {
   list-style-type: none;
   display: flex;
@@ -30,7 +33,7 @@ article header {
   border-bottom: 3px solid #999;
 }
 article header li.datetime {
-  margin-left: 316%;
+  margin-left: 245%;
 }
 article .postContent {
   margin-left: 0.3em;
@@ -116,7 +119,7 @@ article footer .comment article {
   margin-top: 1em;
 }
 article footer .comment article li.datetime {
-  margin-left: 312.5%;
+  margin-left: 242%;
 }
 article footer .comment .commentFormSection header {
   display: grid;

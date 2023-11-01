@@ -32,7 +32,7 @@
             $commente = "DROP TABLE commente";
             $dbh->exec($commente);
 
-            $deleteForeignKeys = 'ALTER TABLE messages DROP FOREIGN KEY autheur';
+            $deleteForeignKeys = 'ALTER TABLE messages DROP FOREIGN KEY auteur';
             $dbh->exec($deleteForeignKeys);
             $message = "DROP TABLE messages";
             $dbh->exec($message);

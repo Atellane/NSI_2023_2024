@@ -14,7 +14,6 @@ function follow(obj) {
             data: {
                 // You can send any data you need here
                 action: "remove",
-                abonne: obj.classList[1],
                 abonnement: obj.id
             },
             success: function (response) {
@@ -34,7 +33,6 @@ function follow(obj) {
             data: {
                 // You can send any data you need here
                 action: "create",
-                abonne: obj.classList[1],
                 abonnement: obj.id
             },
             success: function (response) {
@@ -70,7 +68,6 @@ function share(obj) {
             data: {
                 // You can send any data you need here
                 action: "remove",
-                user: obj.classList[1],
                 post: postId
             },
             success: function (response) {
@@ -90,7 +87,6 @@ function share(obj) {
             data: {
                 // You can send any data you need here
                 action: "create",
-                user: obj.classList[1],
                 post: postId
             },
             success: function (response) {
@@ -123,7 +119,6 @@ function afficherPreviewImage(input, className) {
 function soumettreCommentaire(obj) {
     // get the form object's data
     var postId = obj.parentNode.parentNode.parentNode.parentNode.parentNode.id;
-    console.log(postId);
     var commentaire = new FormData(obj.parentNode.querySelector(".commentForm"));
     commentaire.append("idDuPost", postId);
     // -------------------------------------------
@@ -135,7 +130,7 @@ function soumettreCommentaire(obj) {
     // -------------------------------------------
 
     $.ajax({
-        url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/posts/addComment.php",
+        url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/posts/add_comment.php",
         type: "POST",
         data: commentaire,
         contentType: false,
@@ -162,7 +157,6 @@ function soumettreCommentaire(obj) {
 function soumettreModification(obj) {
     // get the form object's data
     var postId = obj.parentNode.parentNode.parentNode.parentNode.id;
-    console.log(postId);
     var modification = new FormData(obj.parentNode.querySelector(".modifForm"));
     modification.append("idDuPost", postId);
     // -------------------------------------------
@@ -174,7 +168,7 @@ function soumettreModification(obj) {
     // -------------------------------------------
 
     $.ajax({
-        url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/posts/modifyAPost.php",
+        url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/posts/modify_a_post.php",
         type: "POST",
         data: modification,
         contentType: false,
@@ -224,24 +218,22 @@ function ouvrirModif(obj) {
 
 function supprimerPost(obj) {
     postId = obj.parentNode.parentNode.parentNode.parentNode.parentNode.id;
-    console.log(postId);
     $.ajax({
-        url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/posts/deletePost.php",
+        url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/posts/delete_a_post.php",
         method: "POST", // or "GET" depending on your needs
         data: {
-            // You can send any data you need here
-            user: obj.classList[1],
             post: postId
         },
         success: function (response) {
             // Handle the response from the PHP file if needed
             console.log("Signal sent successfully.");
             console.log("Response from PHP: " + response);
+            window.location.reload();
         },
         error: function (xhr, status, error) {
             // Handle errors if the request fails
             console.error("Error: " + error);
         }
     });
-    window.location.reload();
+
 };

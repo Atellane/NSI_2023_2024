@@ -24,6 +24,17 @@ body {
             color: $colorOnHoverForHeader
           }
         }
+
+        #signUp, #logOut {
+          border: 1px solid $normalColorForHeader;
+          border-radius: 6px;
+          padding: 4px 8px 4px 8px;
+  
+          &:hover {
+            border-color: $colorOnHoverForHeader;
+            color: $colorOnHoverForHeader;
+          }
+        }
       }
   
       #acceuil {
@@ -93,8 +104,12 @@ body {
           width: 2em; 
           height: 2em;
           margin-left: .5em;
-          border-radius: 50%; 
         }
+
+        #logOut {
+          margin-left: 1em;
+        }
+
       }
   
       #connexion {
@@ -110,17 +125,6 @@ body {
           margin-right: .8em;
   
           &:hover {
-            color: $colorOnHoverForHeader;
-          }
-        }
-  
-        #signUp {
-          border: 1px solid $normalColorForHeader;
-          border-radius: 6px;
-          padding: 4px 8px 4px 8px;
-  
-          &:hover {
-            border-color: $colorOnHoverForHeader;
             color: $colorOnHoverForHeader;
           }
         }

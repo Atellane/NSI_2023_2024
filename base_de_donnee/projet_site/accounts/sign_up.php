@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="sign_in_and_up.css">
-    <link rel="stylesheet" href="../header.css">
-    <link rel="stylesheet" href="../form.css">
+    <link rel="stylesheet" href="../composant_css/sign_in_sign_up_and_create_post.css">
+    <link rel="stylesheet" href="../composant_css/header.css">
+    <link rel="stylesheet" href="../composant_css/pfp.css">
+    <link rel="stylesheet" href="../composant_css/form.css">
+    <link rel="stylesheet" href="../composant_css/reponse_php.css">
     <title>Sign up</title>
 </head>
 <body>
@@ -30,19 +32,19 @@
                         </svg>
                     </a>
                     <a href="../page_d_acceuil.php#mostRecentPost">Post les plus récents</a>
+                    <a href="../page_d_acceuil.php#postRankedByNumberOfShare">Post les plus partagés</a>
                     <?php
                     try {
-                        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                            if (isset($_POST['utilisateur'])) {
-                                echo '<a href="../page_d_acceuil.php#postFromFollowed">Post de vos abonnements</a>';
-                            }
+                        session_start();
+                        if (isset($_SESSION['utilisateur'])) {
+                            echo '<a href="../page_d_acceuil.php#postFromFollowed">Post de vos abonnements</a>';
+                            echo '<a href="../posts/create_a_post.php">Créer un post</a>';
                         }
                     } catch (Exception $e) {
                         die($e->getMessage());
                     }
                     ?>
-                    <a href="../page_d_acceuil.php#postRankedByNumberOfShare">Post les plus partagés</a>
-                    <a href="../posts/createAPost.php">Créer un post</a>
+                    
                 </li>
                 <li>
                     <form id="searchBar" action="../search_answer.php" method="get">
@@ -61,15 +63,15 @@
                 </li>
                 <?php
                 try {
-                    session_start();
-
                     if (isset($_SESSION["utilisateur"])) {
                         $username = $_SESSION["utilisateur"];
                         $pdp = $_SESSION["nom_photo_de_profil"];
                         echo "<li id='username'>
                             $username
-                            <img src='./pfp/$pdp' alt='photo de profil de $username'>
+                            <img id='pfp' src='./pfp/$pdp' alt='photo de profil de $username'>
+                            <a id='logOut' href='./log_out.php'>Log out</a>
                         </li>";
+
                     } else {
                         echo "<li id='connexion'>
                             <a id='signIn' href='./sign_in.php'>Sign in</a>
@@ -90,7 +92,7 @@
                 $dbh = new PDO('mysql:host=localhost;port=50765;dbname=eouzan', 'azure', '6#vWHD_$');
                 $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                $username = $_POST["username"];
+                $username = htmlspecialchars($_POST["username"]);
 
                 if (strlen($username) === 0) {
                     die("<section id='reponsePhp'>
@@ -115,20 +117,21 @@
                     </section>");
                 }
 
-                if (strlen($_POST["password"]) === 0) {
+                if (strlen(htmlspecialchars($_POST["password"])) === 0) {
                     die("<section id='reponsePhp'>
                     <p>Vous devez renseigner un mot de passe</p>
                     <button onclick='history.replaceState(null, null, location.href);location.reload();'>réessayer</button>
                 </section>");
                 }
 
-                $mot_de_passe = password_hash($_POST["password"], PASSWORD_DEFAULT);
+                $mot_de_passe = password_hash(htmlspecialchars($_POST["password"]), PASSWORD_DEFAULT);
 
                 $pfp = $_FILES["pfp"];
                 $upload_dir = "./pfp/";
-                $upload_file = $upload_dir . basename("default_pfp.png");
+                $pfp_name = "default_pfp.png";
+                $upload_file = $upload_dir . basename($pfp_name);
 
-                if ($pfp['size'] !== 0) {
+                if (!(empty($pfp["name"]))) {
                     $base_pfp_name = $pfp["name"];
                     $pfp_tmp = $pfp["tmp_name"];
                     $pfp_extension = pathinfo($base_pfp_name, PATHINFO_EXTENSION);
@@ -193,7 +196,7 @@
                         echo "</section>";
                         die("$newContents");
                     }
-
+                    
                     $upload_file = $upload_dir . basename($pfp_name);
 
                     if (!move_uploaded_file($pfp_tmp, $upload_file)) {
@@ -205,19 +208,22 @@
                         die("$contents");
                     }
                 }
+
+                $nombre_abonne = 0;
                 
-                $sql = "INSERT INTO utilisateurs (username, mot_de_passe, emplacement_photo_de_profil) VALUES (:username, :mot_de_passe, :upload_file)";
+                $sql = "INSERT INTO utilisateurs (username, mot_de_passe, nom_photo_de_profil, nombre_abonne) VALUES (:username, :mot_de_passe, :pfp_name, :nombre_abonne)";
                 $statement = $dbh->prepare($sql);
                 $statement->bindParam(':username', $username, PDO::PARAM_STR);
                 $statement->bindParam(':mot_de_passe', $mot_de_passe, PDO::PARAM_STR);
-                $statement->bindParam(':upload_file', $upload_file, PDO::PARAM_STR);
+                $statement->bindParam(':pfp_name', $pfp_name, PDO::PARAM_STR);
+                $statement->bindParam(':nombre_abonne', $nombre_abonne, PDO::PARAM_INT);
                 $statement->execute();
 
-                die("<section id='reponsePhp'>
+                echo "<section id='reponsePhp'>
                     <p>ça a marché !</p>
                     <img src='../assets/signeValidation.png' alt='image signe validation'>
                     <a href='./sign_in.php'>se connecter</a>
-                </section>");
+                </section>";
             } else {
                 echo "<h1>S'inscrire :</h1>
                 <form enctype='multipart/form-data' method='post'>
@@ -231,7 +237,7 @@
                     </div>
                     <div>
                         <label for='pfp'>Photo de profil :</label>
-                        <input type='file' name='pfp' id='pfp'>
+                        <input type='file' name='pfp'>
                     </div>
                     <div id='submitInput'>
                         <input type='submit' value='Envoyer'>
