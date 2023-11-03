@@ -149,8 +149,15 @@ article {
 
           li {
             &.datetime {
-              margin-left: 242%;
+              margin-left: 236%;
             }
+          }
+        }
+
+        .preview {
+          display: none;
+          &.previewOuverte {
+            display: inherit;
           }
         }
 

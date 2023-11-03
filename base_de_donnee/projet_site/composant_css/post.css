@@ -119,7 +119,13 @@ article footer .comment article {
   margin-top: 1em;
 }
 article footer .comment article li.datetime {
-  margin-left: 242%;
+  margin-left: 236%;
+}
+article footer .comment .preview {
+  display: none;
+}
+article footer .comment .preview.previewOuverte {
+  display: inherit;
 }
 article footer .comment .commentFormSection header {
   display: grid;

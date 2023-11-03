@@ -199,7 +199,7 @@
                                                                 <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
                                                             </svg>
                                                         </button>
-                                                        " . $message["nombreDeCommentaire"] . "
+                                                        <p>" . $message["nombreDeCommentaire"] . "</p>
                                                     </li>
                                                     <li>
                                                         <button onclick='ouvrirModif(this)'>
@@ -234,7 +234,7 @@
                                                                 <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
                                                             </svg>
                                                         </button>
-                                                        " . $message["nombreDeCommentaire"] . "
+                                                        <p>" . $message["nombreDeCommentaire"] . "</p>
                                                     </li>
                                                 </ul>
                                             </section>";
@@ -282,9 +282,6 @@
                                                         </section>";
                                         }
 
-                                        echo "<footer>
-                                                        <section class='postFooter'>";
-
                                         if ($_SESSION["utilisateur"] === $commentaire["auteur"]) {
                                             echo "<footer>
                                                             <section class='postFooter'>
@@ -318,19 +315,12 @@
                                                                         <label for='postText'>Texte Post:</label>
                                                                         <textarea class='texteModification' name='texteModification' rows='5' cols='40'></textarea>
                                                                         <br /> <label for='image'>Image :</label>
-                                                                        <input class='imageModification' type='file' name='image'>
+                                                                        <input class='imageModification' type='file' name='imageModification'>
                                                                         <br>
                                                                     </form>
                                                                 
                                                                     <button class='submitModifForm' onclick='soumettreModification(this)'><span>submit the form!</span></button>
                                                                 </header>
-                                                                <footer>
-                                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                                    <h1 class='modifPreview'>
-                                                                        SENT: <span></span>
-                                                                        <img src='#' alt='rien' />
-                                                                    </h1>
-                                                                </footer>
                                                             </article>
                                                         </footer>";
                                         } else {
@@ -351,50 +341,86 @@
 
                                     }
 
-                                    echo "<article class='commentFormSection'>
-                                                <header>
-                                                    <form enctype='multipart/form-data' class='commentForm'>
-                                                        Commentaire:
-                                                        <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
-                                                        <br /> <label for='image'>Image :</label>
-                                                        <input class='imageCommentaire' type='file' name='image'>
-                                                        <br>
-                                                    </form>
-                                                
-                                                    <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
-                                                </header>
-                                                <footer>
-                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                    <h1 class='commentPreview'>
-                                                        SENT: <span></span>
-                                                        <img src='#' alt='rien' />
-                                                    </h1>
-                                                </footer>
-                                            </article>
-                                        </section>";
+                                    echo "<article class='blogPost preview'>
+                                        <header>
+                                            <ul>
+                                                <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
+                                                <li>" . $_SESSION["utilisateur"] . "</li>
+                                                <li class='liFollow'>                            
+                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
+                                                        <span>Follow</span>
+                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                    </button>
+                                                </li>
+                                                <li class='datetime'>#</li>
+                                            </ul>
+                                        </header>
+                                        <section class='postContent'>
+                                            <img src='#' alt='imagePost' />
+                                            <br />
+                                            <p>#</p>
+                                        </section>
+                                        <footer>
+                                            <section class='postFooter'>
+                                                <p>preview de votre post !</p>
+                                            </section>
+                                        </footer>
+                                    </article>
+                                    <article class='commentFormSection'>
+                                        <header>
+                                            <form enctype='multipart/form-data' class='commentForm'>
+                                                Commentaire:
+                                                <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
+                                                <br /> <label for='image'>Image :</label>
+                                                <input class='imageCommentaire' type='file' name='imageCommentaire'>
+                                                <br>
+                                            </form>
+
+                                            <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
+                                        </header>
+                                    </article>
+                                </section>";
                                 } else {
-                                    echo "<section class='comment'>
-                                            <article class='commentFormSection'>
-                                                <header>
-                                                    <form enctype='multipart/form-data' class='commentForm'>
-                                                        Commentaire:
-                                                        <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
-                                                        <br /> <label for='image'>Image :</label>
-                                                        <input class='imageCommentaire' type='file' name='image'>
-                                                        <br>
-                                                    </form>
-                                                
-                                                    <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
-                                                </header>
-                                                <footer>
-                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                    <h1 class='commentPreview'>
-                                                        SENT: <span></span>
-                                                        <img src='#' alt='rien' />
-                                                    </h1>
-                                                </footer>
-                                            </article>
-                                        </section>";
+                                    echo "<setcion ='comment'>
+                                    <article class='blogPost preview'>
+                                        <header>
+                                            <ul>
+                                                <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
+                                                <li>" . $_SESSION["utilisateur"] . "</li>
+                                                <li class='liFollow'>                            
+                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
+                                                        <span>Follow</span>
+                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                    </button>
+                                                </li>
+                                                <li class='datetime'>#</li>
+                                            </ul>
+                                        </header>
+                                        <section class='postContent'>
+                                            <img src='#' alt='imagePost' />
+                                            <br />
+                                            <p>#</p>
+                                        </section>
+                                        <footer>
+                                            <section class='postFooter'>
+                                                <p>preview de votre post !</p>
+                                            </section>
+                                        </footer>
+                                    </article>
+                                    <article class='commentFormSection'>
+                                        <header>
+                                            <form enctype='multipart/form-data' class='commentForm'>
+                                                Commentaire:
+                                                <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
+                                                <br /> <label for='image'>Image :</label>
+                                                <input class='imageCommentaire' type='file' name='imageCommentaire'>
+                                                <br>
+                                            </form>
+
+                                            <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
+                                        </header>
+                                    </article>
+                                </section>";
                                 }
 
                                 if ($_SESSION["utilisateur"] === $message["auteur"]) {
@@ -404,19 +430,16 @@
                                                         <label for='postText'>Texte Post:</label>
                                                         <textarea class='texteModification' name='texteModification' rows='5' cols='40'></textarea>
                                                         <br /> <label for='image'>Image :</label>
-                                                        <input class='imageModification' type='file' name='image'>
+                                                        <input class='imageModification' type='file' name='imageModification'>
                                                         <br>
                                                     </form>
                                                 
                                                     <button class='submitModifForm' onclick='soumettreModification(this)'><span>submit the form!</span></button>
                                                 </header>
-                                                <footer>
-                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                    <h1 class='modifPreview'>
-                                                        SENT: <span></span>
-                                                        <img src='#' alt='rien' />
-                                                    </h1>
-                                                </footer>
+                                                                              
+                                                        
+                                             
+                                                
                                             </article>
                                         </footer>";
                                 } else {
@@ -468,7 +491,7 @@
                                                                 <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
                                                             </svg>
                                                         </button>
-                                                        " . $message["nombreDeCommentaire"] . "
+                                                        <p>" . $message["nombreDeCommentaire"] . "</p>
                                                     </li>
                                                     <li>
                                                         <button onclick='ouvrirModif(this)'>
@@ -503,7 +526,7 @@
                                                                 <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
                                                             </svg>
                                                         </button>
-                                                        " . $message["nombreDeCommentaire"] . "
+                                                        <p>" . $message["nombreDeCommentaire"] . "</p>
                                                     </li>
                                                 </ul>
                                             </section>";
@@ -551,9 +574,6 @@
                                                         </section>";
                                         }
 
-                                        echo "<footer>
-                                                        <section class='postFooter'>";
-
                                         if ($_SESSION["utilisateur"] === $commentaire["auteur"]) {
                                             echo "<footer>
                                                             <section class='postFooter'>
@@ -587,19 +607,12 @@
                                                                         <label for='postText'>Texte Post:</label>
                                                                         <textarea class='texteModification' name='texteModification' rows='5' cols='40'></textarea>
                                                                         <br /> <label for='image'>Image :</label>
-                                                                        <input class='imageModification' type='file' name='image'>
+                                                                        <input class='imageModification' type='file' name='imageModification'>
                                                                         <br>
                                                                     </form>
                                                                 
                                                                     <button class='submitModifForm' onclick='soumettreModification(this)'><span>submit the form!</span></button>
                                                                 </header>
-                                                                <footer>
-                                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                                    <h1 class='modifPreview'>
-                                                                        SENT: <span></span>
-                                                                        <img src='#' alt='rien' />
-                                                                    </h1>
-                                                                </footer>
                                                             </article>
                                                         </footer>";
                                         } else {
@@ -620,50 +633,86 @@
 
                                     }
 
-                                    echo "<article class='commentFormSection'>
-                                                <header>
-                                                    <form enctype='multipart/form-data' class='commentForm'>
-                                                        Commentaire:
-                                                        <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
-                                                        <br /> <label for='image'>Image :</label>
-                                                        <input class='imageCommentaire' type='file' name='image'>
-                                                        <br>
-                                                    </form>
-                                                
-                                                    <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
-                                                </header>
-                                                <footer>
-                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                    <h1 class='commentPreview'>
-                                                        SENT: <span></span>
-                                                        <img src='#' alt='rien' />
-                                                    </h1>
-                                                </footer>
-                                            </article>
-                                        </section>";
+                                    echo "<article class='blogPost preview'>
+                                        <header>
+                                            <ul>
+                                                <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
+                                                <li>" . $_SESSION["utilisateur"] . "</li>
+                                                <li class='liFollow'>                            
+                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
+                                                        <span>Follow</span>
+                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                    </button>
+                                                </li>
+                                                <li class='datetime'>#</li>
+                                            </ul>
+                                        </header>
+                                        <section class='postContent'>
+                                            <img src='#' alt='imagePost' />
+                                            <br />
+                                            <p>#</p>
+                                        </section>
+                                        <footer>
+                                            <section class='postFooter'>
+                                                <p>preview de votre post !</p>
+                                            </section>
+                                        </footer>
+                                    </article>
+                                    <article class='commentFormSection'>
+                                        <header>
+                                            <form enctype='multipart/form-data' class='commentForm'>
+                                                Commentaire:
+                                                <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
+                                                <br /> <label for='image'>Image :</label>
+                                                <input class='imageCommentaire' type='file' name='imageCommentaire'>
+                                                <br>
+                                            </form>
+
+                                            <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
+                                        </header>
+                                    </article>
+                                </section>";
                                 } else {
-                                    echo "<section class='comment'>
-                                            <article class='commentFormSection'>
-                                                <header>
-                                                    <form enctype='multipart/form-data' class='commentForm'>
-                                                        Commentaire:
-                                                        <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
-                                                        <br /> <label for='image'>Image :</label>
-                                                        <input class='imageCommentaire' type='file' name='image'>
-                                                        <br>
-                                                    </form>
-                                                
-                                                    <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
-                                                </header>
-                                                <footer>
-                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                    <h1 class='commentPreview'>
-                                                        SENT: <span></span>
-                                                        <img src='#' alt='rien' />
-                                                    </h1>
-                                                </footer>
-                                            </article>
-                                        </section>";
+                                    echo "<setcion ='comment'>
+                                    <article class='blogPost preview'>
+                                        <header>
+                                            <ul>
+                                                <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
+                                                <li>" . $_SESSION["utilisateur"] . "</li>
+                                                <li class='liFollow'>                            
+                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
+                                                        <span>Follow</span>
+                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                    </button>
+                                                </li>
+                                                <li class='datetime'>#</li>
+                                            </ul>
+                                        </header>
+                                        <section class='postContent'>
+                                            <img src='#' alt='imagePost' />
+                                            <br />
+                                            <p>#</p>
+                                        </section>
+                                        <footer>
+                                            <section class='postFooter'>
+                                                <p>preview de votre post !</p>
+                                            </section>
+                                        </footer>
+                                    </article>
+                                    <article class='commentFormSection'>
+                                        <header>
+                                            <form enctype='multipart/form-data' class='commentForm'>
+                                                Commentaire:
+                                                <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
+                                                <br /> <label for='image'>Image :</label>
+                                                <input class='imageCommentaire' type='file' name='imageCommentaire'>
+                                                <br>
+                                            </form>
+
+                                            <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
+                                        </header>
+                                    </article>
+                                </section>";
                                 }
 
                                 if ($_SESSION["utilisateur"] === $message["auteur"]) {
@@ -673,19 +722,16 @@
                                                         <label for='postText'>Texte Post:</label>
                                                         <textarea class='texteModification' name='texteModification' rows='5' cols='40'></textarea>
                                                         <br /> <label for='image'>Image :</label>
-                                                        <input class='imageModification' type='file' name='image'>
+                                                        <input class='imageModification' type='file' name='imageModification'>
                                                         <br>
                                                     </form>
                                                 
                                                     <button class='submitModifForm' onclick='soumettreModification(this)'><span>submit the form!</span></button>
                                                 </header>
-                                                <footer>
-                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                    <h1 class='modifPreview'>
-                                                        SENT: <span></span>
-                                                        <img src='#' alt='rien' />
-                                                    </h1>
-                                                </footer>
+                                                                              
+                                                        
+                                             
+                                                
                                             </article>
                                         </footer>";
                                 } else {
@@ -768,7 +814,7 @@
                                                                     <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
                                                                 </svg>
                                                             </button>
-                                                            " . $message["nombreDeCommentaire"] . "
+                                                            <p>" . $message["nombreDeCommentaire"] . "</p>
                                                         </li>
                                                         <li>
                                                             <button onclick='ouvrirModif(this)'>
@@ -803,7 +849,7 @@
                                                                     <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
                                                                 </svg>
                                                             </button>
-                                                            " . $message["nombreDeCommentaire"] . "
+                                                            <p>" . $message["nombreDeCommentaire"] . "</p>
                                                         </li>
                                                     </ul>
                                                 </section>";
@@ -887,19 +933,12 @@
                                                                             <label for='postText'>Texte Post:</label>
                                                                             <textarea class='texteModification' name='texteModification' rows='5' cols='40'></textarea>
                                                                             <br /> <label for='image'>Image :</label>
-                                                                            <input class='imageModification' type='file' name='image'>
+                                                                            <input class='imageModification' type='file' name='imageModification'>
                                                                             <br>
                                                                         </form>
                                                                     
                                                                         <button class='submitModifForm' onclick='soumettreModification(this)'><span>submit the form!</span></button>
                                                                     </header>
-                                                                    <footer>
-                                                                        <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                                        <h1 class='modifPreview'>
-                                                                            SENT: <span></span>
-                                                                            <img src='#' alt='rien' />
-                                                                        </h1>
-                                                                    </footer>
                                                                 </article>
                                                             </footer>";
                                         } else {
@@ -920,50 +959,87 @@
 
                                     }
 
-                                    echo "<article class='commentFormSection'>
-                                                    <header>
-                                                        <form enctype='multipart/form-data' class='commentForm'>
-                                                            Commentaire:
-                                                            <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
-                                                            <br /> <label for='image'>Image :</label>
-                                                            <input class='imageCommentaire' type='file' name='image'>
-                                                            <br>
-                                                        </form>
-                                                    
-                                                        <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
-                                                    </header>
-                                                    <footer>
-                                                        <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                        <h1 class='commentPreview'>
-                                                            SENT: <span></span>
-                                                            <img src='#' alt='rien' />
-                                                        </h1>
-                                                    </footer>
-                                                </article>
-                                            </section>";
+                                    echo "<article class='blogPost preview'>
+                                        <header>
+                                            <ul>
+                                                <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
+                                                <li>" . $_SESSION["utilisateur"] . "</li>
+                                                <li class='liFollow'>                            
+                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
+                                                        <span>Follow</span>
+                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                    </button>
+                                                </li>
+                                                <li class='datetime'>#</li>
+                                            </ul>
+                                        </header>
+                                        <section class='postContent'>
+                                            <img src='#' alt='imagePost' />
+                                            <br />
+                                            <p>#</p>
+                                        </section>
+                                        <footer>
+                                            <section class='postFooter'>
+                                                <p>preview de votre post !</p>
+                                            </section>
+                                        </footer>
+                                    </article>
+                                    <article class='commentFormSection'>
+                                        <header>
+                                            <form enctype='multipart/form-data' class='commentForm'>
+                                                Commentaire:
+                                                <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
+                                                <br /> <label for='image'>Image :</label>
+                                                <input class='imageCommentaire' type='file' name='imageCommentaire'>
+                                                <br>
+                                            </form>
+
+                                            <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
+                                        </header>
+                                    </article>
+                                </section>";
                                 } else {
                                     echo "<section class='comment'>
-                                                <article class='commentFormSection'>
-                                                    <header>
-                                                        <form enctype='multipart/form-data' class='commentForm'>
-                                                            Commentaire:
-                                                            <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
-                                                            <br /> <label for='image'>Image :</label>
-                                                            <input class='imageCommentaire' type='file' name='image'>
-                                                            <br>
-                                                        </form>
-                                                    
-                                                        <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
-                                                    </header>
-                                                    <footer>
-                                                        <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                        <h1 class='commentPreview'>
-                                                            SENT: <span></span>
-                                                            <img src='#' alt='rien' />
-                                                        </h1>
-                                                    </footer>
-                                                </article>
-                                            </section>";
+                                                <setcion ='comment'>
+                                    <article class='blogPost preview'>
+                                        <header>
+                                            <ul>
+                                                <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
+                                                <li>" . $_SESSION["utilisateur"] . "</li>
+                                                <li class='liFollow'>                            
+                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
+                                                        <span>Follow</span>
+                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                    </button>
+                                                </li>
+                                                <li class='datetime'>#</li>
+                                            </ul>
+                                        </header>
+                                        <section class='postContent'>
+                                            <img src='#' alt='imagePost' />
+                                            <br />
+                                            <p>#</p>
+                                        </section>
+                                        <footer>
+                                            <section class='postFooter'>
+                                                <p>preview de votre post !</p>
+                                            </section>
+                                        </footer>
+                                    </article>
+                                    <article class='commentFormSection'>
+                                        <header>
+                                            <form enctype='multipart/form-data' class='commentForm'>
+                                                Commentaire:
+                                                <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
+                                                <br /> <label for='image'>Image :</label>
+                                                <input class='imageCommentaire' type='file' name='imageCommentaire'>
+                                                <br>
+                                            </form>
+
+                                            <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
+                                        </header>
+                                    </article>
+                                </section>";
                                 }
 
                                 if ($_SESSION["utilisateur"] === $message["auteur"]) {
@@ -973,19 +1049,12 @@
                                                             <label for='postText'>Texte Post:</label>
                                                             <textarea class='texteModification' name='texteModification' rows='5' cols='40'></textarea>
                                                             <br /> <label for='image'>Image :</label>
-                                                            <input class='imageModification' type='file' name='image'>
+                                                            <input class='imageModification' type='file' name='imageModification'>
                                                             <br>
                                                         </form>
                                                     
                                                         <button class='submitModifForm' onclick='soumettreModification(this)'><span>submit the form!</span></button>
                                                     </header>
-                                                    <footer>
-                                                        <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                        <h1 class='modifPreview'>
-                                                            SENT: <span></span>
-                                                            <img src='#' alt='rien' />
-                                                        </h1>
-                                                    </footer>
                                                 </article>
                                             </footer>";
                                 } else {
@@ -1058,7 +1127,7 @@
                                                                 <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
                                                             </svg>
                                                         </button>
-                                                        " . $message["nombreDeCommentaire"] . "
+                                                        <p>" . $message["nombreDeCommentaire"] . "</p>
                                                     </li>
                                                     <li>
                                                         <button onclick='ouvrirModif(this)'>
@@ -1093,7 +1162,7 @@
                                                                 <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
                                                             </svg>
                                                         </button>
-                                                        " . $message["nombreDeCommentaire"] . "
+                                                        <p>" . $message["nombreDeCommentaire"] . "</p>
                                                     </li>
                                                 </ul>
                                             </section>";
@@ -1141,9 +1210,6 @@
                                                         </section>";
                                         }
 
-                                        echo "<footer>
-                                                        <section class='postFooter'>";
-
                                         if ($_SESSION["utilisateur"] === $commentaire["auteur"]) {
                                             echo "<footer>
                                                             <section class='postFooter'>
@@ -1177,19 +1243,12 @@
                                                                         <label for='postText'>Texte Post:</label>
                                                                         <textarea class='texteModification' name='texteModification' rows='5' cols='40'></textarea>
                                                                         <br /> <label for='image'>Image :</label>
-                                                                        <input class='imageModification' type='file' name='image'>
+                                                                        <input class='imageModification' type='file' name='imageModification'>
                                                                         <br>
                                                                     </form>
                                                                 
                                                                     <button class='submitModifForm' onclick='soumettreModification(this)'><span>submit the form!</span></button>
                                                                 </header>
-                                                                <footer>
-                                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                                    <h1 class='modifPreview'>
-                                                                        SENT: <span></span>
-                                                                        <img src='#' alt='rien' />
-                                                                    </h1>
-                                                                </footer>
                                                             </article>
                                                         </footer>";
                                         } else {
@@ -1210,50 +1269,86 @@
 
                                     }
 
-                                    echo "<article class='commentFormSection'>
-                                                <header>
-                                                    <form enctype='multipart/form-data' class='commentForm'>
-                                                        Commentaire:
-                                                        <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
-                                                        <br /> <label for='image'>Image :</label>
-                                                        <input class='imageCommentaire' type='file' name='image'>
-                                                        <br>
-                                                    </form>
-                                                
-                                                    <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
-                                                </header>
-                                                <footer>
-                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                    <h1 class='commentPreview'>
-                                                        SENT: <span></span>
-                                                        <img src='#' alt='rien' />
-                                                    </h1>
-                                                </footer>
-                                            </article>
-                                        </section>";
+                                    echo "<article class='blogPost preview'>
+                                        <header>
+                                            <ul>
+                                                <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
+                                                <li>" . $_SESSION["utilisateur"] . "</li>
+                                                <li class='liFollow'>                            
+                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
+                                                        <span>Follow</span>
+                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                    </button>
+                                                </li>
+                                                <li class='datetime'>#</li>
+                                            </ul>
+                                        </header>
+                                        <section class='postContent'>
+                                            <img src='#' alt='imagePost' />
+                                            <br />
+                                            <p>#</p>
+                                        </section>
+                                        <footer>
+                                            <section class='postFooter'>
+                                                <p>preview de votre post !</p>
+                                            </section>
+                                        </footer>
+                                    </article>
+                                    <article class='commentFormSection'>
+                                        <header>
+                                            <form enctype='multipart/form-data' class='commentForm'>
+                                                Commentaire:
+                                                <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
+                                                <br /> <label for='image'>Image :</label>
+                                                <input class='imageCommentaire' type='file' name='imageCommentaire'>
+                                                <br>
+                                            </form>
+
+                                            <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
+                                        </header>
+                                    </article>
+                                </section>";
                                 } else {
-                                    echo "<section class='comment'>
-                                            <article class='commentFormSection'>
-                                                <header>
-                                                    <form enctype='multipart/form-data' class='commentForm'>
-                                                        Commentaire:
-                                                        <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
-                                                        <br /> <label for='image'>Image :</label>
-                                                        <input class='imageCommentaire' type='file' name='image'>
-                                                        <br>
-                                                    </form>
-                                                
-                                                    <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
-                                                </header>
-                                                <footer>
-                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                    <h1 class='commentPreview'>
-                                                        SENT: <span></span>
-                                                        <img src='#' alt='rien' />
-                                                    </h1>
-                                                </footer>
-                                            </article>
-                                        </section>";
+                                    echo "<setcion ='comment'>
+                                    <article class='blogPost preview'>
+                                        <header>
+                                            <ul>
+                                                <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
+                                                <li>" . $_SESSION["utilisateur"] . "</li>
+                                                <li class='liFollow'>                            
+                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
+                                                        <span>Follow</span>
+                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                    </button>
+                                                </li>
+                                                <li class='datetime'>#</li>
+                                            </ul>
+                                        </header>
+                                        <section class='postContent'>
+                                            <img src='#' alt='imagePost' />
+                                            <br />
+                                            <p>#</p>
+                                        </section>
+                                        <footer>
+                                            <section class='postFooter'>
+                                                <p>preview de votre post !</p>
+                                            </section>
+                                        </footer>
+                                    </article>
+                                    <article class='commentFormSection'>
+                                        <header>
+                                            <form enctype='multipart/form-data' class='commentForm'>
+                                                Commentaire:
+                                                <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
+                                                <br /> <label for='image'>Image :</label>
+                                                <input class='imageCommentaire' type='file' name='imageCommentaire'>
+                                                <br>
+                                            </form>
+
+                                            <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
+                                        </header>
+                                    </article>
+                                </section>";
                                 }
 
                                 if ($_SESSION["utilisateur"] === $message["auteur"]) {
@@ -1263,19 +1358,12 @@
                                                         <label for='postText'>Texte Post:</label>
                                                         <textarea class='texteModification' name='texteModification' rows='5' cols='40'></textarea>
                                                         <br /> <label for='image'>Image :</label>
-                                                        <input class='imageModification' type='file' name='image'>
+                                                        <input class='imageModification' type='file' name='imageModification'>
                                                         <br>
                                                     </form>
                                                 
                                                     <button class='submitModifForm' onclick='soumettreModification(this)'><span>submit the form!</span></button>
                                                 </header>
-                                                <footer>
-                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                    <h1 class='modifPreview'>
-                                                        SENT: <span></span>
-                                                        <img src='#' alt='rien' />
-                                                    </h1>
-                                                </footer>
                                             </article>
                                         </footer>";
                                 } else {
@@ -1327,7 +1415,7 @@
                                                                 <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
                                                             </svg>
                                                         </button>
-                                                        " . $message["nombreDeCommentaire"] . "
+                                                        <p>" . $message["nombreDeCommentaire"] . "</p>
                                                     </li>
                                                     <li>
                                                         <button onclick='ouvrirModif(this)'>
@@ -1362,7 +1450,7 @@
                                                                 <path d='M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z'></path>
                                                             </svg>
                                                         </button>
-                                                        " . $message["nombreDeCommentaire"] . "
+                                                        <p>" . $message["nombreDeCommentaire"] . "</p>
                                                     </li>
                                                 </ul>
                                             </section>";
@@ -1410,9 +1498,6 @@
                                                         </section>";
                                         }
 
-                                        echo "<footer>
-                                                        <section class='postFooter'>";
-
                                         if ($_SESSION["utilisateur"] === $commentaire["auteur"]) {
                                             echo "<footer>
                                                             <section class='postFooter'>
@@ -1446,19 +1531,12 @@
                                                                         <label for='postText'>Texte Post:</label>
                                                                         <textarea class='texteModification' name='texteModification' rows='5' cols='40'></textarea>
                                                                         <br /> <label for='image'>Image :</label>
-                                                                        <input class='imageModification' type='file' name='image'>
+                                                                        <input class='imageModification' type='file' name='imageModification'>
                                                                         <br>
                                                                     </form>
                                                                 
                                                                     <button class='submitModifForm' onclick='soumettreModification(this)'><span>submit the form!</span></button>
                                                                 </header>
-                                                                <footer>
-                                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                                    <h1 class='modifPreview'>
-                                                                        SENT: <span></span>
-                                                                        <img src='#' alt='rien' />
-                                                                    </h1>
-                                                                </footer>
                                                             </article>
                                                         </footer>";
                                         } else {
@@ -1479,50 +1557,86 @@
 
                                     }
 
-                                    echo "<article class='commentFormSection'>
-                                                <header>
-                                                    <form enctype='multipart/form-data' class='commentForm'>
-                                                        Commentaire:
-                                                        <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
-                                                        <br /> <label for='image'>Image :</label>
-                                                        <input class='imageCommentaire' type='file' name='image'>
-                                                        <br>
-                                                    </form>
-                                                
-                                                    <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
-                                                </header>
-                                                <footer>
-                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                    <h1 class='commentPreview'>
-                                                        SENT: <span></span>
-                                                        <img src='#' alt='rien' />
-                                                    </h1>
-                                                </footer>
-                                            </article>
-                                        </section>";
+                                    echo "<article class='blogPost preview'>
+                                        <header>
+                                            <ul>
+                                                <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
+                                                <li>" . $_SESSION["utilisateur"] . "</li>
+                                                <li class='liFollow'>                            
+                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
+                                                        <span>Follow</span>
+                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                    </button>
+                                                </li>
+                                                <li class='datetime'>#</li>
+                                            </ul>
+                                        </header>
+                                        <section class='postContent'>
+                                            <img src='#' alt='imagePost' />
+                                            <br />
+                                            <p>#</p>
+                                        </section>
+                                        <footer>
+                                            <section class='postFooter'>
+                                                <p>preview de votre post !</p>
+                                            </section>
+                                        </footer>
+                                    </article>
+                                    <article class='commentFormSection'>
+                                        <header>
+                                            <form enctype='multipart/form-data' class='commentForm'>
+                                                Commentaire:
+                                                <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
+                                                <br /> <label for='image'>Image :</label>
+                                                <input class='imageCommentaire' type='file' name='imageCommentaire'>
+                                                <br>
+                                            </form>
+
+                                            <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
+                                        </header>
+                                    </article>
+                                </section>";
                                 } else {
-                                    echo "<section class='comment'>
-                                            <article class='commentFormSection'>
-                                                <header>
-                                                    <form enctype='multipart/form-data' class='commentForm'>
-                                                        Commentaire:
-                                                        <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
-                                                        <br /> <label for='image'>Image :</label>
-                                                        <input class='imageCommentaire' type='file' name='image'>
-                                                        <br>
-                                                    </form>
-                                                
-                                                    <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
-                                                </header>
-                                                <footer>
-                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                    <h1 class='commentPreview'>
-                                                        SENT: <span></span>
-                                                        <img src='#' alt='rien' />
-                                                    </h1>
-                                                </footer>
-                                            </article>
-                                        </section>";
+                                    echo "<setcion ='comment'>
+                                    <article class='blogPost preview'>
+                                        <header>
+                                            <ul>
+                                                <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
+                                                <li>" . $_SESSION["utilisateur"] . "</li>
+                                                <li class='liFollow'>                            
+                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
+                                                        <span>Follow</span>
+                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                    </button>
+                                                </li>
+                                                <li class='datetime'>#</li>
+                                            </ul>
+                                        </header>
+                                        <section class='postContent'>
+                                            <img src='#' alt='imagePost' />
+                                            <br />
+                                            <p>#</p>
+                                        </section>
+                                        <footer>
+                                            <section class='postFooter'>
+                                                <p>preview de votre post !</p>
+                                            </section>
+                                        </footer>
+                                    </article>
+                                    <article class='commentFormSection'>
+                                        <header>
+                                            <form enctype='multipart/form-data' class='commentForm'>
+                                                Commentaire:
+                                                <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
+                                                <br /> <label for='image'>Image :</label>
+                                                <input class='imageCommentaire' type='file' name='imageCommentaire'>
+                                                <br>
+                                            </form>
+
+                                            <button class='submitCommentForm' onclick='soumettreCommentaire(this)'><span>submit the form!</span></button>
+                                        </header>
+                                    </article>
+                                </section>";
                                 }
 
                                 if ($_SESSION["utilisateur"] === $message["auteur"]) {
@@ -1532,19 +1646,12 @@
                                                         <label for='postText'>Texte Post:</label>
                                                         <textarea class='texteModification' name='texteModification' rows='5' cols='40'></textarea>
                                                         <br /> <label for='image'>Image :</label>
-                                                        <input class='imageModification' type='file' name='image'>
+                                                        <input class='imageModification' type='file' name='imageModification'>
                                                         <br>
                                                     </form>
                                                 
                                                     <button class='submitModifForm' onclick='soumettreModification(this)'><span>submit the form!</span></button>
                                                 </header>
-                                                <footer>
-                                                    <!-- JUST SOME FEEDBACK TO LET US KNOW WHAT IS SENT -->
-                                                    <h1 class='modifPreview'>
-                                                        SENT: <span></span>
-                                                        <img src='#' alt='rien' />
-                                                    </h1>
-                                                </footer>
                                             </article>
                                         </footer>";
                                 } else {
