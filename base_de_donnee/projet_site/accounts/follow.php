@@ -5,12 +5,22 @@ try {
     
     session_start();
     $username = $_SESSION["utilisateur"];
-    $celuiQuiSAbonne = $_POST["abonne"];
     $abonnement = $_POST["abonnement"];
-    echo "" . $celuiQuiSAbonne . " " . $abonnement . " " . $_SESSION["miaou"] . "";
-        
-    session_destroy();
-
+    $id = $username . $abonnement;
+    
+    if ($_POST["action"] == "create") {
+        $sql = "INSERT INTO sAbonneA (id, abonne, abonnement) VALUES (:id, :username, :abonnement)";
+        $statement = $dbh->prepare($sql);
+        $statement->bindParam(":id", $id, PDO::PARAM_STR);
+        $statement->bindParam(":username", $username, PDO::PARAM_STR);
+        $statement->bindParam(":abonnement", $abonnement, PDO::PARAM_STR);
+        $statement->execute();
+    } else {
+        $sql = "DELETE FROM sAbonneA WHERE id = :id";
+        $statement = $dbh->prepare($sql);
+        $statement->bindParam(":id", $id, PDO::PARAM_STR);
+        $statement->execute();
+    }
 } catch (PDOException $e) {
     die("Erreur !: " . $e->getMessage());
 }

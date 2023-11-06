@@ -1,0 +1,7 @@
+#pageContent {
+  display: grid;
+  justify-content: center;
+}
+#pageContent .blogPost {
+  width: 100em;
+}/*# sourceMappingURL=create_a_post.css.map */

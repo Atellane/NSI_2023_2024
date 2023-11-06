@@ -16,10 +16,10 @@ function follow(obj) {
                 action: "remove",
                 abonnement: obj.id
             },
-            success: function (response) {
+            success: function (data, response) {
                 // Handle the response from the PHP file if needed
                 console.log("Signal sent successfully.");
-                console.log("Response from PHP: " + response);
+                console.log("Response from PHP: " + data + " " + response);
             },
             error: function (xhr, status, error) {
                 // Handle errors if the request fails
@@ -35,10 +35,10 @@ function follow(obj) {
                 action: "create",
                 abonnement: obj.id
             },
-            success: function (response) {
+            success: function (data, response) {
                 // Handle the response from the PHP file if needed
                 console.log("Signal sent successfully.");
-                console.log("Response from PHP: " + response);
+                console.log("Response from PHP: " + data + " " + response);
             },
             error: function (xhr, status, error) {
                 // Handle errors if the request fails
@@ -77,10 +77,10 @@ function share(obj) {
                 action: "remove",
                 post: postId
             },
-            success: function (response) {
+            success: function (data, response) {
                 // Handle the response from the PHP file if needed
                 console.log("Signal sent successfully.");
-                console.log("Response from PHP: " + response);
+                console.log("Response from PHP: " + data + " " + response);
             },
             error: function (xhr, status, error) {
                 // Handle errors if the request fails
@@ -103,10 +103,10 @@ function share(obj) {
                 action: "create",
                 post: postId
             },
-            success: function (response) {
+            success: function (data, response) {
                 // Handle the response from the PHP file if needed
                 console.log("Signal sent successfully.");
-                console.log("Response from PHP: " + response);
+                console.log("Response from PHP: " + data + " " + response);
             },
             error: function (xhr, status, error) {
                 // Handle errors if the request fails
@@ -163,10 +163,10 @@ function soumettreCommentaire(obj) {
             // for your information:
             // just show what we got back from the server
             // -------------------------------------------
-            commentId = reponse;
+            commentId = data;
             // -------------------------------------------
             console.log("Signal sent successfully.");
-            console.log("Response from PHP: " + response);
+            console.log("Response from PHP: " + data + " " + response);
         },
         error: function (xhr, status, error) {
         // Handle errors if the request fails
@@ -230,29 +230,28 @@ function soumettreModification(obj) {
             post.querySelector(":scope > .postContent > br").remove();
         }
     }
-    // -------------------------------------------
 
-//     $.ajax({
-//         url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/posts/modify_a_post.php",
-//         type: "POST",
-//         data: modification,
-//         contentType: false,
-//         processData: false,
-//         success: function(data, response) {
-//             // -------------------------------------------
-//             // for your information:
-//             // just show what we got back from the server
-//             // -------------------------------------------
+    $.ajax({
+        url: "https://webravel.azurewebsites.net/2023-2024-terminales-NSI/leouzan/posts/modify_a_post.php",
+        type: "POST",
+        data: modification,
+        contentType: false,
+        processData: false,
+        success: function(data, response) {
+            // -------------------------------------------
+            // for your information:
+            // just show what we got back from the server
+            // -------------------------------------------
 
-//             // -------------------------------------------
-//             console.log("Signal sent successfully.");
-//             console.log("Response from PHP: " + response);
-//         },
-//         error: function (xhr, status, error) {
-//         // Handle errors if the request fails
-//         console.error("Error: " + error);
-//         }
-//    });
+            // -------------------------------------------
+            console.log("Signal sent successfully.");
+            console.log("Response from PHP: " + data + " " + response);
+        },
+        error: function (xhr, status, error) {
+        // Handle errors if the request fails
+        console.error("Error: " + error);
+        }
+   });
    
    obj.parentNode.querySelector('.modifForm').reset();
 };
@@ -289,10 +288,10 @@ function supprimerPost(obj) {
         data: {
             post: postId
         },
-        success: function (response) {
+        success: function (data, response) {
             // Handle the response from the PHP file if needed
             console.log("Signal sent successfully.");
-            console.log("Response from PHP: " + response);
+            console.log("Response from PHP: " + data + " " + response);
             window.location.reload();
         },
         error: function (xhr, status, error) {

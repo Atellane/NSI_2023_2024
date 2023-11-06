@@ -50,21 +50,6 @@
                     ?>
                     
                 </li>
-                <li>
-                    <form id="searchBar" action="../search_answer.php" method="get">
-                        <div>
-                            <label for="keyword">recherche :</label>
-                            <input type="text" id="keyword" name="keyword">
-                        </div>
-                        <div>
-                            <button type="submit" >
-                                <svg focusable="false" viewBox="0 0 24 24">
-                                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </form>
-                </li>
                 <?php
                 try {
                     if (isset($_SESSION["utilisateur"])) {
@@ -106,14 +91,30 @@
                                 echo "<nav class='user'>                    
                                 <ul>
                                     <li><img id='pfp' src='./accounts/pfp/" . $user['nom_photo_de_profil'] . "' alt='photo de profil de  " . $user['username'] . "' width='30' height='30'></li>
-                                    <li>" . $user['username'] . "</li>
-                                    <li>
-                                        <button class='followButton connecte' id='" . $user['username'] . "' onclick='follow(this)'>
+                                    <li>" . $user['username'] . "</li>";
+                                $id = $_SESSION["utilisateur"] . $user["username"];
+                                $sql = "SELECT id 
+                                        FROM sAbonneA
+                                        WHERE id = :id";
+                                $statement = $dbh->prepare($sql);
+                                $statement->bindParam(":id", $id, PDO::PARAM_STR);
+                                $statement->execute();
+                                if ($statement->rowCount() > 0) {
+                                    echo "<li>
+                                        <button class='followButton connecte followed' id='" . $user['username'] . "' onclick='follow(this)'>
                                             <span>Follow</span>
                                             <img src='./assets/signeValidation.png' height='20' width='20'>
                                         </button>
-                                    </li>
-                                </ul>
+                                    </li>";
+                                } else {
+                                    echo "<li>
+                                    <button class='followButton connecte' id='" . $user['username'] . "' onclick='follow(this)'>
+                                        <span>Follow</span>
+                                        <img src='./assets/signeValidation.png' height='20' width='20'>
+                                    </button>
+                                </li>";
+                                }
+                                echo "</ul>
                                 <p>" . $user['nombre_abonne'] . " followers</p>
                             </nav>";
                             }
@@ -123,13 +124,30 @@
                                 <ul>
                                     <li><img id='pfp' src='./accounts/pfp/" . $user['nom_photo_de_profil'] . "' alt='photo de profil de " . $user['username'] . "' width='30' height='30'></li>
                                     <li>" . $user['username'] . "</li>
-                                    <li>
-                                        <button class='followButton' id='" . $user['username'] . "' onclick='follow(this)'>
+                                    <li>";
+                                    $id = $_SESSION["utilisateur"] . $user["username"];
+                                    $sql = "SELECT id 
+                                            FROM sAbonneA
+                                            WHERE id = :id";
+                                    $statement = $dbh->prepare($sql);
+                                    $statement->bindParam(":id", $id, PDO::PARAM_STR);
+                                    $statement->execute();
+                                    if ($statement->rowCount() > 0) {
+                                        echo "<li>
+                                            <button class='followButton connecte followed' id='" . $user['username'] . "' onclick='follow(this)'>
+                                                <span>Follow</span>
+                                                <img src='./assets/signeValidation.png' height='20' width='20'>
+                                            </button>
+                                        </li>";
+                                    } else {
+                                        echo "<li>
+                                        <button class='followButton connecte' id='" . $user['username'] . "' onclick='follow(this)'>
                                             <span>Follow</span>
                                             <img src='./assets/signeValidation.png' height='20' width='20'>
                                         </button>
-                                    </li>
-                                </ul>
+                                    </li>";
+                                    }
+                                    echo "</ul>
                                 <p>" . $user['nombre_abonne'] . " followers</p>
                             </nav>";
                             }
@@ -161,14 +179,30 @@
                                         <header>
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $message["nom_photo_de_profil"] . "' alt='photo de profil de " . $message["auteur"] . "' width='30' height='30'></li>
-                                                <li>" . $message["auteur"] . "</li>
-                                                <li class='liFollow'>                            
-                                                    <button class='followButton connecte' id='" . $message["auteur"] . "' onclick='follow(this)'>
+                                                <li>" . $message["auteur"] . "</li>";
+                                                $id = $_SESSION["utilisateur"] . $message["auteur"];
+                                                $sql = "SELECT id 
+                                                        FROM sAbonneA
+                                                        WHERE id = :id";
+                                                $statement = $dbh->prepare($sql);
+                                                $statement->bindParam(":id", $id, PDO::PARAM_STR);
+                                                $statement->execute();
+                                                if ($statement->rowCount() > 0) {
+                                                    echo "<li>
+                                                        <button class='followButton connecte followed' id='" . $message['auteur'] . "' onclick='follow(this)'>
+                                                            <span>Follow</span>
+                                                            <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                        </button>
+                                                    </li>";
+                                                } else {
+                                                    echo "<li>
+                                                    <button class='followButton connecte' id='" . $message['auteur'] . "' onclick='follow(this)'>
                                                         <span>Follow</span>
                                                         <img src='./assets/signeValidation.png' height='20' width='20'>
                                                     </button>
-                                                </li>
-                                                <li class='datetime'>" . $message["dateEtHeureFormatee"] . "</li>
+                                                </li>";
+                                                }
+                                                echo "<li class='datetime'>" . $message["dateEtHeureFormatee"] . "</li>
                                             </ul>
                                         </header>";
 
@@ -188,10 +222,25 @@
                                     echo "<footer>
                                             <section class='postFooter'>
                                                 <ul>
-                                                    <li class='partage'>
-                                                        <button class='shareButton connecte' onclick='share(this)'>
-                                                        </button>
-                                                        <p>" . $message["nombreDePartage"] . "</p>
+                                                    <li class='partage'>";
+                                    $sql = "SELECT id
+                                            FROM partage
+                                            WHERE utilisateur = :nomUtilisateur 
+                                            AND messagepartage = :idDuPost";
+        
+                                    $statement = $dbh->prepare($sql);
+                                    $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                    $statement->bindParam(':idDuPost', $message["signatureMessage"], PDO::PARAM_STR);
+                                    $statement->execute();
+        
+                                    if ($statement->rowCount() > 0) {
+                                        echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                </button>";
+                                    } else {
+                                        echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                </button>";
+                                    }
+                                    echo                 "<p>" . $message["nombreDePartage"] . "</p>
                                                     </li>
                                                     <li>
                                                         <button class='commentButton connecte' onclick='ouvrirCommentaire(this)'>
@@ -223,10 +272,25 @@
                                     echo "<footer>
                                             <section class='postFooter'>
                                                 <ul>
-                                                    <li class='partage'>
-                                                        <button class='shareButton connecte' onclick='share(this)'>
-                                                        </button>
-                                                        <p>" . $message["nombreDePartage"] . "</p>
+                                                    <li class='partage'>";
+                                    $sql = "SELECT id
+                                            FROM partage
+                                            WHERE utilisateur = :nomUtilisateur 
+                                            AND messagepartage = :idDuPost";
+        
+                                    $statement = $dbh->prepare($sql);
+                                    $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                    $statement->bindParam(':idDuPost', $message["signatureMessage"], PDO::PARAM_STR);
+                                    $statement->execute();
+
+                                    if ($statement->rowCount() > 0) {
+                                        echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                </button>";
+                                    } else {
+                                        echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                </button>";
+                                    }
+                                    echo                 "<p>" . $message["nombreDePartage"] . "</p>
                                                     </li>
                                                     <li>
                                                         <button class='commentButton connecte' onclick='ouvrirCommentaire(this)'>
@@ -255,18 +319,34 @@
                                     echo "<section class='comment'>";
 
                                     foreach ($commentaires as $commentaire) {
-                                        echo "<article class='blogPost' id='" . $commentaire["signaturecommentaire"] . "'>
+                                        echo "<article class='blogPost' id='" . $commentaire["signatureMessage"] . "'>
                                                         <header>
                                                             <ul>
                                                                 <li><img id='pfp' src='./accounts/pfp/" . $commentaire["nom_photo_de_profil"] . "' alt='photo de profil de " . $commentaire["auteur"] . "' width='30' height='30'></li>
-                                                                <li>" . $commentaire["auteur"] . "</li>
-                                                                <li class='liFollow'>                            
-                                                                    <button class='followButton' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
+                                                                <li>" . $commentaire["auteur"] . "</li>";
+                                                                $id = $_SESSION["utilisateur"] . $commentaire["auteur"];
+                                                                $sql = "SELECT id 
+                                                                        FROM sAbonneA
+                                                                        WHERE id = :id";
+                                                                $statement = $dbh->prepare($sql);
+                                                                $statement->bindParam(":id", $id, PDO::PARAM_STR);
+                                                                $statement->execute();
+                                                                if ($statement->rowCount() > 0) {
+                                                                    echo "<li>
+                                                                        <button class='followButton connecte followed' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
+                                                                            <span>Follow</span>
+                                                                            <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                                        </button>
+                                                                    </li>";
+                                                                } else {
+                                                                    echo "<li>
+                                                                    <button class='followButton connecte' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
                                                                         <span>Follow</span>
                                                                         <img src='./assets/signeValidation.png' height='20' width='20'>
                                                                     </button>
-                                                                </li>
-                                                                <li class='datetime'>" . $commentaire["dateEtHeureFormatee"] . "</li>
+                                                                </li>";
+                                                                }
+                                                                echo "<li class='datetime'>" . $commentaire["dateEtHeureFormatee"] . "</li>
                                                             </ul>
                                                         </header>";
 
@@ -286,10 +366,25 @@
                                             echo "<footer>
                                                             <section class='postFooter'>
                                                                 <ul>
-                                                                    <li class='partage'>
-                                                                        <button class='shareButton' onclick='share(this)'>
-                                                                        </button>
-                                                                        <p>" . $commentaire["nombreDePartage"] . "</p>
+                                                                    <li class='partage'>";
+                                            $sql = "SELECT id
+                                                    FROM partage
+                                                    WHERE utilisateur = :nomUtilisateur 
+                                                    AND messagepartage = :idDuPost";
+                        
+                                            $statement = $dbh->prepare($sql);
+                                            $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                            $statement->bindParam(':idDuPost', $commentaire["signatureMessage"], PDO::PARAM_STR);
+                                            $statement->execute();
+                        
+                                            if ($statement->rowCount() > 0) {
+                                                echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                        </button>";
+                                            } else {
+                                                echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                        </button>";
+                                            }
+                                            echo                       "<p>" . $commentaire["nombreDePartage"] . "</p>
                                                                     </li>
                                                                     <li>
                                                                         <button onclick='ouvrirModif(this)'>
@@ -327,10 +422,25 @@
                                             echo "<footer>
                                                             <section class='postFooter'>
                                                                 <ul>
-                                                                    <li class='partage'>
-                                                                        <button class='shareButton' onclick='share(this)'>
-                                                                        </button>
-                                                                        <p>" . $commentaire["nombreDePartage"] . "</p>
+                                                                    <li class='partage'>";
+                                            $sql = "SELECT id
+                                                    FROM partage
+                                                    WHERE utilisateur = :nomUtilisateur 
+                                                    AND messagepartage = :idDuPost";
+                        
+                                            $statement = $dbh->prepare($sql);
+                                            $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                            $statement->bindParam(':idDuPost', $commentaire["signatureMessage"], PDO::PARAM_STR);
+                                            $statement->execute();
+
+                                            if ($statement->rowCount() > 0) {
+                                                echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                        </button>";
+                                            } else {
+                                                echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                        </button>";
+                                            }
+                                            echo                       "<p>" . $commentaire["nombreDePartage"] . "</p>
                                                                     </li>
                                                                 </ul>
                                                             </section>
@@ -346,12 +456,6 @@
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
                                                 <li>" . $_SESSION["utilisateur"] . "</li>
-                                                <li class='liFollow'>                            
-                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
-                                                        <span>Follow</span>
-                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
-                                                    </button>
-                                                </li>
                                                 <li class='datetime'>#</li>
                                             </ul>
                                         </header>
@@ -362,7 +466,7 @@
                                         </section>
                                         <footer>
                                             <section class='postFooter'>
-                                                <p>preview de votre post !</p>
+                                                <p>preview de votre post</p>
                                             </section>
                                         </footer>
                                     </article>
@@ -387,12 +491,6 @@
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
                                                 <li>" . $_SESSION["utilisateur"] . "</li>
-                                                <li class='liFollow'>                            
-                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
-                                                        <span>Follow</span>
-                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
-                                                    </button>
-                                                </li>
                                                 <li class='datetime'>#</li>
                                             </ul>
                                         </header>
@@ -403,7 +501,7 @@
                                         </section>
                                         <footer>
                                             <section class='postFooter'>
-                                                <p>preview de votre post !</p>
+                                                <p>preview de votre post</p>
                                             </section>
                                         </footer>
                                     </article>
@@ -453,14 +551,30 @@
                                         <header>
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $message["nom_photo_de_profil"] . "' alt='photo de profil de " . $message["auteur"] . "' width='30' height='30'></li>
-                                                <li>" . $message["auteur"] . "</li>
-                                                <li class='liFollow'>                            
-                                                    <button class='followButton' id='" . $message["auteur"] . "' onclick='follow(this)'>
+                                                <li>" . $message["auteur"] . "</li>";
+                                                $id = $_SESSION["utilisateur"] . $message["auteur"];
+                                                $sql = "SELECT id 
+                                                        FROM sAbonneA
+                                                        WHERE id = :id";
+                                                $statement = $dbh->prepare($sql);
+                                                $statement->bindParam(":id", $id, PDO::PARAM_STR);
+                                                $statement->execute();
+                                                if ($statement->rowCount() > 0) {
+                                                    echo "<li>
+                                                        <button class='followButton connecte followed' id='" . $message["auteur"] . "' onclick='follow(this)'>
+                                                            <span>Follow</span>
+                                                            <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                        </button>
+                                                    </li>";
+                                                } else {
+                                                    echo "<li>
+                                                    <button class='followButton connecte' id='" . $message["auteur"] . "' onclick='follow(this)'>
                                                         <span>Follow</span>
                                                         <img src='./assets/signeValidation.png' height='20' width='20'>
                                                     </button>
-                                                </li>
-                                                <li class='datetime'>" . $message["dateEtHeureFormatee"] . "</li>
+                                                </li>";
+                                                }
+                                                echo "<li class='datetime'>" . $message["dateEtHeureFormatee"] . "</li>
                                             </ul>
                                         </header>";
 
@@ -480,10 +594,25 @@
                                     echo "<footer>
                                             <section class='postFooter'>
                                                 <ul>
-                                                    <li class='partage'>
-                                                        <button class='shareButton' onclick='share(this)'>
-                                                        </button>
-                                                        <p>" . $message["nombreDePartage"] . "</p>
+                                                    <li class='partage'>";
+                                    $sql = "SELECT id
+                                            FROM partage
+                                            WHERE utilisateur = :nomUtilisateur 
+                                            AND messagepartage = :idDuPost";
+        
+                                    $statement = $dbh->prepare($sql);
+                                    $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                    $statement->bindParam(':idDuPost', $message["signatureMessage"], PDO::PARAM_STR);
+                                    $statement->execute();
+        
+                                    if ($statement->rowCount() > 0) {
+                                        echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                </button>";
+                                    } else {
+                                        echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                </button>";
+                                    }
+                                    echo                "<p>" . $message["nombreDePartage"] . "</p>
                                                     </li>
                                                     <li>
                                                         <button class='commentButton' onclick='ouvrirCommentaire(this)'>
@@ -515,10 +644,25 @@
                                     echo "<footer>
                                             <section class='postFooter'>
                                                 <ul>
-                                                    <li class='partage'>
-                                                        <button class='shareButton' onclick='share(this)'>
-                                                        </button>
-                                                        <p>" . $message["nombreDePartage"] . "</p>
+                                                    <li class='partage'>";
+                                    $sql = "SELECT id
+                                            FROM partage
+                                            WHERE utilisateur = :nomUtilisateur 
+                                            AND messagepartage = :idDuPost";
+        
+                                    $statement = $dbh->prepare($sql);
+                                    $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                    $statement->bindParam(':idDuPost', $message["signatureMessage"], PDO::PARAM_STR);
+                                    $statement->execute();
+
+                                    if ($statement->rowCount() > 0) {
+                                        echo    "<button class='shareButton shared' onclick='share(this)'>
+                                                </button>";
+                                    } else {
+                                        echo    "<button class='shareButton' onclick='share(this)'>
+                                                </button>";
+                                    }
+                                    echo                 "<p>" . $message["nombreDePartage"] . "</p>
                                                     </li>
                                                     <li>
                                                         <button class='commentButton' onclick='ouvrirCommentaire(this)'>
@@ -547,18 +691,34 @@
                                     echo "<section class='comment'>";
 
                                     foreach ($commentaires as $commentaire) {
-                                        echo "<article class='blogPost' id='" . $commentaire["signaturecommentaire"] . "'>
+                                        echo "<article class='blogPost' id='" . $commentaire["signatureMessage"] . "'>
                                                         <header>
                                                             <ul>
                                                                 <li><img id='pfp' src='./accounts/pfp/" . $commentaire["nom_photo_de_profil"] . "' alt='photo de profil de " . $commentaire["auteur"] . "' width='30' height='30'></li>
-                                                                <li>" . $commentaire["auteur"] . "</li>
-                                                                <li class='liFollow'>                            
-                                                                    <button class='followButton' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
+                                                                <li>" . $commentaire["auteur"] . "</li>";
+                                                                $id = $_SESSION["utilisateur"] . $commentaire["auteur"];
+                                                                $sql = "SELECT id 
+                                                                        FROM sAbonneA
+                                                                        WHERE id = :id";
+                                                                $statement = $dbh->prepare($sql);
+                                                                $statement->bindParam(":id", $id, PDO::PARAM_STR);
+                                                                $statement->execute();
+                                                                if ($statement->rowCount() > 0) {
+                                                                    echo "<li>
+                                                                        <button class='followButton connecte followed' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
+                                                                            <span>Follow</span>
+                                                                            <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                                        </button>
+                                                                    </li>";
+                                                                } else {
+                                                                    echo "<li>
+                                                                    <button class='followButton connecte' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
                                                                         <span>Follow</span>
                                                                         <img src='./assets/signeValidation.png' height='20' width='20'>
                                                                     </button>
-                                                                </li>
-                                                                <li class='datetime'>" . $commentaire["dateEtHeureFormatee"] . "</li>
+                                                                </li>";
+                                                                }
+                                                                echo "<li class='datetime'>" . $commentaire["dateEtHeureFormatee"] . "</li>
                                                             </ul>
                                                         </header>";
 
@@ -578,10 +738,25 @@
                                             echo "<footer>
                                                             <section class='postFooter'>
                                                                 <ul>
-                                                                    <li class='partage'>
-                                                                        <button class='shareButton' onclick='share(this)'>
-                                                                        </button>
-                                                                        <p>" . $commentaire["nombreDePartage"] . "</p>
+                                                                    <li class='partage'>";
+                                            $sql = "SELECT id
+                                                    FROM partage
+                                                    WHERE utilisateur = :nomUtilisateur 
+                                                    AND messagepartage = :idDuPost";
+                        
+                                            $statement = $dbh->prepare($sql);
+                                            $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                            $statement->bindParam(':idDuPost', $commentaire["signatureMessage"], PDO::PARAM_STR);
+                                            $statement->execute();
+
+                                            if ($statement->rowCount() > 0) {
+                                                echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                        </button>";
+                                            } else {
+                                                echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                        </button>";
+                                            }
+                                            echo                       "<p>" . $commentaire["nombreDePartage"] . "</p>
                                                                     </li>
                                                                     <li>
                                                                         <button onclick='ouvrirModif(this)'>
@@ -619,10 +794,25 @@
                                             echo "<footer>
                                                             <section class='postFooter'>
                                                                 <ul>
-                                                                    <li class='partage'>
-                                                                        <button class='shareButton' onclick='share(this)'>
-                                                                        </button>
-                                                                        <p>" . $commentaire["nombreDePartage"] . "</p>
+                                                                    <li class='partage'>";
+                                            $sql = "SELECT id
+                                                    FROM partage
+                                                    WHERE utilisateur = :nomUtilisateur 
+                                                    AND messagepartage = :idDuPost";
+                                                
+                                            $statement = $dbh->prepare($sql);
+                                            $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                            $statement->bindParam(':idDuPost', $commentaire["signatureMessage"], PDO::PARAM_STR);
+                                            $statement->execute();
+
+                                            if ($statement->rowCount() > 0) {
+                                                echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                        </button>";
+                                            } else {
+                                                echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                        </button>";
+                                            }
+                                            echo                       "<p>" . $commentaire["nombreDePartage"] . "</p>
                                                                     </li>
                                                                 </ul>
                                                             </section>
@@ -638,12 +828,6 @@
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
                                                 <li>" . $_SESSION["utilisateur"] . "</li>
-                                                <li class='liFollow'>                            
-                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
-                                                        <span>Follow</span>
-                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
-                                                    </button>
-                                                </li>
                                                 <li class='datetime'>#</li>
                                             </ul>
                                         </header>
@@ -654,7 +838,7 @@
                                         </section>
                                         <footer>
                                             <section class='postFooter'>
-                                                <p>preview de votre post !</p>
+                                                <p>preview de votre post</p>
                                             </section>
                                         </footer>
                                     </article>
@@ -679,12 +863,6 @@
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
                                                 <li>" . $_SESSION["utilisateur"] . "</li>
-                                                <li class='liFollow'>                            
-                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
-                                                        <span>Follow</span>
-                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
-                                                    </button>
-                                                </li>
                                                 <li class='datetime'>#</li>
                                             </ul>
                                         </header>
@@ -695,14 +873,17 @@
                                         </section>
                                         <footer>
                                             <section class='postFooter'>
-                                                <p>preview de votre post !</p>
+                                                <p>preview de votre post</p>
                                             </section>
                                         </footer>
                                     </article>
                                     <article class='commentFormSection'>
                                         <header>
                                             <form enctype='multipart/form-data' class='commentForm'>
-                                                Commentaire:
+                                            LEFT JOIN utilisateurs ON messages.auteur = utilisateurs.username
+                                            LEFT JOIN commente ON commente.commentaire = messages.signatureMessage
+                                            WHERE commente.commentaire IS NULL
+                                                                        Commentaire:
                                                 <textarea class='texteCommentaire' name='texteCommentaire' rows='5' cols='40'></textarea>
                                                 <br /> <label for='image'>Image :</label>
                                                 <input class='imageCommentaire' type='file' name='imageCommentaire'>
@@ -773,14 +954,30 @@
                                             <header>
                                                 <ul>
                                                     <li><img id='pfp' src='./accounts/pfp/" . $message["nom_photo_de_profil"] . "' alt='photo de profil de " . $message["auteur"] . "' width='30' height='30'></li>
-                                                    <li>" . $message["auteur"] . "</li>
-                                                    <li class='liFollow'>                            
+                                                    <li>" . $message["auteur"] . "</li>";
+                                                    $id = $_SESSION["utilisateur"] . $message["auteur"];
+                                                    $sql = "SELECT id 
+                                                            FROM sAbonneA
+                                                            WHERE id = :id";
+                                                    $statement = $dbh->prepare($sql);
+                                                    $statement->bindParam(":id", $id, PDO::PARAM_STR);
+                                                    $statement->execute();
+                                                    if ($statement->rowCount() > 0) {
+                                                        echo "<li>
+                                                            <button class='followButton connecte followed' id='" . $message["auteur"] . "' onclick='follow(this)'>
+                                                                <span>Follow</span>
+                                                                <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                            </button>
+                                                        </li>";
+                                                    } else {
+                                                        echo "<li>
                                                         <button class='followButton connecte' id='" . $message["auteur"] . "' onclick='follow(this)'>
                                                             <span>Follow</span>
                                                             <img src='./assets/signeValidation.png' height='20' width='20'>
                                                         </button>
-                                                    </li>
-                                                    <li class='datetime'>" . $message["dateEtHeureFormatee"] . "</li>
+                                                    </li>";
+                                                    }
+                                                    echo "<li class='datetime'>" . $message["dateEtHeureFormatee"] . "</li>
                                                 </ul>
                                             </header>";
 
@@ -803,10 +1000,25 @@
                                     echo "<footer>
                                                 <section class='postFooter'>
                                                     <ul>
-                                                        <li class='partage'>
-                                                            <button class='shareButton connecte' onclick='share(this)'>
-                                                            </button>
-                                                            <p>" . $message["nombreDePartage"] . "</p>
+                                                        <li class='partage'>";
+                                    $sql = "SELECT id
+                                            FROM partage
+                                            WHERE utilisateur = :nomUtilisateur 
+                                            AND messagepartage = :idDuPost";
+                                    
+                                    $statement = $dbh->prepare($sql);
+                                    $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                    $statement->bindParam(':idDuPost', $commentaire["signatureMessage"], PDO::PARAM_STR);
+                                    $statement->execute();
+            
+                                    if ($statement->rowCount() > 0) {
+                                        echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                </button>";
+                                    } else {
+                                        echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                </button>";
+                                    }
+                                    echo                    "<p>" . $message["nombreDePartage"] . "</p>
                                                         </li>
                                                         <li>
                                                             <button class='commentButton connecte' onclick='ouvrirCommentaire(this)'>
@@ -838,10 +1050,25 @@
                                     echo "<footer>
                                                 <section class='postFooter'>
                                                     <ul>
-                                                        <li class='partage'>
-                                                            <button class='shareButton connecte' onclick='share(this)'>
-                                                            </button>
-                                                            <p>" . $message["nombreDePartage"] . "</p>
+                                                        <li class='partage'>";
+                                    $sql = "SELECT id
+                                            FROM partage
+                                            WHERE utilisateur = :nomUtilisateur 
+                                            AND messagepartage = :idDuPost";
+
+                                    $statement = $dbh->prepare($sql);
+                                    $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                    $statement->bindParam(':idDuPost', $message["signatureMessage"], PDO::PARAM_STR);
+                                    $statement->execute();
+            
+                                    if ($statement->rowCount() > 0) {
+                                        echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                </button>";
+                                    } else {
+                                        echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                </button>";
+                                    }
+                                    echo                     "<p>" . $message["nombreDePartage"] . "</p>
                                                         </li>
                                                         <li>
                                                             <button class='commentButton connecte' onclick='ouvrirCommentaire(this)'>
@@ -870,18 +1097,34 @@
                                     echo "<section class='comment'>";
 
                                     foreach ($commentaires as $commentaire) {
-                                        echo "<article class='blogPost' id='" . $commentaire["signaturecommentaire"] . "'>
+                                        echo "<article class='blogPost' id='" . $commentaire["signatureMessage"] . "'>
                                                             <header>
                                                                 <ul>
                                                                     <li><img id='pfp' src='./accounts/pfp/" . $commentaire["nom_photo_de_profil"] . "' alt='photo de profil de " . $commentaire["auteur"] . "' width='30' height='30'></li>
-                                                                    <li>" . $commentaire["auteur"] . "</li>
-                                                                    <li class='liFollow'>                            
+                                                                    <li>" . $commentaire["auteur"] . "</li>";
+                                                                    $id = $_SESSION["utilisateur"] . $commentaire["auteur"];
+                                                                    $sql = "SELECT id 
+                                                                            FROM sAbonneA
+                                                                            WHERE id = :id";
+                                                                    $statement = $dbh->prepare($sql);
+                                                                    $statement->bindParam(":id", $id, PDO::PARAM_STR);
+                                                                    $statement->execute();
+                                                                    if ($statement->rowCount() > 0) {
+                                                                        echo "<li>
+                                                                            <button class='followButton connecte followed' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
+                                                                                <span>Follow</span>
+                                                                                <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                                            </button>
+                                                                        </li>";
+                                                                    } else {
+                                                                        echo "<li>
                                                                         <button class='followButton connecte' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
                                                                             <span>Follow</span>
                                                                             <img src='./assets/signeValidation.png' height='20' width='20'>
                                                                         </button>
-                                                                    </li>
-                                                                    <li class='datetime'>" . $commentaire["dateEtHeureFormatee"] . "</li>
+                                                                    </li>";
+                                                                    }
+                                                                    echo "<li class='datetime'>" . $commentaire["dateEtHeureFormatee"] . "</li>
                                                                 </ul>
                                                             </header>";
 
@@ -904,10 +1147,25 @@
                                             echo "<footer>
                                                                 <section class='postFooter'>
                                                                     <ul>
-                                                                        <li class='partage'>
-                                                                            <button class='shareButton connecte' onclick='share(this)'>
-                                                                            </button>
-                                                                            <p>" . $commentaire["nombreDePartage"] . "</p>
+                                                                        <li class='partage'>";
+                                            $sql = "SELECT id
+                                                    FROM partage
+                                                    WHERE utilisateur = :nomUtilisateur 
+                                                    AND messagepartage = :idDuPost";
+
+                                            $statement = $dbh->prepare($sql);
+                                            $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                            $statement->bindParam(':idDuPost', $commentaire["signatureMessage"], PDO::PARAM_STR);
+                                            $statement->execute();
+
+                                            if ($statement->rowCount() > 0) {
+                                                echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                        </button>";
+                                            } else {
+                                                echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                        </button>";
+                                            }
+                                            echo                            "<p>" . $commentaire["nombreDePartage"] . "</p>
                                                                         </li>
                                                                         <li>
                                                                             <button onclick='ouvrirModif(this)'>
@@ -945,10 +1203,25 @@
                                             echo "<footer>
                                                                 <section class='postFooter'>
                                                                     <ul>
-                                                                        <li class='partage'>
-                                                                            <button class='shareButton connecte' onclick='share(this)'>
-                                                                            </button>
-                                                                            <p>" . $commentaire["nombreDePartage"] . "</p>
+                                                                        <li class='partage'>";
+                                            $sql = "SELECT id
+                                                    FROM partage
+                                                    WHERE utilisateur = :nomUtilisateur 
+                                                    AND messagepartage = :idDuPost";
+                                                    
+                                            $statement = $dbh->prepare($sql);
+                                            $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                            $statement->bindParam(':idDuPost', $commentaire["signatureMessage"], PDO::PARAM_STR);
+                                            $statement->execute();
+
+                                            if ($statement->rowCount() > 0) {
+                                                echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                        </button>";
+                                            } else {
+                                                echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                        </button>";
+                                            }
+                                            echo                       "<p>" . $commentaire["nombreDePartage"] . "</p>
                                                                         </li>
                                                                     </ul>
                                                                 </section>
@@ -964,12 +1237,6 @@
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
                                                 <li>" . $_SESSION["utilisateur"] . "</li>
-                                                <li class='liFollow'>                            
-                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
-                                                        <span>Follow</span>
-                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
-                                                    </button>
-                                                </li>
                                                 <li class='datetime'>#</li>
                                             </ul>
                                         </header>
@@ -980,7 +1247,7 @@
                                         </section>
                                         <footer>
                                             <section class='postFooter'>
-                                                <p>preview de votre post !</p>
+                                                <p>preview de votre post</p>
                                             </section>
                                         </footer>
                                     </article>
@@ -1006,12 +1273,6 @@
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
                                                 <li>" . $_SESSION["utilisateur"] . "</li>
-                                                <li class='liFollow'>                            
-                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
-                                                        <span>Follow</span>
-                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
-                                                    </button>
-                                                </li>
                                                 <li class='datetime'>#</li>
                                             </ul>
                                         </header>
@@ -1022,7 +1283,7 @@
                                         </section>
                                         <footer>
                                             <section class='postFooter'>
-                                                <p>preview de votre post !</p>
+                                                <p>preview de votre post</p>
                                             </section>
                                         </footer>
                                     </article>
@@ -1089,14 +1350,30 @@
                                         <header>
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $message["nom_photo_de_profil"] . "' alt='photo de profil de " . $message["auteur"] . "' width='30' height='30'></li>
-                                                <li>" . $message["auteur"] . "</li>
-                                                <li class='liFollow'>                            
+                                                <li>" . $message["auteur"] . "</li>";
+                                                $id = $_SESSION["utilisateur"] . $message["auteur"];
+                                                $sql = "SELECT id 
+                                                        FROM sAbonneA
+                                                        WHERE id = :id";
+                                                $statement = $dbh->prepare($sql);
+                                                $statement->bindParam(":id", $id, PDO::PARAM_STR);
+                                                $statement->execute();
+                                                if ($statement->rowCount() > 0) {
+                                                    echo "<li>
+                                                        <button class='followButton connecte followed' id='" . $message["auteur"] . "' onclick='follow(this)'>
+                                                            <span>Follow</span>
+                                                            <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                        </button>
+                                                    </li>";
+                                                } else {
+                                                    echo "<li>
                                                     <button class='followButton connecte' id='" . $message["auteur"] . "' onclick='follow(this)'>
                                                         <span>Follow</span>
                                                         <img src='./assets/signeValidation.png' height='20' width='20'>
                                                     </button>
-                                                </li>
-                                                <li class='datetime'>" . $message["dateEtHeureFormatee"] . "</li>
+                                                </li>";
+                                                }
+                                                echo "<li class='datetime'>" . $message["dateEtHeureFormatee"] . "</li>
                                             </ul>
                                         </header>";
 
@@ -1116,10 +1393,25 @@
                                     echo "<footer>
                                             <section class='postFooter'>
                                                 <ul>
-                                                    <li class='partage'>
-                                                        <button class='shareButton connecte' onclick='share(this)'>
-                                                        </button>
-                                                        <p>" . $message["nombreDePartage"] . "</p>
+                                                    <li class='partage'>";
+                                    $sql = "SELECT id
+                                            FROM partage
+                                            WHERE utilisateur = :nomUtilisateur 
+                                            AND messagepartage = :idDuPost";
+                                
+                                    $statement = $dbh->prepare($sql);
+                                     $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                    $statement->bindParam(':idDuPost', $message["signatureMessage"], PDO::PARAM_STR);
+                                    $statement->execute();
+        
+                                    if ($statement->rowCount() > 0) {
+                                        echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                </button>";
+                                    } else {
+                                        echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                </button>";
+                                    }
+                                    echo                 "<p>" . $message["nombreDePartage"] . "</p>
                                                     </li>
                                                     <li>
                                                         <button class='commentButton connecte' onclick='ouvrirCommentaire(this)'>
@@ -1151,10 +1443,25 @@
                                     echo "<footer>
                                             <section class='postFooter'>
                                                 <ul>
-                                                    <li class='partage'>
-                                                        <button class='shareButton connecte' onclick='share(this)'>
-                                                        </button>
-                                                        <p>" . $message["nombreDePartage"] . "</p>
+                                                    <li class='partage'>";
+                                    $sql = "SELECT id
+                                            FROM partage
+                                            WHERE utilisateur = :nomUtilisateur 
+                                            AND messagepartage = :idDuPost";
+
+                                            $statement = $dbh->prepare($sql);
+                                            $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                            $statement->bindParam(':idDuPost', $message["signatureMessage"], PDO::PARAM_STR);
+                                            $statement->execute();
+
+                                            if ($statement->rowCount() > 0) {
+                                                echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                        </button>";
+                                            } else {
+                                                echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                        </button>";
+                                            }
+                                            echo         "<p>" . $message["nombreDePartage"] . "</p>
                                                     </li>
                                                     <li>
                                                         <button class='commentButton connecte' onclick='ouvrirCommentaire(this)'>
@@ -1183,18 +1490,34 @@
                                     echo "<section class='comment'>";
 
                                     foreach ($commentaires as $commentaire) {
-                                        echo "<article class='blogPost' id='" . $commentaire["signaturecommentaire"] . "'>
+                                        echo "<article class='blogPost' id='" . $commentaire["signatureMessage"] . "'>
                                                         <header>
                                                             <ul>
                                                                 <li><img id='pfp' src='./accounts/pfp/" . $commentaire["nom_photo_de_profil"] . "' alt='photo de profil de " . $commentaire["auteur"] . "' width='30' height='30'></li>
-                                                                <li>" . $commentaire["auteur"] . "</li>
-                                                                <li class='liFollow'>                            
-                                                                    <button class='followButton' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
+                                                                <li>" . $commentaire["auteur"] . "</li>";
+                                                                $id = $_SESSION["utilisateur"] . $commentaire["auteur"];
+                                                                $sql = "SELECT id 
+                                                                        FROM sAbonneA
+                                                                        WHERE id = :id";
+                                                                $statement = $dbh->prepare($sql);
+                                                                $statement->bindParam(":id", $id, PDO::PARAM_STR);
+                                                                $statement->execute();
+                                                                if ($statement->rowCount() > 0) {
+                                                                    echo "<li>
+                                                                        <button class='followButton connecte followed' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
+                                                                            <span>Follow</span>
+                                                                            <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                                        </button>
+                                                                    </li>";
+                                                                } else {
+                                                                    echo "<li>
+                                                                    <button class='followButton connecte' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
                                                                         <span>Follow</span>
                                                                         <img src='./assets/signeValidation.png' height='20' width='20'>
                                                                     </button>
-                                                                </li>
-                                                                <li class='datetime'>" . $commentaire["dateEtHeureFormatee"] . "</li>
+                                                                </li>";
+                                                                }
+                                                                echo "<li class='datetime'>" . $commentaire["dateEtHeureFormatee"] . "</li>
                                                             </ul>
                                                         </header>";
 
@@ -1214,10 +1537,25 @@
                                             echo "<footer>
                                                             <section class='postFooter'>
                                                                 <ul>
-                                                                    <li class='partage'>
-                                                                        <button class='shareButton' onclick='share(this)'>
-                                                                        </button>
-                                                                        <p>" . $commentaire["nombreDePartage"] . "</p>
+                                                                    <li class='partage'>";
+                                            $sql = "SELECT id
+                                                    FROM partage
+                                                    WHERE utilisateur = :nomUtilisateur 
+                                                    AND messagepartage = :idDuPost";
+
+                                            $statement = $dbh->prepare($sql);
+                                            $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                            $statement->bindParam(':idDuPost', $commentaire["signatureMessage"], PDO::PARAM_STR);
+                                            $statement->execute();
+
+                                            if ($statement->rowCount() > 0) {
+                                                echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                        </button>";
+                                            } else {
+                                                echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                        </button>";
+                                            }
+                                            echo                       "<p>" . $commentaire["nombreDePartage"] . "</p>
                                                                     </li>
                                                                     <li>
                                                                         <button onclick='ouvrirModif(this)'>
@@ -1255,10 +1593,26 @@
                                             echo "<footer>
                                                             <section class='postFooter'>
                                                                 <ul>
-                                                                    <li class='partage'>
-                                                                        <button class='shareButton' onclick='share(this)'>
-                                                                        </button>
-                                                                        <p>" . $commentaire["nombreDePartage"] . "</p>
+                                                                    <li class='partage'>";
+
+                                            $sql = "SELECT id
+                                                    FROM partage
+                                                    WHERE utilisateur = :nomUtilisateur 
+                                                    AND messagepartage = :idDuPost";
+                        
+                                                    $statement = $dbh->prepare($sql);
+                                                    $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                                    $statement->bindParam(':idDuPost', $commentaire["signatureMessage"], PDO::PARAM_STR);
+                                                    $statement->execute();
+                        
+                                                    if ($statement->rowCount() > 0) {
+                                                        echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                                </button>";
+                                                    } else {
+                                                        echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                                </button>";
+                                                    }
+                                            echo                       "<p>" . $commentaire["nombreDePartage"] . "</p>
                                                                     </li>
                                                                 </ul>
                                                             </section>
@@ -1274,12 +1628,6 @@
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
                                                 <li>" . $_SESSION["utilisateur"] . "</li>
-                                                <li class='liFollow'>                            
-                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
-                                                        <span>Follow</span>
-                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
-                                                    </button>
-                                                </li>
                                                 <li class='datetime'>#</li>
                                             </ul>
                                         </header>
@@ -1290,7 +1638,7 @@
                                         </section>
                                         <footer>
                                             <section class='postFooter'>
-                                                <p>preview de votre post !</p>
+                                                <p>preview de votre post</p>
                                             </section>
                                         </footer>
                                     </article>
@@ -1315,12 +1663,6 @@
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
                                                 <li>" . $_SESSION["utilisateur"] . "</li>
-                                                <li class='liFollow'>                            
-                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
-                                                        <span>Follow</span>
-                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
-                                                    </button>
-                                                </li>
                                                 <li class='datetime'>#</li>
                                             </ul>
                                         </header>
@@ -1331,7 +1673,7 @@
                                         </section>
                                         <footer>
                                             <section class='postFooter'>
-                                                <p>preview de votre post !</p>
+                                                <p>preview de votre post</p>
                                             </section>
                                         </footer>
                                     </article>
@@ -1377,14 +1719,30 @@
                                         <header>
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $message["nom_photo_de_profil"] . "' alt='photo de profil de " . $message["auteur"] . "' width='30' height='30'></li>
-                                                <li>" . $message["auteur"] . "</li>
-                                                <li class='liFollow'>                            
-                                                    <button class='followButton' id='" . $message["auteur"] . "' onclick='follow(this)'>
+                                                <li>" . $message["auteur"] . "</li>";
+                                                $id = $_SESSION["utilisateur"] . $message["auteur"];
+                                                $sql = "SELECT id 
+                                                        FROM sAbonneA
+                                                        WHERE id = :id";
+                                                $statement = $dbh->prepare($sql);
+                                                $statement->bindParam(":id", $id, PDO::PARAM_STR);
+                                                $statement->execute();
+                                                if ($statement->rowCount() > 0) {
+                                                    echo "<li>
+                                                        <button class='followButton connecte followed' id='" . $message["auteur"] . "' onclick='follow(this)'>
+                                                            <span>Follow</span>
+                                                            <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                        </button>
+                                                    </li>";
+                                                } else {
+                                                    echo "<li>
+                                                    <button class='followButton connecte' id='" . $message["auteur"] . "' onclick='follow(this)'>
                                                         <span>Follow</span>
                                                         <img src='./assets/signeValidation.png' height='20' width='20'>
                                                     </button>
-                                                </li>
-                                                <li class='datetime'>" . $message["dateEtHeureFormatee"] . "</li>
+                                                </li>";
+                                                }
+                                                echo "<li class='datetime'>" . $message["dateEtHeureFormatee"] . "</li>
                                             </ul>
                                         </header>";
 
@@ -1404,10 +1762,25 @@
                                     echo "<footer>
                                             <section class='postFooter'>
                                                 <ul>
-                                                    <li class='partage'>
-                                                        <button class='shareButton' onclick='share(this)'>
-                                                        </button>
-                                                        <p>" . $message["nombreDePartage"] . "</p>
+                                                    <li class='partage'>";
+                                    $sql = "SELECT id
+                                            FROM partage
+                                            WHERE utilisateur = :nomUtilisateur 
+                                            AND messagepartage = :idDuPost";
+        
+                                    $statement = $dbh->prepare($sql);
+                                    $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                    $statement->bindParam(':idDuPost', $message["signatureMessage"], PDO::PARAM_STR);
+                                    $statement->execute();
+        
+                                    if ($statement->rowCount() > 0) {
+                                        echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                </button>";
+                                    } else {
+                                        echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                </button>";
+                                    }
+                            echo                       "<p>" . $message["nombreDePartage"] . "</p>
                                                     </li>
                                                     <li>
                                                         <button class='commentButton' onclick='ouvrirCommentaire(this)'>
@@ -1439,10 +1812,25 @@
                                     echo "<footer>
                                             <section class='postFooter'>
                                                 <ul>
-                                                    <li class='partage'>
-                                                        <button class='shareButton' onclick='share(this)'>
-                                                        </button>
-                                                        <p>" . $message["nombreDePartage"] . "</p>
+                                                    <li class='partage'>";
+                                    $sql = "SELECT id
+                                            FROM partage
+                                            WHERE utilisateur = :nomUtilisateur 
+                                            AND messagepartage = :idDuPost";
+
+                                    $statement = $dbh->prepare($sql);
+                                    $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                    $statement->bindParam(':idDuPost', $message["signatureMessage"], PDO::PARAM_STR);
+                                    $statement->execute();
+        
+                                    if ($statement->rowCount() > 0) {
+                                        echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                </button>";
+                                    } else {
+                                        echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                </button>";
+                                    }
+                                    echo                 "<p>" . $message["nombreDePartage"] . "</p>
                                                     </li>
                                                     <li>
                                                         <button class='commentButton' onclick='ouvrirCommentaire(this)'>
@@ -1471,18 +1859,34 @@
                                     echo "<section class='comment'>";
 
                                     foreach ($commentaires as $commentaire) {
-                                        echo "<article class='blogPost' id='" . $commentaire["signaturecommentaire"] . "'>
+                                        echo "<article class='blogPost' id='" . $commentaire["signatureMessage"] . "'>
                                                         <header>
                                                             <ul>
                                                                 <li><img id='pfp' src='./accounts/pfp/" . $commentaire["nom_photo_de_profil"] . "' alt='photo de profil de " . $commentaire["auteur"] . "' width='30' height='30'></li>
-                                                                <li>" . $commentaire["auteur"] . "</li>
-                                                                <li class='liFollow'>                            
-                                                                    <button class='followButton' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
+                                                                <li>" . $commentaire["auteur"] . "</li>";
+                                                                $id = $_SESSION["utilisateur"] . $commentaire["auteur"];
+                                                                $sql = "SELECT id 
+                                                                        FROM sAbonneA
+                                                                        WHERE id = :id";
+                                                                $statement = $dbh->prepare($sql);
+                                                                $statement->bindParam(":id", $id, PDO::PARAM_STR);
+                                                                $statement->execute();
+                                                                if ($statement->rowCount() > 0) {
+                                                                    echo "<li>
+                                                                        <button class='followButton connecte followed' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
+                                                                            <span>Follow</span>
+                                                                            <img src='./assets/signeValidation.png' height='20' width='20'>
+                                                                        </button>
+                                                                    </li>";
+                                                                } else {
+                                                                    echo "<li>
+                                                                    <button class='followButton connecte' id='" . $commentaire["auteur"] . "' onclick='follow(this)'>
                                                                         <span>Follow</span>
                                                                         <img src='./assets/signeValidation.png' height='20' width='20'>
                                                                     </button>
-                                                                </li>
-                                                                <li class='datetime'>" . $commentaire["dateEtHeureFormatee"] . "</li>
+                                                                </li>";
+                                                                }
+                                                                echo "<li class='datetime'>" . $commentaire["dateEtHeureFormatee"] . "</li>
                                                             </ul>
                                                         </header>";
 
@@ -1502,10 +1906,25 @@
                                             echo "<footer>
                                                             <section class='postFooter'>
                                                                 <ul>
-                                                                    <li class='partage'>
-                                                                        <button class='shareButton' onclick='share(this)'>
-                                                                        </button>
-                                                                        <p>" . $commentaire["nombreDePartage"] . "</p>
+                                                                    <li class='partage'>";
+                                            $sql = "SELECT id
+                                                    FROM partage
+                                                    WHERE utilisateur = :nomUtilisateur 
+                                                    AND messagepartage = :idDuPost";
+
+                                            $statement = $dbh->prepare($sql);
+                                            $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                            $statement->bindParam(':idDuPost', $commentaire["signatureMessage"], PDO::PARAM_STR);
+                                            $statement->execute();
+                        
+                                            if ($statement->rowCount() > 0) {
+                                                echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                        </button>";
+                                            } else {
+                                                echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                        </button>";
+                                            }
+                                            echo                       "<p>" . $commentaire["nombreDePartage"] . "</p>
                                                                     </li>
                                                                     <li>
                                                                         <button onclick='ouvrirModif(this)'>
@@ -1543,10 +1962,25 @@
                                             echo "<footer>
                                                             <section class='postFooter'>
                                                                 <ul>
-                                                                    <li class='partage'>
-                                                                        <button class='shareButton' onclick='share(this)'>
-                                                                        </button>
-                                                                        <p>" . $commentaire["nombreDePartage"] . "</p>
+                                                                    <li class='partage'>";
+                                            $sql = "SELECT id
+                                                    FROM partage
+                                                    WHERE utilisateur = :nomUtilisateur 
+                                                    AND messagepartage = :idDuPost";
+                        
+                                            $statement = $dbh->prepare($sql);
+                                            $statement->bindParam(':nomUtilisateur', $_SESSION["utilisateur"], PDO::PARAM_STR);
+                                            $statement->bindParam(':idDuPost', $commentaire["signatureMessage"], PDO::PARAM_STR);
+                                            $statement->execute();
+                        
+                                            if ($statement->rowCount() > 0) {
+                                                echo    "<button class='shareButton connecte shared' onclick='share(this)'>
+                                                        </button>";
+                                            } else {
+                                                echo    "<button class='shareButton connecte' onclick='share(this)'>
+                                                        </button>";
+                                            }
+                                            echo                       "<p>" . $commentaire["nombreDePartage"] . "</p>
                                                                     </li>
                                                                 </ul>
                                                             </section>
@@ -1562,12 +1996,6 @@
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
                                                 <li>" . $_SESSION["utilisateur"] . "</li>
-                                                <li class='liFollow'>                            
-                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
-                                                        <span>Follow</span>
-                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
-                                                    </button>
-                                                </li>
                                                 <li class='datetime'>#</li>
                                             </ul>
                                         </header>
@@ -1578,7 +2006,7 @@
                                         </section>
                                         <footer>
                                             <section class='postFooter'>
-                                                <p>preview de votre post !</p>
+                                                <p>preview de votre post</p>
                                             </section>
                                         </footer>
                                     </article>
@@ -1603,12 +2031,6 @@
                                             <ul>
                                                 <li><img id='pfp' src='./accounts/pfp/" . $_SESSION["nom_photo_de_profil"] . "' alt='photo de profil de " . $_SESSION["utilisateur"] . "' width='30' height='30'></li>
                                                 <li>" . $_SESSION["utilisateur"] . "</li>
-                                                <li class='liFollow'>                            
-                                                    <button class='followButton connecte' id='" . $_SESSION["utilisateur"] . "' onclick='follow(this)'>
-                                                        <span>Follow</span>
-                                                        <img src='./assets/signeValidation.png' height='20' width='20'>
-                                                    </button>
-                                                </li>
                                                 <li class='datetime'>#</li>
                                             </ul>
                                         </header>
@@ -1619,7 +2041,7 @@
                                         </section>
                                         <footer>
                                             <section class='postFooter'>
-                                                <p>preview de votre post !</p>
+                                                <p>preview de votre post</p>
                                             </section>
                                         </footer>
                                     </article>
