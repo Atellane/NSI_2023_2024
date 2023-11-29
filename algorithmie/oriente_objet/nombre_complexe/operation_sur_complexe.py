@@ -48,48 +48,48 @@ if __name__ == "__main__":
 
     fonction: object = Operation_Complexe.addition_deux_complexes(premierComplexe, deuxiemeComplexe)
     fonction: complex = fonction.obtenir_forme_algebrique()
-    resultat =  Complexe(3 + 2, 2 + 3)
-    resultat = resultat.obtenir_forme_algebrique()
+    resultat: object =  Complexe(3 + 2, 2 + 3)
+    resultat: complex = resultat.obtenir_forme_algebrique()
     assert  fonction == resultat, "probleme addition_deux_complexes"
 
     fonction: object = Operation_Complexe.soustraction_deux_complexes(premierComplexe, deuxiemeComplexe)
     fonction: complex = fonction.obtenir_forme_algebrique()
-    resultat = Complexe(3 - 2, 2 - 3)
-    resultat = resultat.obtenir_forme_algebrique()
+    resultat: object = Complexe(3 - 2, 2 - 3)
+    resultat: complex = resultat.obtenir_forme_algebrique()
     assert fonction == resultat, "probleme soustraction_deux_complexes"
 
     fonction: object = Operation_Complexe.multiplication_deux_complexes(premierComplexe, deuxiemeComplexe)
     fonction: complex = fonction.obtenir_forme_algebrique()
-    resultat = Complexe(3*2 - 2*3, 3*2 + 2*3)
-    resultat = resultat.obtenir_forme_algebrique()
+    resultat: object = Complexe(3*2 - 2*3, 3*2 + 2*3)
+    resultat: complex = resultat.obtenir_forme_algebrique()
     assert fonction == resultat, "probleme multiplication_deux_complexes"
 
     fonction: object = Operation_Complexe.division_deux_complexes(premierComplexe, deuxiemeComplexe)
     fonction: complex = fonction.obtenir_forme_algebrique()
-    resultat = Complexe((3*2 + 2*3) / (2**2 + 3**2), (2 * 2 - 3 * 3) / (2**2 + 3**2))
-    resultat = resultat.obtenir_forme_algebrique()
+    resultat: object = Complexe((3*2 + 2*3) / (2**2 + 3**2), (2 * 2 - 3 * 3) / (2**2 + 3**2))
+    resultat: complex = resultat.obtenir_forme_algebrique()
     assert fonction == resultat, "probleme division_deux_complexes"
 
     fonction: object = Operation_Complexe.addition_complexe_reel(premierComplexe, reel)
     fonction: complex = fonction.obtenir_forme_algebrique()
-    resultat = Complexe(3 + 2.5, 2)
-    resultat = resultat.obtenir_forme_algebrique()
+    resultat: object = Complexe(3 + 2.5, 2)
+    resultat: complex = resultat.obtenir_forme_algebrique()
     assert fonction == resultat, "probleme addition_complexe_reel"
 
     fonction: object = Operation_Complexe.soustraction_complexe_reel(premierComplexe, reel)
     fonction: complex = fonction.obtenir_forme_algebrique()
-    resultat = Complexe(3 - 2.5, 2)
-    resultat = resultat.obtenir_forme_algebrique()
+    resultat: object = Complexe(3 - 2.5, 2)
+    resultat: complex = resultat.obtenir_forme_algebrique()
     assert fonction == resultat, "probleme soustraction_complexe_reel"
 
     fonction: object = Operation_Complexe.multiplication_complexe_reel(premierComplexe, reel)
     fonction: complex = fonction.obtenir_forme_algebrique()
-    resultat = Complexe(3*2.5, 2*2.5)
-    resultat = resultat.obtenir_forme_algebrique()
+    resultat: object = Complexe(3*2.5, 2*2.5)
+    resultat: complex = resultat.obtenir_forme_algebrique()
     assert fonction == resultat, "probleme multiplication_complexe_reel"
 
     fonction: object = Operation_Complexe.division_complexe_reel(premierComplexe, reel)
     fonction: complex = fonction.obtenir_forme_algebrique()
-    resultat = Complexe(3/2.5, 2/2.5)
-    resultat = resultat.obtenir_forme_algebrique()
+    resultat: object = Complexe(3/2.5, 2/2.5)
+    resultat: complex = resultat.obtenir_forme_algebrique()
     assert fonction == resultat, "probleme multiplication_complexe_reel"
