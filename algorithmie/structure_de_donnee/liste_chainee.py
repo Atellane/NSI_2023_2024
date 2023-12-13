@@ -66,6 +66,7 @@ class Liste():
         else:
             cellulePrecedente: object = listeDesCellules[position-1]
             cellulePrecedente.attr_suivant(None)
+            listeDesCellules.pop(-1)
     
     def est_vide(self: object) -> bool:
         """Renvoie True si la liste est vide, sinon, renvoie False"""

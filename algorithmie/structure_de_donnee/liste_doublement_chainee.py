@@ -25,7 +25,7 @@ class Cellule_Liste_Doublement_Chainee():
         return self.__valeur
     
     def __repr__(self: object) -> str:
-        return "["+str(self.__valeur)+"]->"+str(self.__suivant)
+        return str(self.__precedent)+"->["+str(self.__valeur)+"]->"+str(self.__suivant)
 
 class Liste_Doublement_Chainee():
     """Classe basique de liste chainée"""
@@ -51,28 +51,44 @@ class Liste_Doublement_Chainee():
     def ajouter(self: object, c: object, position: int = inf) -> None:
         """Ajoute la cellule c à la place position (compter à partir à 0) et à la fin si position >= nombre de cellule ou par défaut"""
         listeDesCellules: list = self.__cellules
-        if position < len(listeDesCellules) - 1:
+        if position == 0:
+            celluleSuivante = listeDesCellules[0]
+            celluleSuivante.attr_precedent(hex(id(c)))
+            c.attr_suivant(hex(id(celluleSuivante)))
+            listeDesCellules.insert(0, c)
+        elif position < len(listeDesCellules) - 1:
             cellulePrecedente = listeDesCellules[position-1]
             addresseCelluleSuivante: hex = cellulePrecedente.lire_suivant()
+            celluleSuivante: object = listeDesCellules[position]
+            celluleSuivante.attr_precedent(hex(id(c)))
             cellulePrecedente.attr_suivant(hex(id(c)))
             c.attr_suivant(addresseCelluleSuivante)
+            c.attr_precedent(hex(id(cellulePrecedente)))
             listeDesCellules.insert(position, c)
         else:
             cellulePrecedente = listeDesCellules[-1]
             cellulePrecedente.attr_suivant(hex(id(c)))
+            c.attr_precedent(hex(id(cellulePrecedente)))
             listeDesCellules.append(c)
     
     def retirer(self: object, position: int = inf) -> None:
         """Retire la cellule c à la place position (compter à partir à 0) et à la fin si position >= nombre de cellule ou par défaut"""
         listeDesCellules: list = self.__cellules
-        if position < len(listeDesCellules) - 1:
+        if position == 0:
+            celluleSuivante = listeDesCellules[position+1]
+            celluleSuivante.attr_precedent(0x0)
+            listeDesCellules.pop(0)
+        elif position < len(listeDesCellules) - 1:
             cellulePrecedente: object = listeDesCellules[position-1]
             addresseCelluleSuivante: hex = hex(id(listeDesCellules[position+1]))
+            celluleSuivante: object = listeDesCellules[position+1]
+            celluleSuivante.attr_precedent(hex(id(cellulePrecedente)))
             cellulePrecedente.attr_suivant(addresseCelluleSuivante)
             listeDesCellules.pop(position)
         else:
             cellulePrecedente: object = listeDesCellules[position-1]
             cellulePrecedente.attr_suivant(None)
+            listeDesCellules.pop(-1)
     
     def est_vide(self: object) -> bool:
         """Renvoie True si la liste est vide, sinon, renvoie False"""
