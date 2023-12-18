@@ -103,7 +103,7 @@ class Liste_Doublement_Chainee():
         emplacementElement = self.__trouver_cellule(hex(id(c)))
         return self.__cellules[emplacementElement-1]
 
-    def cherche_element(self: object, valeur) -> int:
+    def cherche_element_valeur(self: object, valeur) -> int:
         """valeur <T> (n'importe quel type)
         Renvoie position 1er élément de la liste aillant pour valeur la valeur donnée en entrer, retourne -1 si l'élément n'as pas été trouvé"""
         for i in range(len(self.__cellules)):
@@ -111,6 +111,14 @@ class Liste_Doublement_Chainee():
             if celluleActuelle.lire_valeur() == valeur:
                 return i
         return -1
+    
+    def cherche_element_index(self: object, index: int) -> object:
+        """Renvoie l'élément de la liste d'index 'index'"""
+        try:
+            return self.__cellules[index]
+        except IndexError:
+            print("l'index donné n'existe pas")
+
 
 if __name__=="__main__" :
     c1 = Cellule_Liste_Doublement_Chainee(10)
@@ -133,6 +141,8 @@ if __name__=="__main__" :
     assert lst.premier_element() == c1,"problème fonction récup 1er élément"
     assert lst.dernier_element() == c3, "probmème récupn dernier élément"
     assert lst.prochain_element(c1) == c2, "problème récupération élément suivant."
-    assert lst.cherche_element("A") == 1, "problème récupération position éléments"
-    assert lst.cherche_element(";)") == -1, "ça détecte quelque chose qui n'existe pas oskour"
+    assert lst.cherche_element_valeur("A") == 1, "problème récupération position éléments"
+    assert lst.cherche_element_valeur(";)") == -1, "ça détecte quelque chose qui n'existe pas oskour"
+    assert lst.cherche_element_index(1) == c2, "ne trouve pas l'élément en fonction de l'index"
+    assert lst.cherche_element_index(1000) == None, "trouve un élément qui n'existe pas"
     assert lst.element_precedent(c2) == c1, "problème récupération élément précédent."
