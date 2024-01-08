@@ -64,7 +64,7 @@ class Liste():
             cellulePrecedente.attr_suivant(addresseCelluleSuivante)
             listeDesCellules.pop(position)
         else:
-            cellulePrecedente: object = listeDesCellules[position-1]
+            cellulePrecedente: object = listeDesCellules[-2]
             cellulePrecedente.attr_suivant(None)
             listeDesCellules.pop(-1)
     
