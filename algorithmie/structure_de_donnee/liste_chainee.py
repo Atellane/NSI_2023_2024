@@ -8,8 +8,11 @@ class Cellule_Liste():
     def __init__(self: object, valeur) -> object: # valeur peut être de n'importe quel type
         self.__valeur = valeur
 
-    def attr_suivant(self: object, suivant) -> hex:
-        self.__suivant = hex(id(suivant))
+    def attr_suivant(self: object, suivant) -> None:
+        if isinstance(suivant, Cellule_Liste) == False:
+            self.__suivant = 0
+        else:
+            self.__suivant = hex(id(suivant))
 
     def lire_suivant(self: object): # peut retourner n'importe quel type
         return self.__suivant
@@ -46,13 +49,13 @@ class Liste():
         listeDesCellules: list = self.__cellules
         if position < len(listeDesCellules) - 1:
             cellulePrecedente = listeDesCellules[position-1]
-            addresseCelluleSuivante: hex = cellulePrecedente.lire_suivant()
-            cellulePrecedente.attr_suivant(hex(id(c)))
-            c.attr_suivant(addresseCelluleSuivante)
+            celluleSuivante: object = listeDesCellules[position]
+            cellulePrecedente.attr_suivant(c)
+            c.attr_suivant(celluleSuivante)
             listeDesCellules.insert(position, c)
         else:
             cellulePrecedente = listeDesCellules[-1]
-            cellulePrecedente.attr_suivant(hex(id(c)))
+            cellulePrecedente.attr_suivant(c)
             listeDesCellules.append(c)
     
     def retirer(self: object, position: int = inf) -> None:
@@ -60,8 +63,8 @@ class Liste():
         listeDesCellules: list = self.__cellules
         if position < len(listeDesCellules) - 1:
             cellulePrecedente: object = listeDesCellules[position-1]
-            addresseCelluleSuivante: hex = hex(id(listeDesCellules[position+1]))
-            cellulePrecedente.attr_suivant(addresseCelluleSuivante)
+            celluleSuivante: object = listeDesCellules[position+1]
+            cellulePrecedente.attr_suivant(celluleSuivante)
             listeDesCellules.pop(position)
         else:
             cellulePrecedente: object = listeDesCellules[-2]
