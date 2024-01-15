@@ -1,10 +1,13 @@
 from liste_chainee import Cellule_Liste, Liste
 
 class Pile():
-    def __init__(self: object, premier_element) -> object:
+    def __init__(self: object, premier_element = None) -> object:
         """premier_element : <T>"""
-        premier_element: object = Cellule_Liste(premier_element)
-        self.__pile = Liste(premier_element)
+        if premier_element != None:
+            premier_element: object = Cellule_Liste(premier_element)
+            self.__pile = Liste(premier_element)
+        else:
+            self.__pile = Liste()
     
     def __repr__(self: object) -> str:
         pile = self.__pile
@@ -56,6 +59,11 @@ class Pile():
         return True
 
 if __name__ == "__main__":
+    pile = Pile()
+    print(pile)
+    pile.ajouter("UwU")
+    print(pile)
+    pile.retirer()
     pile: object = Pile("bonjour,")
     print(pile)
     assert pile.obtenir_element() == "bonjour,", "oskour 1"

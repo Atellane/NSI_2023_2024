@@ -29,11 +29,12 @@ class Liste():
     __fin: hex = 0x0
     __cellules: list = []
 
-    def __init__(self: object, c: object) -> object:
-        self.__debut = hex(id(c))
-        self.__fin = self.__debut
-        cellules = self.__cellules
-        cellules.append(c)
+    def __init__(self: object, c: object = None) -> object:
+        if c != None:
+            self.__debut = hex(id(c))
+            self.__fin = self.__debut
+            cellules = self.__cellules
+            cellules.append(c)
 
     def __trouver_cellule(self: object, adresse_c: hex) -> object:
         for i in range(len(self.__cellules)):
@@ -47,29 +48,36 @@ class Liste():
     def ajouter(self: object, c: object, position: int = inf) -> None:
         """Ajoute la cellule c à la place position (compter à partir à 0) et à la fin si position >= nombre de cellule ou par défaut"""
         listeDesCellules: list = self.__cellules
-        if position < len(listeDesCellules) - 1:
-            cellulePrecedente = listeDesCellules[position-1]
-            celluleSuivante: object = listeDesCellules[position]
-            cellulePrecedente.attr_suivant(c)
-            c.attr_suivant(celluleSuivante)
-            listeDesCellules.insert(position, c)
+        if len(listeDesCellules) != 0:
+            if position < len(listeDesCellules) - 1:
+                cellulePrecedente = listeDesCellules[position-1]
+                celluleSuivante: object = listeDesCellules[position]
+                cellulePrecedente.attr_suivant(c)
+                c.attr_suivant(celluleSuivante)
+                listeDesCellules.insert(position, c)
+            else:
+                cellulePrecedente = listeDesCellules[-1]
+                cellulePrecedente.attr_suivant(c)
+                listeDesCellules.append(c)
         else:
-            cellulePrecedente = listeDesCellules[-1]
-            cellulePrecedente.attr_suivant(c)
             listeDesCellules.append(c)
     
     def retirer(self: object, position: int = inf) -> None:
         """Retire la cellule c à la place position (compter à partir à 0) et à la fin si position >= nombre de cellule ou par défaut"""
         listeDesCellules: list = self.__cellules
-        if position < len(listeDesCellules) - 1:
-            cellulePrecedente: object = listeDesCellules[position-1]
-            celluleSuivante: object = listeDesCellules[position+1]
-            cellulePrecedente.attr_suivant(celluleSuivante)
-            listeDesCellules.pop(position)
-        else:
-            cellulePrecedente: object = listeDesCellules[-2]
-            cellulePrecedente.attr_suivant(None)
-            listeDesCellules.pop(-1)
+        if len(listeDesCellules) != 0:
+            if position < len(listeDesCellules) - 1:
+                cellulePrecedente: object = listeDesCellules[position-1]
+                celluleSuivante: object = listeDesCellules[position+1]
+                cellulePrecedente.attr_suivant(celluleSuivante)
+                listeDesCellules.pop(position)
+            elif len(listeDesCellules) == 1:
+                listeDesCellules.pop(0)
+            else:
+                cellulePrecedente: object = listeDesCellules[-2]
+                cellulePrecedente.attr_suivant(None)
+                listeDesCellules.pop(-1)
+
     
     def est_vide(self: object) -> bool:
         """Renvoie True si la liste est vide, sinon, renvoie False"""
@@ -109,7 +117,7 @@ class Liste():
         try:
             return self.__cellules[index]
         except IndexError:
-            print("l'index donné n'existe pas")
+            print(f"l'index \"{index}\" donné n'existe pas")
 
 if __name__=="__main__" :
     c1 = Cellule_Liste(10)
