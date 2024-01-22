@@ -1,6 +1,6 @@
 import pydot
 
-class noeud:
+class Noeud:
     """Une classe définissant le noeud d'un arbre"""
 
     def __init__(self, valeur):
@@ -71,7 +71,7 @@ class noeud:
         return self.__valeur
 
 
-class arbre:
+class Arbre:
     """ Une classe arbre basique"""
     def __init__(self, r):
         """noeud->arbre
@@ -200,12 +200,12 @@ class arbre:
 
 
 if __name__ == "__main__":
-    a = arbre(noeud(5))
-    a.ajouter(a.Lire_racine(),noeud(10))
-    a.ajouter(a.Lire_racine(), noeud(12), position="d")
-    a.ajouter(a.Lire_racine().Lire_fg(), noeud(15), position="d")
-    a.ajouter(a.Lire_racine().Lire_fg(), noeud(20), position="g")
-    a.ajouter(a.Lire_racine().Lire_fd(), noeud(16), position="d")
+    a = Arbre(Noeud(5))
+    a.ajouter(a.Lire_racine(),Noeud(10))
+    a.ajouter(a.Lire_racine(), Noeud(12), position="d")
+    a.ajouter(a.Lire_racine().Lire_fg(), Noeud(15), position="d")
+    a.ajouter(a.Lire_racine().Lire_fg(), Noeud(20), position="g")
+    a.ajouter(a.Lire_racine().Lire_fd(), Noeud(16), position="d")
     print("père :\n",a.Lire_racine())
     print("fils :\n", a.Lire_racine().Lire_fg())
     print(a)
