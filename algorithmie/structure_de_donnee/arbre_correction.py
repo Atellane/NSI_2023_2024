@@ -102,7 +102,7 @@ class Arbre:
             n.Attr_pere(pere)
 
     def sous_arbre(self, r):
-        return arbre(r)
+        return Arbre(r)
 
     def Lire_racine(self):
         return self.__racine
