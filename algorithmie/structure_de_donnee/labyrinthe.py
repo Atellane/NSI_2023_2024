@@ -80,16 +80,7 @@ class Labyrinthe:
         sleep(0.027)  # Pause de 0.027 seconde (ajustez selon vos besoins)
 
         while sommet_courant != sortie:
-            if sommet_courant[0] != self.hauteur-1 and not ((sommet_courant[0]+1, sommet_courant[1]) in chemin_suivi):
-                sommet_courant[0] += 1
-                chemin_suivi.append(sommet_courant)
-                self.afficher_chemin_suivi_direct(chemin_suivi)
-                self.__racine.update_idletasks()
-            elif sommet_courant[1] != self.hauteur-1 and not ((sommet_courant[0], sommet_courant[1]+1) in chemin_suivi):
-                chemin_suivi[1] += 1
-                chemin_suivi.append(sommet_courant)
-                self.afficher_chemin_suivi_direct(chemin_suivi)
-                self.__racine.update_idletasks
+            pass
 
 
     def dijsktra_graphe(self: object, entree: tuple=None, sortie: tuple=None) -> None:
