@@ -35,6 +35,12 @@ class Graphe():
 				return True
 		return False
 
+	def obtenir_sommet(self: object) -> dict:
+		return self.__sommets
+
+	def nombre_de_sommet(self: object) -> int:
+		return len(self.__sommets)
+
 	def ajouter_arete(self: object, sommet_1: str, sommet_2: str, distance: float) -> None:
 		"""Permet d'ajouter une arrête entre deux sommets exitants du graphe."""
 		if sommet_1 in self.__sommets and sommet_2 in self.__sommets:
@@ -81,22 +87,19 @@ class Graphe():
 				m_adjacence[index_sommet_a].append(self.distance(liste_sommets[index_sommet_a], sommet_b))
 		return m_adjacence
 
-	def parcours_en_profondeur(self: object, sommet_depart: str) -> list:
-		"""Implémente le parcours en profondeur d'un graphe à partir d'un sommet de départ."""
-		ordre_de_visite: list = []  # Liste pour stocker l'ordre de visite des sommets
+	def parcours_en_profondeur(self: object, sommet_depart: str, deja_visite: list=[]) -> list:
+		if len(deja_visite) == (len(self.__sommets) - 1):
+			return [sommet_depart]
+		else:
+			deja_visite.append(sommet_depart)
+			ordre_de_visite = []
+			ordre_de_visite.append(sommet_depart)
+			voisins: list = list(self.voisins(sommet_depart))
+			for voisin in voisins:
+				if voisin not in deja_visite:
+					ordre_de_visite.extend(self.parcours_en_profondeur(voisin, deja_visite))
+			return ordre_de_visite
 
-		def recursif(sommet: str):
-			"""Fonction récursive pour le parcours en profondeur."""
-			ordre_de_visite.append(sommet)
-
-			for voisin in self.voisins(sommet):
-				if voisin not in ordre_de_visite:
-					recursif(voisin)
-
-		# Appel initial à la fonction de parcours en profondeur
-		recursif(sommet_depart)
-
-		return ordre_de_visite
 
 	def dijkstra(self: object, sommet_depart: str) -> dict:
 		"""Implémente l'algorithme de Dijkstra pour trouver la distance de chaque sommet à partir d'un sommet de départ."""
@@ -135,5 +138,8 @@ if __name__ == "__main__":
 	print(graph_liste_sommets)
 	graph_vide: Graphe = Graphe()
 	graph.ajouter_arete("UwU", "UwU3", 2)
+	graph.ajouter_sommet("UwU4")
+	graph.ajouter_arete("UwU2", "UwU4", 4)
 	print(graph.parcours_en_profondeur("UwU"))
 	print(graph.dijkstra("UwU"))
+	print(graph.voisins("UwU4"))
