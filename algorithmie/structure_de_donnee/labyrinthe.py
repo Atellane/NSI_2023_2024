@@ -9,51 +9,80 @@ class Labyrinthe:
     def __init__(self: object, hauteur: int, largeur: int) -> object:
         self.largeur = largeur
         self.hauteur = hauteur
-        sys.setrecursionlimit(self.hauteur*self.largeur * 100)
+        self.__coord_hauteur = 800//self.hauteur
+        self.__coord_largeur = 1880//self.largeur
+        sys.setrecursionlimit(self.hauteur * self.largeur * 10)
 
-        self.__racine: Tk = tk.Tk()
+        self.__racine: tk.Tk = tk.Tk()
         self.__grille: list = [[{"haut": True, "bas": True, "gauche": True, "droite": True} for _ in range(self.largeur)] for _ in range(self.hauteur)]
         self.__graph: Graphe = self.creer_graphe_a_partir_labyrinthe()
+        self.__canvas: Canvas = None
+        self.afficher()
+        self.__racine.mainloop()
     
     def afficher(self: object) -> None:
         """Crée la grille de base et les boutons nécessaires à la création d'un labyrinthe et à sa résolution."""
         for _, children in self.__racine.children.items():
             children.pack_forget()
 
-        self.__canvas: Canvas = tk.Canvas(self.__racine, width=self.largeur*20, height=self.hauteur*20)
+        self.__canvas = tk.Canvas(self.__racine, width=1880, height=800)
         self.__canvas.pack()
 
         for i in range(self.hauteur):
             for j in range(self.largeur):
-                x1, y1 = j * 20, i * 20
-                x2, y2 = x1 + 20, y1 + 20
-                cellule = self.__grille[i][j]
+                nom_sommet = (i, j)
+                voisins = list(self.__graph.voisins(nom_sommet))
 
-                # Dessiner le mur du haut s'il est présent
-                if cellule["haut"]:
-                    self.__canvas.create_line(x1, y1, x2, y1, width=2)
+                if (i - 1, j) not in voisins:
+                    self.__canvas.create_line(j * self.__coord_largeur, i * self.__coord_hauteur, (j + 1) * self.__coord_largeur, i * self.__coord_hauteur, fill="black", width=2)
+                    self.__racine.update_idletasks()
 
-                # Dessiner le mur de gauche s'il est présent
-                if cellule["gauche"]:
-                    self.__canvas.create_line(x1, y1, x1, y2, width=2)
+                if (i + 1, j) not in voisins:
+                    self.__canvas.create_line(j * self.__coord_largeur, (i + 1) * self.__coord_hauteur, (j + 1) * self.__coord_largeur, (i + 1) * self.__coord_hauteur, fill="black", width=2)
+                    self.__racine.update_idletasks()
 
-                # # Dessiner le mur de droite s'il est présent
-                # if j + 1 < self.largeur and self.__grille[i][j + 1]["gauche"]:
-                #     self.__canvas.create_line(x2, y1, x2, y2, width=2)
+                if (i, j - 1) not in voisins:
+                    self.__canvas.create_line(j * self.__coord_largeur, i * self.__coord_hauteur, j * self.__coord_largeur, (i + 1) * self.__coord_hauteur, fill="black", width=2)
+                    self.__racine.update_idletasks()
 
-                # # Dessiner le mur du bas s'il est présent
-                # if i + 1 < self.hauteur and self.__grille[i + 1][j]["haut"]:
-                #     self.__canvas.create_line(x1, y2, x2, y2, width=2)
-
+                if (i, j + 1) not in voisins:
+                    self.__canvas.create_line((j + 1) * self.__coord_largeur, i * self.__coord_hauteur, (j + 1) * self.__coord_largeur, (i + 1) * self.__coord_hauteur, fill="black", width=2)
+                    self.__racine.update_idletasks()
 
         bouton_effacer: Button = tk.Button(self.__racine, text="Effacer le chemin suivi.", command=self.suppr_chemin_suivi)
         bouton_effacer.pack(side=tk.BOTTOM)
-        bouton_dijsktra: Button = tk.Button(self.__racine, text="dijkstra", command=self.dijsktra_graphe)
+        bouton_dijsktra: Button = tk.Button(self.__racine, text="Dijkstra", command=self.dijsktra_graphe)
         bouton_dijsktra.pack(side=tk.BOTTOM)
-        bouton_main_a_droite: Button = tk.Button(self.__racine, text="main à droite", command=self.main_a_droite)
+        bouton_main_a_droite: Button = tk.Button(self.__racine, text="Main à droite", command=self.main_a_droite)
         bouton_main_a_droite.pack(side=tk.BOTTOM)
-        bouton_gen_labyrinthe: Button = tk.Button(self.__racine, text="recursion", command=self.__parcours_en_profondeur)
+        bouton_gen_labyrinthe: Button = tk.Button(self.__racine, text="Récursion", command=self.__parcours_en_profondeur)
         bouton_gen_labyrinthe.pack(side=tk.BOTTOM)
+        self.__bouton_largeur: Scale = tk.Scale(self.__racine, from_=40, to=141, orient=tk.HORIZONTAL, showvalue=0, command=self.__modif_label_largeur)
+        self.__bouton_largeur.bind("<ButtonRelease>", self.__modifier_largeur)
+        self.__bouton_largeur.set(self.largeur)
+        self.__bouton_largeur.pack(side=tk.BOTTOM)
+        self.__label_largeur: Label = tk.Label(self.__racine, fg="black", width=20, text=f"largeur : {self.largeur}")
+        self.__label_largeur.pack(side=tk.BOTTOM)
+        self.__bouton_hauteur: Scale = tk.Scale(self.__racine, from_=23, to=60, orient=tk.HORIZONTAL, showvalue=0, command=self.__modif_label_hauteur)
+        self.__bouton_hauteur.bind("<ButtonRelease>", self.__modifier_hauteur)
+        self.__bouton_hauteur.set(self.hauteur)
+        self.__bouton_hauteur.pack(side=tk.BOTTOM)
+        self.__label_hauteur: Label = tk.Label(self.__racine, fg="black", width=20, text=f"hauteur : {self.hauteur}")
+        self.__label_hauteur.pack(side=tk.BOTTOM)
+
+    def __modif_label_largeur(self: object, valeur: int) -> None:
+        self.__label_largeur.config(text=f"largeur : {valeur}")
+    
+    def __modifier_largeur(self: object, event: object) -> None:
+        self.largeur = self.__bouton_largeur.get()
+        self.__coord_largeur = 1880//self.largeur
+
+    def __modif_label_hauteur(self: object, valeur: int) -> None:
+        self.__label_hauteur.config(text=f"hauteur : {valeur}")
+
+    def __modifier_hauteur(self: object, object: object) -> None:
+        self.hauteur = self.__bouton_hauteur.get()
+        self.__coord_hauteur = 800//self.hauteur
 
     def creer_graphe_a_partir_labyrinthe(self: object, premier_appel: bool=True) -> Graphe:
         """Crée un graphe à partir de l'objet Labyrinthe."""
@@ -77,7 +106,7 @@ class Labyrinthe:
                     if j != self.largeur - 1 and j < self.largeur - 1:
                         graph.ajouter_sommet((i, j+1))
                         graph.ajouter_arete(nom_sommet, (i, j+1), 1)
-            print(graph)
+
         else:
             for i in range(self.hauteur):
                 for j in range(self.largeur):
@@ -96,7 +125,6 @@ class Labyrinthe:
                     if not self.__grille[i][j]["gauche"] and j != self.largeur - 1 and j < self.largeur - 1:
                         graph.ajouter_sommet((i, j+1))
                         graph.ajouter_arete(nom_sommet, (i, j+1), 1)
-            print(graph)
 
         return graph
 
@@ -107,10 +135,10 @@ class Labyrinthe:
             entree = (0, 0)
         if sortie == None:
             sortie = (self.hauteur - randint(1, self.hauteur-1), self.largeur - randint(1, self.largeur-1))
-        self.__canvas.create_rectangle(entree[1]*20, entree[0]*20, entree[1]*20 + 20, entree[0]*20 + 20, fill="blue", outline="", tags="entree")
-        self.__canvas.create_rectangle(sortie[1]*20, sortie[0]*20, sortie[1]*20 + 20, sortie[0]*20 + 20, fill="red", outline="", tags="sortie")
+        self.__canvas.create_rectangle(entree[1]*self.__coord_largeur, entree[0]*self.__coord_hauteur, entree[1]*self.__coord_largeur + self.__coord_largeur, entree[0]*self.__coord_hauteur + self.__coord_hauteur, fill="blue", outline="", tags="entree")
+        self.__canvas.create_rectangle(sortie[1]*self.__coord_largeur, sortie[0]*self.__coord_hauteur, sortie[1]*self.__coord_largeur + self.__coord_largeur, sortie[0]*self.__coord_hauteur + self.__coord_hauteur, fill="red", outline="", tags="sortie")
         self.__racine.update_idletasks()
-        sleep(1)
+        # sleep(0.00002)
 
         chemin_suivi: list = [entree]
         sommet_courant: tuple = entree
@@ -125,15 +153,15 @@ class Labyrinthe:
                 stack.append(sommet_courant)
                 sommet_courant = voisin_suivant
                 chemin_suivi.append(sommet_courant)
-                self.__canvas.create_rectangle(sommet_courant[1]*20, sommet_courant[0]*20, sommet_courant[1]*20 + 20, sommet_courant[0]*20 + 20, fill="green", outline="", tags="chemin_suivi")
+                self.__canvas.create_rectangle(sommet_courant[1]*self.__coord_largeur, sommet_courant[0]*self.__coord_hauteur, sommet_courant[1]*self.__coord_largeur + self.__coord_largeur, sommet_courant[0]*self.__coord_hauteur + self.__coord_hauteur, fill="green", outline="", tags="chemin_suivi")
                 self.__racine.update_idletasks()
-                sleep(0.027)
+                # sleep(0.027)
             elif stack:
                 sommet_courant = stack.pop()
                 chemin_suivi.append(sommet_courant)
-                self.__canvas.create_rectangle(sommet_courant[1]*20, sommet_courant[0]*20, sommet_courant[1]*20 + 20, sommet_courant[0]*20 + 20, fill="green", outline="", tags="chemin_suivi")
+                self.__canvas.create_rectangle(sommet_courant[1]*self.__coord_largeur, sommet_courant[0]*self.__coord_hauteur, sommet_courant[1]*self.__coord_largeur + self.__coord_largeur, sommet_courant[0]*self.__coord_hauteur + self.__coord_hauteur, fill="green", outline="", tags="chemin_suivi")
                 self.__racine.update_idletasks()
-                sleep(0.027)
+                # sleep(0.027)
             else:
                 break
 
@@ -145,24 +173,24 @@ class Labyrinthe:
         if sortie == None:
             sortie = (self.hauteur - randint(1, self.hauteur-2), self.largeur - randint(1, self.largeur-2))
             # sortie = (self.hauteur - 1, self.largeur - 1)
-        self.__canvas.create_rectangle(entree[1]*20, entree[0]*20, entree[1]*20 + 20, entree[0]*20 + 20, fill="blue", outline="", tags="entree")
-        self.__canvas.create_rectangle(sortie[1]*20, sortie[0]*20, sortie[1]*20 + 20, sortie[0]*20 + 20, fill="red", outline="", tags="sortie")
+        self.__canvas.create_rectangle(entree[1]*self.__coord_largeur, entree[0]*self.__coord_hauteur, entree[1]*self.__coord_largeur + self.__coord_largeur, entree[0]*self.__coord_hauteur + self.__coord_hauteur, fill="blue", outline="", tags="entree")
+        self.__canvas.create_rectangle(sortie[1]*self.__coord_largeur, sortie[0]*self.__coord_hauteur, sortie[1]*self.__coord_largeur + self.__coord_largeur, sortie[0]*self.__coord_hauteur + self.__coord_hauteur, fill="red", outline="", tags="sortie")
         self.__racine.update_idletasks()
         distances = self.__graph.dijkstra(sortie)
         chemin_suivi: list = [entree]
         sommet_courant: tuple = entree
 
         # Affichez le chemin suivi après chaque itération avec une pause
-        self.__canvas.create_rectangle(sommet_courant[1]*20, sommet_courant[0]*20, sommet_courant[1]*20 + 20, sommet_courant[0]*20 + 20, fill="green", outline="", tags="chemin_suivi")
+        self.__canvas.create_rectangle(sommet_courant[1]*self.__coord_largeur, sommet_courant[0]*self.__coord_hauteur, sommet_courant[1]*self.__coord_largeur + self.__coord_largeur, sommet_courant[0]*self.__coord_hauteur + self.__coord_hauteur, fill="green", outline="", tags="chemin_suivi")
         self.__racine.update_idletasks()
         # sleep(0.027)  # Pause de 0.027 seconde (ajustez selon vos besoins)
 
         while distances[sommet_courant][1] != None:
             sommet_courant = distances[sommet_courant][1]
             chemin_suivi.append(sommet_courant)
-            self.__canvas.create_rectangle(sommet_courant[1]*20, sommet_courant[0]*20, sommet_courant[1]*20 + 20, sommet_courant[0]*20 + 20, fill="green", outline="", tags="chemin_suivi")
+            self.__canvas.create_rectangle(sommet_courant[1]*self.__coord_largeur, sommet_courant[0]*self.__coord_hauteur, sommet_courant[1]*self.__coord_largeur + self.__coord_largeur, sommet_courant[0]*self.__coord_hauteur + self.__coord_hauteur, fill="green", outline="", tags="chemin_suivi")
             self.__racine.update_idletasks()
-            # sleep(0.027)
+            # sleep(1)
 
     def suppr_chemin_suivi(self: object) -> None:
         """Supprime la représentation du chemin parcouru."""
@@ -189,12 +217,14 @@ class Labyrinthe:
                 self.__grille[i_suivante][j_suivante]["droite"] = False
 
     def __parcours_en_profondeur(self: object) -> None:
+        """Génère récursivement un nouveau labyrinthe, certaine partie générées (généralement pas pkus d'une ou deux cases) peuvent être totalement 
+        innaccessible, si c'est le cas, djikstra n'ira pas au delà de la case départ et la main droite s'arrêtera après avoir remplis toutes les parties
+        accessibles du labyrinthe."""
         deja_visite = []
         self.__grille = [[{"haut": True, "bas": True, "gauche": True, "droite": True} for _ in range(self.largeur)] for _ in range(self.hauteur)]
         cellule_depart = (choice(range(self.hauteur)), choice(range(self.largeur)))
         self.__graph = self.creer_graphe_a_partir_labyrinthe()    
         def parcours_en_profondeur(sommet_depart: str=None) -> list:
-            print("UwU")
             if len(deja_visite) == (self.__graph.nombre_de_sommet() - 1):
                 deja_visite.append(sommet_depart)
             else:
@@ -210,15 +240,8 @@ class Labyrinthe:
             self.enlever_mur(deja_visite[coordonnee-1], deja_visite[coordonnee])
 
         self.__graph = self.creer_graphe_a_partir_labyrinthe(False)
-        print(self.__graph)
         self.afficher()
 
-    def mainloop(self: object) -> None:
-        """Boucle principale, permet de lancer l'affichage de tout le travail exécuté auparavant. À mettre en fin de fichier."""
-        self.__racine.mainloop()
-
 if __name__ == "__main__":
-    labyrinthe = Labyrinthe(40, 94)
-    # labyrinthe = Labyrinthe(20, 50)
-    labyrinthe.afficher()
-    labyrinthe.mainloop()
+    # labyrinthe = Labyrinthe(40, 94)
+    labyrinthe = Labyrinthe(60,141)
