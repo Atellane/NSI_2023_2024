@@ -55,8 +55,10 @@ class Labyrinthe:
         bouton_dijsktra.pack(side=tk.BOTTOM)
         bouton_main_a_droite: Button = tk.Button(self.__racine, text="Main à droite", command=self.__main_a_droite)
         bouton_main_a_droite.pack(side=tk.BOTTOM)
-        bouton_gen_labyrinthe: Button = tk.Button(self.__racine, text="Récursion", command=self.__parcours_en_profondeur)
-        bouton_gen_labyrinthe.pack(side=tk.BOTTOM)
+        bouton_gen_labyrinthe_recur: Button = tk.Button(self.__racine, text="Récursion", command=self.__parcours_en_profondeur)
+        bouton_gen_labyrinthe_recur.pack(side=tk.BOTTOM)
+        bouton_gen_labyrinthe_kruskal: Button = tk.Button(self.__racine, text="Kruskal", command=self.__kruskal)
+        bouton_gen_labyrinthe_kruskal.pack(side=tk.LEFT) # plus de place en bas
         self.__bouton_largeur: Scale = tk.Scale(self.__racine, from_=40, to=141, orient=tk.HORIZONTAL, showvalue=0, command=self.__modif_label_largeur)
         self.__bouton_largeur.bind("<ButtonRelease>", self.__modifier_largeur)
         self.__bouton_largeur.set(self.__largeur)
@@ -239,6 +241,40 @@ class Labyrinthe:
         for coordonnee in range(1, len(deja_visite)):
             self.__enlever_mur(deja_visite[coordonnee-1], deja_visite[coordonnee])
 
+        self.__graph = self.__creer_graphe_a_partir_labyrinthe(False)
+        self.__afficher()
+
+    def __kruskal(self: object) -> None:
+        """génère un nouveau labyrinthe à l'aide de l'algorithme de kruskal"""
+        self.__grille = [[{"haut": True, "bas": True, "gauche": True, "droite": True} for _ in range(self.__largeur)] for _ in range(self.__hauteur)]
+        # Initialisez les identifiants uniques pour chaque cellule
+        identifiants = [[i + j * self.__largeur for i in range(self.__largeur)] for j in range(self.__hauteur)]
+
+        # Créez une liste de tous les murs avec leurs coordonnées et mélangez-la
+        murs = []
+        for i in range(self.__hauteur):
+            for j in range(self.__largeur):
+                if i > 0:
+                    murs.append(((i, j), (i - 1, j)))  # Mur du haut
+                if j > 0:
+                    murs.append(((i, j), (i, j - 1)))  # Mur de gauche
+
+        shuffle(murs)
+
+        for mur in murs:
+            cellule1, cellule2 = mur
+            i1, j1 = cellule1
+            i2, j2 = cellule2
+
+            # Vérifiez si les cellules ont des identifiants différents
+            if identifiants[i1][j1] != identifiants[i2][j2]:
+                # Cassez le mur et fusionnez les identifiants
+                self.__enlever_mur(cellule1, cellule2)
+                id1, id2 = identifiants[i1][j1], identifiants[i2][j2]
+                for i in range(self.__hauteur):
+                    for j in range(self.__largeur):
+                        if identifiants[i][j] == id2:
+                            identifiants[i][j] = id1
         self.__graph = self.__creer_graphe_a_partir_labyrinthe(False)
         self.__afficher()
 
