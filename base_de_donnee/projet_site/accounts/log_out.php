@@ -12,7 +12,7 @@
         <nav>
             <ul id="topBar">
                 <li id="acceuil">
-                    <a href="../page_d_acceuil.php">
+                    <a href="../index.php">
                         <svg version="1.1" id="homeIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 460.298 460.297" xml:space="preserve">
                             <path d="M230.149,120.939L65.986,256.274c0,0.191-0.048,0.472-0.144,0.855c-0.094,0.38-0.144,0.656-0.144,0.852v137.041
                             c0,4.948,1.809,9.236,5.426,12.847c3.616,3.613,7.898,5.431,12.847,5.431h109.63V303.664h73.097v109.64h109.629
@@ -27,8 +27,8 @@
                             c1.522-1.906,2.189-4.145,1.991-6.716C460.068,229.007,459.021,226.961,457.122,225.438z"></path>
                         </svg>
                     </a>
-                    <a href="../page_d_acceuil.php#mostRecentPost">Post les plus récents</a>
-                    <a href="../page_d_acceuil.php#postRankedByNumberOfShare">Post les plus partagés</a>
+                    <a href="../index.php#mostRecentPost">Post les plus récents</a>
+                    <a href="../index.php#postRankedByNumberOfShare">Post les plus partagés</a>
                                         
                 </li>
                 <li id="connexion">

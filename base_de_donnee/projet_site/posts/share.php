@@ -3,7 +3,7 @@ try {
     session_start();
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
-    $dbh = new PDO('mysql:host=localhost;port=50765;dbname=eouzan', 'azure', '6#vWHD_$');
+    $dbh = new PDO('mysql:host=localhost;port=50929;dbname=eouzan', 'azure', '6#vWHD_$');
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $postId = $_POST["post"];
