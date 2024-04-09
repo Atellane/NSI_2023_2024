@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+}
+body #topBar {
+  border-bottom: 5px solid rgb(122, 0, 204);
+  background-color: #222;
+  list-style-type: none;
+  margin: 0;
+  display: flex;
+  padding: 0.75%;
+  position: relative;
+  justify-content: space-between;
+  align-items: center; /* Centrer verticalement */
+}
+body #topBar li a {
+  text-decoration: none;
+  color: #cacaca;
+}
+body #topBar li a:hover {
+  color: white;
+}
+body #topBar #acceuil {
+  margin: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+body #topBar #acceuil a {
+  margin-right: 1em;
+}
+body #topBar #acceuil #homeIcon {
+  width: 2.5em;
+  height: 2.5em;
+  margin: 0 auto;
+  display: block;
+  fill: #cacaca;
+}
+body #topBar #acceuil #homeIcon:hover {
+  fill: white;
+}/*# sourceMappingURL=header.css.map */
