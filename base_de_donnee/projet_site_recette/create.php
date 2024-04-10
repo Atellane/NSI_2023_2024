@@ -15,7 +15,7 @@
                 idLivre INT PRIMARY KEY NOT NULL,
                 titre VARCHAR(255) NOT NULL,
                 auteur CHAR(30) NOT NULL,
-                dateDePublication DATETIME NOT NULL
+                dateDePublication DATE NOT NULL
             )';
 
             $dbh->exec($livres);

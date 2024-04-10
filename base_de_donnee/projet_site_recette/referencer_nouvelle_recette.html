@@ -3,9 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="composant_css/form.css">
         <link rel="stylesheet" href="composant_css/header.css">
-        <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" href="referencer_nouvelle_recette.css">
+        <script type="text/javascript" src="form_referencement.js"></script>
         <title>Acceuil</title>
     </head>
     <body>
@@ -35,36 +35,33 @@
             </nav>
         </header>
         <main>
-            <section>
-                <h1>Rechercher une recette :</h1>
-                <form action="rechercher.php" method='get'>
-                    <textarea name="searchBar" id="searchBar" placeholder="Entrez votre recherche..."></textarea>
-                    <button type="submit">Rechercher</button>
-                </form>
-            </section>
-            <section>
-                <h1>Les 10 dernières recettes :</h1>
-                <?php
-                try {
-                    $dbh = new PDO('mysql:host=localhost;port=50929;dbname=eouzan', 'azure', '6#vWHD_$');
-                    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-                    $nomRecettes = "SELECT idRecette, nom FROM recettes
-                                    ORDER BY nom ASC
-                                    LIMIT 10";
-                    $requette = $dbh->query($nomRecettes);
-                    foreach ($requette->fetchAll(PDO::FETCH_ASSOC) as $resultat) {
-                        echo "<ul>";
-                        echo "  <li>
-                                    <a href=recettes.php?recette=" . $row["idRecette"] . ">" . $row["nom"] . "</a>
-                                </li>";
-                        echo "</ul>";
-                    }
-                } catch (PDOException $e) {
-                    die("Erreur !: " . $e->getMessage());
-                }
-                ?>
-            </section>
+            <form action="referencement.php" method="get">
+                <label for="estDansUnLivre">Votre recette est-elle dans un livre de recette ?</label>
+                <select name="estDansUnLivre" id="estDansUnLivre" onchange="afficherOuMasquer(this);" required>
+                    <option value="" default>Sélectionner une option...</option>
+                    <option value="oui">oui</option>
+                    <option value="non">non</option>
+                </select>
+                <label for="titre" class="livre">Titre du livre:</label>
+                <input type="text" name="titre" id="titre" class="livre" />
+                <label for="auteur" class="livre">Auteur :</label>
+                <input type="text" name="auteur" id="auteur" class="livre" />
+                <label for="dateDePublication" class="livre">Date de publication :</label>
+                <input type="date" name="dateDePublication" id="dateDePublication" class="livre" />
+                <label for="numeroDePage" class="livre">N° de la page où se trouve la recette :</label>
+                <input type="number" name="numeroDePage" id="numeroDePage" class="livre" />
+                <label for="nom">Nom de la recette :</label>
+                <input type="text" name="nom" id="nom" />
+                <label for="nomDuChef">Nom du chef possédant la recette :</label>
+                <input type="text" name="nomDuChef" id="nomDuChef" />
+                <label for="tempsDePreparation">Temps de préparation :</label>
+                <input type="number" name="tempsDePreparation" id="tempsDePreparation" />
+                <label for="tempsDeCuisson">Temps de cuisson :</label>
+                <input type="number" name="tempsDeCuisson" id="tempsDeCuisson" />
+                <label for="ingredients">Ingrédients :</label>
+                <textarea name="ingredients" id="ingredients" placeholder="Entrez la liste des ingrédients..."></textarea>
+                <button type="submit" id="submitInput">Référencer</button>
+            </form>
         </main>
     </body>
 </html>

@@ -3,9 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="composant_css/form.css">
         <link rel="stylesheet" href="composant_css/header.css">
-        <link rel="stylesheet" href="index.css">
         <title>Acceuil</title>
     </head>
     <body>
@@ -35,36 +33,49 @@
             </nav>
         </header>
         <main>
-            <section>
-                <h1>Rechercher une recette :</h1>
-                <form action="rechercher.php" method='get'>
-                    <textarea name="searchBar" id="searchBar" placeholder="Entrez votre recherche..."></textarea>
-                    <button type="submit">Rechercher</button>
-                </form>
-            </section>
-            <section>
-                <h1>Les 10 dernières recettes :</h1>
-                <?php
-                try {
-                    $dbh = new PDO('mysql:host=localhost;port=50929;dbname=eouzan', 'azure', '6#vWHD_$');
-                    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            <?php
+            try {
+                $dbh = new PDO('mysql:host=localhost;port=50929;dbname=eouzan', 'azure', '6#vWHD_$');
+                $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                    $nomRecettes = "SELECT idRecette, nom FROM recettes
-                                    ORDER BY nom ASC
-                                    LIMIT 10";
-                    $requette = $dbh->query($nomRecettes);
-                    foreach ($requette->fetchAll(PDO::FETCH_ASSOC) as $resultat) {
-                        echo "<ul>";
-                        echo "  <li>
-                                    <a href=recettes.php?recette=" . $row["idRecette"] . ">" . $row["nom"] . "</a>
-                                </li>";
-                        echo "</ul>";
-                    }
-                } catch (PDOException $e) {
-                    die("Erreur !: " . $e->getMessage());
+                $idRecette = $_GET["recette"];
+                
+                $sql = "SELECT livre, numeroDePage, nom, nomDuChef, tempsDePreparation, tempsDeCuisson, ingredients FROM recettes
+                        WHERE idRecette = :recette";
+                
+                $requete = $dbh->prepare($sql);
+                $requete->bindParam(":recette", $idRecette, PDO::PARAM_STR_CHAR);
+                $requete->execute();
+                
+                $recette = $requete->fetch(PDO::FETCH_ASSOC);
+                
+                echo "<h1>" . $recette["nom"] . "</h1>";
+                echo "<ul>";
+                if (!is_null($recette["livre"])) {
+                    $idLivre = $recette["livre"];
+                    
+                    $sql = "SELECT livres.titre, livres.auteur, livres.dateDePublication FROM livres
+                            WHERE idLivre = :livre";
+
+                    $requete = $dbh->prepare($sql);
+                    $requete->bindParam(":livre", $idLivre, PDO::PARAM_INT);
+                    $requete->execute();
+
+                    $livre = $requete->fetch(PDO::FETCH_ASSOC);
+                    echo "<li>titre du livre contenant la recette : " . $livre["titre"] . "</li>
+                    <li>auteur : " . $livre["auteur"] . "</li>
+                    <li>date de publication du livre : " . $livre["dateDePublication"] . "</li>
+                    <li>numero de page : " . $recette["numeroDePage"] . "</li>";
                 }
-                ?>
-            </section>
+                echo "  <li>nom du chef possédant la recette : " . $recette["nomDuChef"] ."</li>
+                    <li>temps de préparation : " . $recette["tempsDePreparation"] . "</li>
+                    <li>tempsDeCuisson : " . $recette["tempsDeCuisson"] . "</li>
+                    <li>ingredients : " . $recette["ingredients"] . "</li>";
+                echo "</ul>";
+            } catch (PDOException $e) {
+                die("Erreur !: " . $e->getMessage());
+            }
+            ?>
         </main>
     </body>
 </html>
