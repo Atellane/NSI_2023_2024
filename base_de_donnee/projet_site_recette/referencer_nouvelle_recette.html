@@ -6,14 +6,14 @@
         <link rel="stylesheet" href="composant_css/header.css">
         <link rel="stylesheet" href="referencer_nouvelle_recette.css">
         <script type="text/javascript" src="form_referencement.js"></script>
-        <title>Acceuil</title>
+        <title>Référencer une nouvelle recette</title>
     </head>
     <body>
         <header>
             <nav>
                 <ul id="topBar">
                     <li id="acceuil">
-                        <a href="./index.php">
+                        <a href="./">
                             <svg version="1.1" id="homeIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 460.298 460.297" xml:space="preserve" >
                                 <path d="M230.149,120.939L65.986,256.274c0,0.191-0.048,0.472-0.144,0.855c-0.094,0.38-0.144,0.656-0.144,0.852v137.041
@@ -51,15 +51,15 @@
                 <label for="numeroDePage" class="livre">N° de la page où se trouve la recette :</label>
                 <input type="number" name="numeroDePage" id="numeroDePage" class="livre" />
                 <label for="nom">Nom de la recette :</label>
-                <input type="text" name="nom" id="nom" />
+                <input type="text" name="nom" id="nom" required />
                 <label for="nomDuChef">Nom du chef possédant la recette :</label>
-                <input type="text" name="nomDuChef" id="nomDuChef" />
-                <label for="tempsDePreparation">Temps de préparation :</label>
-                <input type="number" name="tempsDePreparation" id="tempsDePreparation" />
-                <label for="tempsDeCuisson">Temps de cuisson :</label>
-                <input type="number" name="tempsDeCuisson" id="tempsDeCuisson" />
+                <input type="text" name="nomDuChef" id="nomDuChef" required />
+                <label for="tempsDePreparation">Temps de préparation (min) :</label>
+                <input type="number" name="tempsDePreparation" id="tempsDePreparation" required />
+                <label for="tempsDeCuisson">Temps de cuisson (min) :</label>
+                <input type="number" name="tempsDeCuisson" id="tempsDeCuisson" required />
                 <label for="ingredients">Ingrédients :</label>
-                <textarea name="ingredients" id="ingredients" placeholder="Entrez la liste des ingrédients..."></textarea>
+                <textarea name="ingredients" id="ingredients" placeholder="Entrez la liste des ingrédients..." required></textarea>
                 <button type="submit" id="submitInput">Référencer</button>
             </form>
         </main>

@@ -13,7 +13,7 @@
             <nav>
                 <ul id="topBar">
                     <li id="acceuil">
-                        <a href="./index.php">
+                        <a href="./">
                             <svg version="1.1" id="homeIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 460.298 460.297" xml:space="preserve" >
                                 <path d="M230.149,120.939L65.986,256.274c0,0.191-0.048,0.472-0.144,0.855c-0.094,0.38-0.144,0.656-0.144,0.852v137.041
@@ -56,7 +56,7 @@
                     foreach ($requette->fetchAll(PDO::FETCH_ASSOC) as $resultat) {
                         echo "<ul>";
                         echo "  <li>
-                                    <a href=recettes.php?recette=" . $row["idRecette"] . ">" . $row["nom"] . "</a>
+                                    <a href=recettes.php?recette=" . $resultat["idRecette"] . ">" . $resultat["nom"] . "</a>
                                 </li>";
                         echo "</ul>";
                     }

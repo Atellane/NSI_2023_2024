@@ -4,14 +4,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="composant_css/header.css">
-        <title>Acceuil</title>
+        <title>Recette</title>
     </head>
     <body>
         <header>
             <nav>
                 <ul id="topBar">
                     <li id="acceuil">
-                        <a href="./index.php">
+                        <a href="./">
                             <svg version="1.1" id="homeIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 460.298 460.297" xml:space="preserve" >
                                 <path d="M230.149,120.939L65.986,256.274c0,0.191-0.048,0.472-0.144,0.855c-0.094,0.38-0.144,0.656-0.144,0.852v137.041
@@ -44,7 +44,7 @@
                         WHERE idRecette = :recette";
                 
                 $requete = $dbh->prepare($sql);
-                $requete->bindParam(":recette", $idRecette, PDO::PARAM_STR_CHAR);
+                $requete->bindParam(":recette", $idRecette, PDO::PARAM_STR);
                 $requete->execute();
                 
                 $recette = $requete->fetch(PDO::FETCH_ASSOC);
@@ -54,8 +54,8 @@
                 if (!is_null($recette["livre"])) {
                     $idLivre = $recette["livre"];
                     
-                    $sql = "SELECT livres.titre, livres.auteur, livres.dateDePublication FROM livres
-                            WHERE idLivre = :livre";
+                    $sql = "SELECT titre, auteur, DATE_FORMAT(dateDePublication, '%d/%m/%Y') AS dateDePublication FROM livres
+                    WHERE idLivre = :livre";
 
                     $requete = $dbh->prepare($sql);
                     $requete->bindParam(":livre", $idLivre, PDO::PARAM_INT);
@@ -68,8 +68,8 @@
                     <li>numero de page : " . $recette["numeroDePage"] . "</li>";
                 }
                 echo "  <li>nom du chef possédant la recette : " . $recette["nomDuChef"] ."</li>
-                    <li>temps de préparation : " . $recette["tempsDePreparation"] . "</li>
-                    <li>tempsDeCuisson : " . $recette["tempsDeCuisson"] . "</li>
+                    <li>temps de préparation : " . $recette["tempsDePreparation"] . " min</li>
+                    <li>tempsDeCuisson : " . $recette["tempsDeCuisson"] . " min</li>
                     <li>ingredients : " . $recette["ingredients"] . "</li>";
                 echo "</ul>";
             } catch (PDOException $e) {
