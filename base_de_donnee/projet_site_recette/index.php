@@ -38,7 +38,15 @@
             <section>
                 <h1>Rechercher une recette :</h1>
                 <form action="rechercher.php" method='get'>
-                    <textarea name="searchBar" id="searchBar" placeholder="Entrez votre recherche..."></textarea>
+                    <label for="typeOfSearch">À partir de quel critère souhaitez vous rechercher la recette :</label>
+                    <select name="typeOfSearch" id="typeOfSearch" required>
+                        <option value="" default>Sélectionnez un critère...</option>
+                        <option value="nom">le nom de la recette</option>
+                        <option value="ingredients">la totalité ou une partie des ingrédients</option>
+                        <option value="tempsPreparation">le temps de préparation maximum</option>
+                        <option value="tempsCuisson">le temps de cuisson maximum</option>
+                    </select>
+                    <textarea name="searchBar" id="searchBar" placeholder="Entrez votre recherche..." required></textarea>
                     <button type="submit">Rechercher</button>
                 </form>
             </section>
