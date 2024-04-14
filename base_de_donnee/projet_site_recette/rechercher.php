@@ -72,9 +72,10 @@
                     $requete = $dbh->prepare($sql);
 
                     $requete->bindParam(":tempsDePreparation", $tempsDePreparation, PDO::PARAM_INT);
+                    
+                    $requete->execute();
                 } elseif ($critereDeRecherche === "tempsCuisson") {
                     $tempsDeCuisson = intval($recherche);
-
                     
                     $sql = "SELECT idRecette, nom FROM recettes
                             WHERE tempsDeCuisson <= :tempsDeCuisson";
@@ -82,6 +83,8 @@
                     $requete = $dbh->prepare($sql);
 
                     $requete->bindParam(":tempsDeCuisson", $tempsDeCuisson, PDO::PARAM_INT);
+
+                    $requete->execute();
                 }
 
                 foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $resultat) {
