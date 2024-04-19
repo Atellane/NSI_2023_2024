@@ -1,3 +1,4 @@
+# TODO développer dans la fonction play un moyen de prendre en compte le cas où il ne reste plus de carte à la personne, comment prévenir l'ordi principal qu'on a gagné
 import os, sys, pygame
 from random import shuffle
 from pygame_textinput import TextInputVisualizer
@@ -26,15 +27,21 @@ def draw_text(text: str, font: pygame.font.Font, color: tuple, x: int, y: int) -
 
 def wait_for_someone_to_initialize_the_game() -> None:
     connection: tuple = get_info()
-    deck, my_hand = tuple(connection[1].rsplit(", "))
-    my_hand: list = my_hand.rsplit(" ")
-    deck = get_cards_from_their_names([deck])[0]
+    my_hand: list = connection[1].rsplit(" ")
     for index_card, card in enumerate(my_hand):
         my_hand[index_card] = get_cards_from_their_names([card])[0]
-    play([connection[0]], False, deck, my_hand)
+    play([connection[0]], False, my_hand)
 
-def wait_for_my_turn() -> None:
-    while 
+def draw_a_card(deck: list) -> dict:
+    card: dict = deck.pop(0)
+    return card
+
+def is_it_my_turn() -> (bool, str):
+    connection: tuple = get_info()
+    if "it's your turn" == connection[1]:
+        return (connection[0], True)
+    else:
+        return (None, False)
 
 def create_a_card(name: str, image: pygame.surface.Surface) -> dict:
     return {"name": name, "image": image}
@@ -79,7 +86,25 @@ def get_ip() -> str:
     while running:
         screen.fill(BLACK)  # Définir l'arrière-plan en noir
         draw_text("Rentrez l'ip de vos adversaires, espacez chaque ip d'un espace (max 9 ip) :", font, WHITE, SCREEN_WIDTH // 2 - 100, 50)
+        button_text: str = "Attendre qu'un-e autre joueur-euse se connecte."
+        button_width: int = font.size(button_text)[0] + 20  # Ajoutez un padding de 20 pixels
+        button_height: int = font.size(button_text)[1] + 20  # Ajoutez un padding de 20 pixels
+        button_x: int = (SCREEN_WIDTH - button_width) // 2
 
+        button: pygame.Rect = pygame.Rect(button_x, 250, button_width, button_height)
+
+        if button.collidepoint(pygame.mouse.get_pos()):
+            if click:
+                screen.fill(BLACK)
+                draw_text("Veuillez patientez...", font, WHITE, SCREEN_WIDTH // 2 - 100, 50)
+                wait_for_someone_to_initialize_the_game()
+        
+        pygame.draw.rect(screen, (255, 0, 0), button)
+
+
+        draw_text(button_text, font, BLACK, button_x + button_width // 2, 250 + button_height // 2)
+
+        click: bool = False
         events: list = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
@@ -92,6 +117,9 @@ def get_ip() -> str:
                     return ip_address  # Retourner l'adresse IP saisie par l'utilisateur
                     # Réinitialiser la saisie
                     text_input.clear_text()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
         
         # Mettre à jour la saisie de texte
         text_input.update(events)
@@ -159,29 +187,69 @@ def main_menu() -> None:
         pygame.display.update()
         pygame.time.Clock().tick(60)
 
-def play(liste_des_ip: list, initialized_the_game: bool=True, deck: list=[], my_hand: list=[]) -> None:
-    if deck == [] and my_hand == []:
+def play(ip_list: list, initialized_the_game: bool=True, my_hand: list=[]) -> None:
+    discard_pile: list = []
+    if initialized_the_game and my_hand == []:
         deck: list = get_cards_from_their_names(get_card_images_names())
         hands: list = []
         shuffle(deck)
-        joueur_num = 0
-        for ip in liste_des_ip:
-            # on prend en compte le nombre de carte qui vont être retirée du deck à la fin pour que tous le monde reçoive la même carte comme étant celle en haut
-            # du deck
-            deck_name: str = deck[(((7*len(liste_des_ip))+7)-(joueur_num*7))-1:(((7*len(liste_des_ip))+7)-(joueur_num*7))]['name']
-            joueur_num += 1
-            hand: list = get_my_hand(deck) 
+        for ip in ip_list:
+            hand: list = get_my_hand(deck)
             hand_name: str = ""
             for card in hand:
-                hand_name =+ f" {card['name']}"
+                hand_name += f" {card['name']}"
             hand_name = hand_name[1:]
-            message: str = f"{deck_name}, {hand_name}"
-            senf_info(ip, message)
+            message: str = f"{hand_name}"
+            send_info(ip, message)
         my_hand: list = get_my_hand(deck)
     running: bool = True
     while running:
         screen.fill(GREEN)
-        wait_for_my_turn()
+
+        if not initialized_the_game:
+            ip, message = get_info()
+            while not (message == "it's your turn"):
+                discard_pile = [get_cards_from_their_names([message])[0]]
+            card_played = do_a_turn()
+            if card_played == None:
+                send_info(ip, card_played)
+                card: str = get_info()[1]
+                my_hand.append(get_cards_from_their_names([card])[0])
+            else:
+                discard_pile =  [card_played]
+                send_info(ip, card_played['name'])
+        else:
+            card_played = do_a_turn()
+            if not (card_played == None):
+                discard_pile.append(card_played)
+            else:
+                my_hand.append(draw_a_card(deck))
+            
+            if len(deck) == 0:
+                temp = discard_pile.pop(-1)
+                deck = discard_pile[::-1]
+                discard_pile = [temp]
+                for ip in ip_list:
+                    send_info(ip, discard_pile[0]["name"])
+
+            for ip in ip_list:
+                send_info(ip, "it's your turn")
+                card: str = get_info()[1]
+                if not card == None:
+                    discard_pile.append(get_cards_from_their_names([card])[0])
+                    message = card["name"]
+                    for ip_2 in ip_list:
+                        send_info(ip_2, message)
+                else:
+                    message = draw_a_card(deck)["name"]
+                    send_info(ip, message)
+                if len(deck) == 0:
+                    temp = discard_pile.pop(-1)
+                    deck = discard_pile[::-1]
+                    discard_pile = [temp]
+                    for ip in ip_list:
+                        send_info(ip, discard_pile[0]["name"])
+
 
 main_menu()
 pygame.quit()
