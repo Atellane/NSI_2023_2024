@@ -1,4 +1,4 @@
-# TODO développer dans la fonction play un moyen de prendre en compte le cas où il ne reste plus de carte à la personne, comment prévenir l'ordi principal qu'on a gagné
+# TODO développer la fonction play pour qu'elle prenne en charge l'envoie de cartes au prochain joueur quand un +2 est joué
 import os, sys, pygame
 from random import shuffle
 from pygame_textinput import TextInputVisualizer
@@ -70,7 +70,7 @@ def get_card_images_names() -> list:
 def get_cards_from_their_names(cards: list[str]) -> list:
     deck: list = []
     for card in cards:
-        deck.append(create_a_card(card, pygame.image.load(card)))
+        deck.append(create_a_card(card.replace("_", " ").replace(".png", ""), pygame.image.load(card)))
     return deck
 
 def get_my_hand(deck: list) -> list:
@@ -208,16 +208,27 @@ def play(ip_list: list, initialized_the_game: bool=True, my_hand: list=[]) -> No
 
         if not initialized_the_game:
             ip, message = get_info()
-            while not (message == "it's your turn"):
-                discard_pile = [get_cards_from_their_names([message])[0]]
-            card_played = do_a_turn()
-            if card_played == None:
-                send_info(ip, card_played)
-                card: str = get_info()[1]
-                my_hand.append(get_cards_from_their_names([card])[0])
+            if (not (message == "it's your turn")) and  (not ("won" in message)):
+                if "draw card" in message:
+                    cards = message.split(", ")[:1]
+                    cards = get_cards_from_their_names(cards)
+                    for card in cards:
+                        my_hand.append(card)
+                else:
+                    discard_pile = [get_cards_from_their_names([message])[0]]
+            elif "won" in message:
+                end_screen(message)
             else:
-                discard_pile =  [card_played]
-                send_info(ip, card_played['name'])
+                card_played = do_a_turn()
+                if len(my_hand) == 0:
+                    send_info(ip, " won")
+                if card_played == None:
+                    send_info(ip, card_played)
+                    card: str = get_info()[1]
+                    my_hand.append(get_cards_from_their_names([card])[0])
+                else:
+                    discard_pile =  [card_played]
+                    send_info(ip, card_played['name'])
         else:
             card_played = do_a_turn()
             if not (card_played == None):
@@ -232,24 +243,26 @@ def play(ip_list: list, initialized_the_game: bool=True, my_hand: list=[]) -> No
                 for ip in ip_list:
                     send_info(ip, discard_pile[0]["name"])
 
-            for ip in ip_list:
+            for index, ip in enumerate(ip_list):
                 send_info(ip, "it's your turn")
-                card: str = get_info()[1]
-                if not card == None:
-                    discard_pile.append(get_cards_from_their_names([card])[0])
-                    message = card["name"]
+                ip_r, message: str = get_info()
+                if message == " won":
+                    message = ip_r + message
+                    for ip_2 in ip_list:
+                        send_info(ip_2, message)
+                elif not message == None:
+                    discard_pile.append(get_cards_from_their_names([message])[0])
                     for ip_2 in ip_list:
                         send_info(ip_2, message)
                 else:
-                    message = draw_a_card(deck)["name"]
-                    send_info(ip, message)
+                    message = "draw card, " + draw_a_card(deck)["name"]
+                    send_info(ip_r, message)
                 if len(deck) == 0:
                     temp = discard_pile.pop(-1)
                     deck = discard_pile[::-1]
                     discard_pile = [temp]
                     for ip in ip_list:
                         send_info(ip, discard_pile[0]["name"])
-
 
 main_menu()
 pygame.quit()
