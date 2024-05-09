@@ -2,6 +2,8 @@
 import os, sys, pygame
 from random import shuffle
 from pygame_textinput import TextInputVisualizer
+from get import get_info
+from send import send_info
 
 # Initialisation de Pygame
 pygame.init()
@@ -69,8 +71,11 @@ def get_card_images_names() -> list:
 
 def get_cards_from_their_names(cards: list[str]) -> list:
     deck: list = []
-    for card in cards:
-        deck.append(create_a_card(card.replace("_", " ").replace(".png", ""), pygame.image.load(card)))
+    if "_" in cards[0]:
+        for card in cards:
+            deck.append(create_a_card(card.replace("_", " ").replace(".png", ""), pygame.image.load(card)))
+    else:
+            deck.append(create_a_card(card, pygame.image.load(card.replace(" ", "_")+".png"))) 
     return deck
 
 def get_my_hand(deck: list) -> list:
@@ -208,7 +213,7 @@ def play(ip_list: list, initialized_the_game: bool=True, my_hand: list=[]) -> No
 
         if not initialized_the_game:
             ip, message = get_info()
-            if (not (message == "it's your turn")) and  (not ("won" in message)):
+            if (not (message == "it's your turn")) and (not ("won" in message)):
                 if "draw card" in message:
                     cards = message.split(", ")[:1]
                     cards = get_cards_from_their_names(cards)
@@ -231,7 +236,8 @@ def play(ip_list: list, initialized_the_game: bool=True, my_hand: list=[]) -> No
                     send_info(ip, card_played['name'])
         else:
             card_played = do_a_turn()
-            if not (card_played == None):
+            if card_played["name"]
+            elif not (card_played == None):
                 discard_pile.append(card_played)
             else:
                 my_hand.append(draw_a_card(deck))
@@ -242,27 +248,48 @@ def play(ip_list: list, initialized_the_game: bool=True, my_hand: list=[]) -> No
                 discard_pile = [temp]
                 for ip in ip_list:
                     send_info(ip, discard_pile[0]["name"])
-
+            
+            skip_ip: bool = False
+            
             for index, ip in enumerate(ip_list):
-                send_info(ip, "it's your turn")
-                ip_r, message: str = get_info()
-                if message == " won":
-                    message = ip_r + message
-                    for ip_2 in ip_list:
-                        send_info(ip_2, message)
-                elif not message == None:
-                    discard_pile.append(get_cards_from_their_names([message])[0])
-                    for ip_2 in ip_list:
-                        send_info(ip_2, message)
+                if skip_ip:
+                    skip_ip = False
                 else:
-                    message = "draw card, " + draw_a_card(deck)["name"]
-                    send_info(ip_r, message)
-                if len(deck) == 0:
-                    temp = discard_pile.pop(-1)
-                    deck = discard_pile[::-1]
-                    discard_pile = [temp]
-                    for ip in ip_list:
-                        send_info(ip, discard_pile[0]["name"])
+                    send_info(ip, "it's your turn")
+                    ip_r, message: str = get_info()
+                    if message == " won":
+                        message = ip_r + " " + message
+                        for ip_2 in ip_list:
+                            send_info(ip_2, message)
+                    elif "+2" in message or "+4" in message:
+                        skip_ip = True
+                        if index+1 <= len(ip_list)-1:
+                            if "+2" in message:
+                                for i in range(2):
+                                    send_info(ip_list[index+1], "draw card, "+draw_a_card(deck)["name"])
+                            else:
+                                for i in range(4):
+                                    send_info(ip_list[index+1], "draw card, "+draw_a_card(deck)["name"])
+                        else:
+                            if "+2" in message:
+                                for i in range(2):
+                                    my_hand.append(draw_a_card(deck))
+                            else:
+                                for i in range(4):
+                                    my_hand.append(draw_a_card(deck))
+                    elif not message == None:
+                        discard_pile.append(get_cards_from_their_names([message])[0])
+                        for ip_2 in ip_list:
+                            send_info(ip_2, message)
+                    else:
+                        message = "draw card, " + draw_a_card(deck)["name"]
+                        send_info(ip_r, message)
+                    if len(deck) == 0:
+                        temp = discard_pile.pop(-1)
+                        deck = discard_pile[::-1]
+                        discard_pile = [temp]
+                        for ip in ip_list:
+                            send_info(ip, discard_pile[0]["name"])
 
 main_menu()
 pygame.quit()

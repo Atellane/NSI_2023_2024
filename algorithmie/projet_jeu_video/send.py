@@ -14,4 +14,4 @@ def send_info(ip, message):
        print("Erreur lors de l'envoi du message:", e)
 
 if __name__ == "__main__":
-    send_info("172.16.41.42", "miaou")
+    send_info("arch-lou", "miaou")
