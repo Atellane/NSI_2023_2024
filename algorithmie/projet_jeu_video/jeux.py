@@ -1,8 +1,8 @@
-# TODO développer la fonction play pour qu'elle prenne en charge l'envoie de cartes au prochain joueur quand un +2 est joué
 import os, sys, pygame
+from threading import Thread
 from random import shuffle
 from pygame_textinput import TextInputVisualizer
-from get import get_info
+from get import get_info, get_my_ip
 from send import send_info
 
 # Initialisation de Pygame
@@ -21,6 +21,7 @@ SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = screen.get_size()
 # Font pour le texte
 font: pygame.font.Font = pygame.font.Font(None, 36)
 
+
 def draw_text(text: str, font: pygame.font.Font, color: tuple, x: int, y: int) -> None:
     text_surface: pygame.Surface = font.render(text, True, color)
     text_rect: pygame.Rect = text_surface.get_rect()
@@ -29,21 +30,16 @@ def draw_text(text: str, font: pygame.font.Font, color: tuple, x: int, y: int) -
 
 def wait_for_someone_to_initialize_the_game() -> None:
     connection: tuple = get_info()
-    my_hand: list = connection[1].rsplit(" ")
+    my_hand: list = connection[1].rsplit(", ")
     for index_card, card in enumerate(my_hand):
         my_hand[index_card] = get_cards_from_their_names([card])[0]
-    play([connection[0]], False, my_hand)
+    connection = get_info()
+    discard_pile: list = [get_cards_from_their_names([connection[1]])[0]]
+    play([connection[0]], False, my_hand, discard_pile)
 
 def draw_a_card(deck: list) -> dict:
-    card: dict = deck.pop(0)
+    card: dict = deck.pop(-1)
     return card
-
-def is_it_my_turn() -> (bool, str):
-    connection: tuple = get_info()
-    if "it's your turn" == connection[1]:
-        return (connection[0], True)
-    else:
-        return (None, False)
 
 def create_a_card(name: str, image: pygame.surface.Surface) -> dict:
     return {"name": name, "image": image}
@@ -69,13 +65,26 @@ def get_card_images_names() -> list:
 
     return temp
 
-def get_cards_from_their_names(cards: list[str]) -> list:
+def get_cards_from_their_names(cards: list) -> list:
     deck: list = []
+    name = cards[0]
+    if ("plus quatre" in cards[0]) and (not "plus quatre" == cards[0]):
+        temp = cards[0].split(" ")[:-1]
+        temp[-1] = " " + temp[-1]
+        cards[0] = "".join(temp)
+    elif ("changement de couleur" in cards[0]) and (not "changement de couleur" == cards[0]):
+        temp = cards[0].split(" ")[:-1]
+        cards[0] = ""
+        for i in temp:
+            cards[0] += f"{i} "
+        cards[0] = cards[0][:-1]
+            
     if "_" in cards[0]:
         for card in cards:
             deck.append(create_a_card(card.replace("_", " ").replace(".png", ""), pygame.image.load(card)))
     else:
-            deck.append(create_a_card(card, pygame.image.load(card.replace(" ", "_")+".png"))) 
+        for card in cards:
+            deck.append(create_a_card(name, pygame.image.load(card.replace(" ", "_")+".png"))) 
     return deck
 
 def get_my_hand(deck: list) -> list:
@@ -90,8 +99,8 @@ def get_ip() -> str:
 
     while running:
         screen.fill(BLACK)  # Définir l'arrière-plan en noir
-        draw_text("Rentrez l'ip de vos adversaires, espacez chaque ip d'un espace (max 9 ip) :", font, WHITE, SCREEN_WIDTH // 2 - 100, 50)
-        button_text: str = "Attendre qu'un-e autre joueur-euse se connecte."
+        draw_text("Entrez l'ip de vos adversaires, espacez chaque ip d'un espace (max 9 ip) :", font, WHITE, SCREEN_WIDTH // 2 - 100, 50)
+        button_text: str = f"Attendre qu'un-e autre joueur-euse se connecte. (Votre ip : {get_my_ip()})"
         button_width: int = font.size(button_text)[0] + 20  # Ajoutez un padding de 20 pixels
         button_height: int = font.size(button_text)[1] + 20  # Ajoutez un padding de 20 pixels
         button_x: int = (SCREEN_WIDTH - button_width) // 2
@@ -192,8 +201,158 @@ def main_menu() -> None:
         pygame.display.update()
         pygame.time.Clock().tick(60)
 
-def play(ip_list: list, initialized_the_game: bool=True, my_hand: list=[]) -> None:
-    discard_pile: list = []
+def do_a_turn(my_hand: list, discard_pile: list) -> dict:
+    buttons: list = []
+    sc_cards: list = []
+    # Parcourir chaque carte dans la main du joueur
+    for i, card in enumerate(my_hand):
+        # Créer un bouton cliquable pour chaque carte
+        sc_cards.append(pygame.Surface((50 + i * 120, SCREEN_HEIGHT - 200)))
+        sc_cards[i].set_alpha(0)
+        sc_cards[i].fill(WHITE)
+        button_rect = pygame.Rect(50 + i * 120, SCREEN_HEIGHT - 200, 100, 150)  # Position et taille du bouton
+        button = {"screen": sc_cards[i] ,"rect": button_rect, "card": card}
+        buttons.append(button)
+    
+    sc_cards.append(pygame.Surface((SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2.75)))
+    sc_cards[-1].set_alpha(255)
+    sc_cards[-1].fill(WHITE)
+    button_rect = pygame.Rect(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 1.5, 100, 50)
+    button = {"screen": sc_cards[-1], "rect": button_rect, "card": {"name": "Piocher"}}
+    buttons.append(button)
+
+    # Boucle principale pour le rendu et l'interaction avec les boutons
+    running = True
+    while running:
+
+        draw_text("Piocher", font, BLACK, button["rect"].centerx, button["rect"].centery)
+        
+        # Afficher "C'est ton tour" en haut au centre de l'écran
+        draw_text("C'est ton tour", font, WHITE, SCREEN_WIDTH // 2, 50)
+
+        # Afficher les cartes dans la main du joueur
+        for button in buttons:
+            pygame.draw.rect(button["screen"], WHITE, button["rect"])
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                for button in buttons:
+                    if button["rect"].collidepoint(mouse_pos):
+                        if button["card"]["name"] == "Piocher":
+                            # Si l'utilisateur demande à piocher, renvoyer Piocher
+                            return button["card"]["name"]
+                        elif "plus quatre" in button["card"]["name"] or "changement de couleur" in button["card"]["name"]:
+                            my_hand.remove(button["card"])
+                            discard_pile.append(button["card"])
+                            # Si c'est une carte spéciale, demander à l'utilisateur de choisir une couleur
+                            color_choice = choose_color()
+                            # Insérer la couleur choisie au début du nom de la carte
+                            button["card"]["name"] += (" " + color_choice)
+                            # Renvoyer le nom de la carte
+                            return button["card"]
+                        elif (discard_pile[-1]["name"].split(" ")[0] == button["card"]["name"].split(" ")[0]) or discard_pile[-1]["name"].split(" ")[-1] == button["card"]["name"].split(" ")[-1]: # vérifie si chiffre ou couleur identique
+                            discard_pile.append(button["card"])
+                            my_hand.remove(button["card"])
+                            return button["card"]
+                        else:
+                            draw_text("Sélection invalide", font, BLACK, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2.25)
+
+
+def choose_color() -> str:
+    # Initialisation des couleurs
+    BLUE = (0, 0, 255)
+    GREEN = (0, 255, 0)
+    RED = (255, 0, 0)
+    YELLOW = (255, 255, 0)
+
+    # Définition des boutons de couleur
+    color_buttons = [
+        {"color": BLUE, "text": "Bleu", "rect": pygame.Rect(250, 350, 100, 50)},
+        {"color": GREEN, "text": "Vert", "rect": pygame.Rect(450, 350, 100, 50)},
+        {"color": RED, "text": "Rouge", "rect": pygame.Rect(250, 400, 100, 50)},
+        {"color": YELLOW, "text": "Jaune", "rect": pygame.Rect(450, 400, 100, 50)}
+    ]
+
+    # Boucle principale pour le rendu et l'interaction avec les boutons
+    running = True
+    while running:
+        screen.fill(GREEN)
+        for button in color_buttons:
+            pygame.draw.rect(screen, button["color"], button["rect"])
+            draw_text(button["text"], font, BLACK, button["rect"].centerx, button["rect"].centery)
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                for button in color_buttons:
+                    if button["rect"].collidepoint(mouse_pos):
+                        return button["text"].lower()  # Renvoyer le nom de la couleur sélectionnée
+
+def draw_my_hand(my_hand: list) -> None:
+    # Dessine la main du joueur sur l'écran
+    hand_size = len(my_hand)
+    if hand_size > 0:
+        # Calcule l'espace horizontal entre les cartes
+        space_between_cards = min(120, (SCREEN_WIDTH - 100) // hand_size)
+        # Calcule la taille maximale pour chaque carte en fonction de l'espace disponible
+        max_card_width = space_between_cards - 10  # 10 pixels de marge entre les cartes
+        max_card_height = int(max_card_width * 1.4)  # Ratio hauteur-largeur typique pour une carte
+
+        # Dessine chaque carte dans la main du joueur
+        for i, card in enumerate(my_hand):
+            card_image = card["image"]
+            # Redimensionne l'image de la carte à la taille maximale calculée
+            card_image = pygame.transform.scale(card_image, (max_card_width, max_card_height))
+            card_rect = card_image.get_rect()
+            # Positionne les cartes horizontalement
+            card_rect.x = 50 + i * space_between_cards
+            # Positionne les cartes verticalement
+            card_rect.y = SCREEN_HEIGHT - card_rect.height - 50
+            screen.blit(card_image, card_rect)
+    else:
+        # Si la main du joueur est vide, dessine un message
+        draw_text("Votre main est vide", font, WHITE, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+
+def draw_discard_pile(discard_pile: list) -> None:
+    # Dessine la pile de défausse sur l'écran
+    if discard_pile:
+        # Calcule la taille maximale pour chaque carte en fonction de l'espace disponible
+        # Calcule l'espace horizontal entre les cartes
+        space_between_cards = min(120, (SCREEN_WIDTH - 100))
+        # Calcule la taille maximale pour chaque carte en fonction de l'espace disponible
+        max_card_width = space_between_cards - 10  # 10 pixels de marge entre les cartes
+        max_card_height = int(max_card_width * 1.4)  # Ratio hauteur-largeur typique pour une carte
+
+        # Dessine la dernière carte dans pile de défausse
+        card_image = discard_pile[-1]["image"]
+        # Redimensionne l'image de la carte à la taille maximale calculée
+        card_image = pygame.transform.scale(card_image, (max_card_width, max_card_height))
+        card_rect = card_image.get_rect()
+        # Positionne les cartes horizontalement
+        card_rect.x = SCREEN_WIDTH  // 2
+        # Positionne les cartes verticalement
+        card_rect.y = SCREEN_HEIGHT // 2
+        screen.blit(card_image, card_rect)
+    else:
+        # Si la pile de défausse est vide, dessine un message
+        draw_text("Pile de défausse vide", font, WHITE, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+
+def end_screen(message: str):
+    screen.fill(GREEN)
+    draw_text(message, font, WHITE, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+
+def play(ip_list: list, initialized_the_game: bool=True, my_hand: list=[], discard_pile: list=[]) -> None:
     if initialized_the_game and my_hand == []:
         deck: list = get_cards_from_their_names(get_card_images_names())
         hands: list = []
@@ -202,82 +361,148 @@ def play(ip_list: list, initialized_the_game: bool=True, my_hand: list=[]) -> No
             hand: list = get_my_hand(deck)
             hand_name: str = ""
             for card in hand:
-                hand_name += f" {card['name']}"
-            hand_name = hand_name[1:]
+                hand_name += f"{card['name']}, "
+            hand_name = hand_name[:-2]
             message: str = f"{hand_name}"
             send_info(ip, message)
         my_hand: list = get_my_hand(deck)
+        discard_pile.append(draw_a_card(deck))
+        for ip in ip_list:
+            send_info(ip, discard_pile[-1]["name"])
+            
     running: bool = True
+    skip_ip: bool = False
     while running:
         screen.fill(GREEN)
 
+        draw_discard_pile(discard_pile)
+        draw_my_hand(my_hand)
+        pygame.display.update()
+
         if not initialized_the_game:
             ip, message = get_info()
-            if (not (message == "it's your turn")) and (not ("won" in message)):
-                if "draw card" in message:
-                    cards = message.split(", ")[:1]
-                    cards = get_cards_from_their_names(cards)
-                    for card in cards:
-                        my_hand.append(card)
-                else:
-                    discard_pile = [get_cards_from_their_names([message])[0]]
+            if "draw card" in message:
+                print("uwu")
+                cards = message.split(", ")[1:]
+                cards = get_cards_from_their_names(cards)
+                for card in cards:
+                    my_hand.append(card)
+            elif (not ("it's your turn" in message)) and (not ("won" in message)):
+                discard_pile = [get_cards_from_their_names([message])[0]]
             elif "won" in message:
                 end_screen(message)
             else:
-                card_played = do_a_turn()
                 if len(my_hand) == 0:
                     send_info(ip, " won")
-                if card_played == None:
+                card_played = do_a_turn(my_hand, discard_pile)
+                
+                screen.fill(GREEN)
+                draw_discard_pile(discard_pile)
+                draw_my_hand(my_hand)
+                pygame.display.update()
+                if card_played == "Piocher":
                     send_info(ip, card_played)
-                    card: str = get_info()[1]
-                    my_hand.append(get_cards_from_their_names([card])[0])
                 else:
                     discard_pile =  [card_played]
                     send_info(ip, card_played['name'])
-        else:
-            card_played = do_a_turn()
-            if card_played["name"]
-            elif not (card_played == None):
-                discard_pile.append(card_played)
+        else:   
+            screen.fill(GREEN)
+            draw_discard_pile(discard_pile)
+            draw_my_hand(my_hand)
+            pygame.display.update()
+            
+            if not skip_ip:
+                if len(my_hand) == 0:
+                    my_ip: str = get_my_ip()
+                    for ip in ip_list:
+                        send_info(ip, f"{my_ip} won")
+                
+                card_played = do_a_turn(my_hand, discard_pile)
+
+                if card_played == "Piocher":
+                    my_hand.append(draw_a_card(deck))
+                elif "plus deux" in card_played or "plus quatre" in card_played:
+                    skip_ip = True
+                    if "plus deux" in card_played:
+                        for i in range(2):
+                            send_info(ip_list[0], "draw card, "+draw_a_card(deck)["name"])
+                    else:
+                        for i in range(4):
+                            send_info(ip_list[0], "draw card, "+draw_a_card(deck)["name"])
+                    discard_pile.append(card_played)
+                    for ip in ip_list:
+                        send_info(ip, card_played["name"])
+                elif "changement de sens" in card_played:
+                    ip_list.reverse()
+                    discard_pile.append(card_played)
+                    for ip in ip_list:
+                        send_info(ip, card_played["name"])
+                elif "interdiction de jouer" in card_played:
+                    skip_ip = True
+                    discard_pile.append(card_played)
+                    for ip in ip_list:
+                        send_info(ip, card_played["name"])
+                else:
+                    discard_pile.append(card_played)
+                    for ip in ip_list:
+                        send_info(ip, card_played["name"])
+                        
+                if len(deck) == 0:
+                    temp = discard_pile.pop(-1)
+                    deck = discard_pile[::-1]
+                    discard_pile = [temp]
+                    for ip in ip_list:
+                        send_info(ip, discard_pile[0]["name"])
             else:
-                my_hand.append(draw_a_card(deck))
-            
-            if len(deck) == 0:
-                temp = discard_pile.pop(-1)
-                deck = discard_pile[::-1]
-                discard_pile = [temp]
-                for ip in ip_list:
-                    send_info(ip, discard_pile[0]["name"])
-            
-            skip_ip: bool = False
+                skip_ip = False
             
             for index, ip in enumerate(ip_list):
+                if len(deck) == 0:
+                    temp = discard_pile.pop(-1)
+                    deck = discard_pile[::-1]
+                    discard_pile = [temp]
+                    for ip in ip_list:
+                        send_info(ip, discard_pile[0]["name"])
+
                 if skip_ip:
                     skip_ip = False
                 else:
                     send_info(ip, "it's your turn")
-                    ip_r, message: str = get_info()
+                    ip_r, message = get_info()
                     if message == " won":
                         message = ip_r + " " + message
                         for ip_2 in ip_list:
                             send_info(ip_2, message)
-                    elif "+2" in message or "+4" in message:
+                    elif "plus deux" in message or "plus quatre" in message:
                         skip_ip = True
                         if index+1 <= len(ip_list)-1:
-                            if "+2" in message:
+                            if "plus deux" in message:
                                 for i in range(2):
                                     send_info(ip_list[index+1], "draw card, "+draw_a_card(deck)["name"])
                             else:
                                 for i in range(4):
                                     send_info(ip_list[index+1], "draw card, "+draw_a_card(deck)["name"])
                         else:
-                            if "+2" in message:
+                            if "plus deux" in message:
                                 for i in range(2):
                                     my_hand.append(draw_a_card(deck))
                             else:
                                 for i in range(4):
                                     my_hand.append(draw_a_card(deck))
-                    elif not message == None:
+                        discard_pile.append(get_cards_from_their_names([message])[0])
+                        for ip_2 in ip_list:
+                            send_info(ip_2, message)
+                    elif "changement de sens" in message:
+                        ip_list.reverse()
+                        discard_pile.append(get_cards_from_their_names([message])[0])
+                        for ip_2 in ip_list:
+                            send_info(ip_2, message)
+                    elif "interdiction de jouer" in message:
+                        skip_ip = True
+                        discard_pile.append(get_cards_from_their_names([message])[0])
+                        for ip_2 in ip_list:
+                            send_info(ip_2, message)
+                    elif not message == "Piocher":
                         discard_pile.append(get_cards_from_their_names([message])[0])
                         for ip_2 in ip_list:
                             send_info(ip_2, message)
